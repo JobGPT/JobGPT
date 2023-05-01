@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from .web_selenium import *
-
+import os
 import json
 # 해당 객체를 불러올 때 수행해함
 
@@ -39,8 +39,14 @@ class WebCrawler:
         query = self.target
         try:
             # 구글 search api 키와 Customsearch 엔진 id를 받아온다.
-            api_key = 'AIzaSyBlNSqg-9WQraWKrdqLdMqh-L0umq_73eA'  # api key 는 나중에 config로 변경해줘야함
-            custom_search_engine_id = '801d58a0c2a1a418b'        # custom_search_engine_id 역시 config에서 불러와야함
+            
+            file_path = os.path.abspath(__file__)
+            abs_path = os.path.dirname(file_path)
+
+            config = open(abs_path+'/google_customSearch_APIkey.json').read()
+            config = json.loads(config)
+            api_key = config['API_KEY']                  # api key 는 나중에 config로 변경해줘야함
+            custom_search_engine_id = config['cx']       # custom_search_engine_id 역시 config에서 불러와야함
             
             # Initialize the Custom Search API service
             service = build("customsearch", "v1", developerKey=api_key)

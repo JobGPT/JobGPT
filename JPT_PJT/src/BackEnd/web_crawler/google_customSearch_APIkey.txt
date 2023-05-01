@@ -1,3 +1,0 @@
-API_KEY = AIzaSyBlNSqg-9WQraWKrdqLdMqh-L0umq_73eA
-
-cx = 801d58a0c2a1a418b
