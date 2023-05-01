@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/venv
 # Edit at https://www.toptal.com/developers/gitignore?templates=venv
 
+# api_Key
+google_customSearch_APIkey.json
+
 ## Chrome_Driver
 chromedriver.*
 
