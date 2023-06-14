@@ -68,6 +68,8 @@ export default function NewChat({ title }) {
               value={editedTitle}
               onChange={handleChangeTitle}
               className="text-white bg-transparent outline-none"
+              style={{width: '40px'}}
+              onClick={(event) => event.stopPropagation()}
             />
           ) : (
             <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative">{title}</div>
@@ -88,9 +90,9 @@ export default function NewChat({ title }) {
           <button
             onClick={() => {
               if (edit_active) {
-                confirmClick(editedTitle);
+                confirmClick(title, editedTitle, delete_active, edit_active);
               } else {
-                confirmClick(title);
+                confirmClick(title, editedTitle, delete_active, edit_active);
               }
             }}
             style={(delete_active || edit_active) && active ? { visibility: 'visible' } : { display: 'none' }}

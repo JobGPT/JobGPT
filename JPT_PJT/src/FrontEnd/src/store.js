@@ -19,10 +19,21 @@ const store = (set) => ({
       img: imgSource,
     }));
   },
-  confirmClick: (title) => {
-    set((store) => ({
-      chats: store.chats.filter((chat) => chat.title !== title),
-    }));
+  confirmClick: (title, newTitle, deleteActive, editActive) => {
+    if (deleteActive) {
+      set((store) => ({
+        chats: store.chats.filter((chat) => chat.title !== title),
+      }));
+    } else if (editActive) {
+      set((store) => ({
+        chats: store.chats.map((chat) => {
+          if (chat.title === title) {
+            return { title: newTitle };
+          }
+          return chat;
+        }),
+      }));
+    }
   },
 });
 
