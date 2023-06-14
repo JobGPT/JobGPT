@@ -1,23 +1,54 @@
+import { useState } from 'react';
+import { useStore } from '../store';
 import Button from 'react-bootstrap/Button';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
-import plus from "../assets/plus.svg"
+import plus from '../assets/plus.svg';
+
+import './NewChatBtn.css';
 
 function NewChatBtn() {
-  return <div className="NewChatBtn w-100 me-4">
-    <Container>
-      <Row>
-        <Button variant="outline-dark">
-          <div className="d-flex p-1">
-            <img src={plus} alt="새채팅생성버튼" />
-            <div className="mx-2">New chat</div>
-          </div>
-        </Button>
-      </Row>
-    </Container>
-  </div>;
+  const addChat = useStore((store) => store.addChat);
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState('');
+
+  return (
+    <div className="NewChatBtn w-100 me-4">
+      <Container>
+        <Row>
+          <Button variant="outline-dark">
+            <a
+              className="newchat"
+              onClick={() => {
+                setOpen(true);
+              }}
+            >
+              <img src={plus} />
+              New chat
+            </a>
+            {open && (
+              <div className="Modal">
+                <div className="modalContent">
+                  <input onChange={(e) => setText(e.target.value)} value={text} />
+                  <button
+                    onClick={() => {
+                      addChat(text);
+                      setText('');
+                      setOpen(false);
+                    }}
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            )}
+          </Button>
+        </Row>
+      </Container>
+    </div>
+  );
 }
 
 export default NewChatBtn;
