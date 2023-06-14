@@ -10,10 +10,10 @@ import cancleimg from '../assets/cancle.svg';
 import checkimg from '../assets/check.svg';
 
 export default function NewChat({ title }) {
-  const [is_active, setActive] = useState(false);
+  const [is_active, setActive] = useState(false); // a 태그 활성화
   const [edit_active, setEdit] = useState(false);
   const [delete_active, setDelete] = useState(false);
-  const [active, setBtnActive] = useState(false);
+  const [active, setBtnActive] = useState(false); // 아무 버튼이나 활성화 되있는 상태
   const [editedTitle, setEditedTitle] = useState(title); // 추가된 상태
 
   const btnClick = useStore((store) => store.btnClick);
@@ -69,7 +69,7 @@ export default function NewChat({ title }) {
               onChange={handleChangeTitle}
               className="text-white bg-transparent outline-none"
               style={{width: '40px'}}
-              onClick={(event) => event.stopPropagation()}
+              onClick={(event) => event.stopPropagation()} // a 태그 눌리는거 방지
             />
           ) : (
             <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative">{title}</div>
@@ -78,7 +78,7 @@ export default function NewChat({ title }) {
         <div
           className="absolute flex right-1 z-10 text-gray-300"
           style={is_active ? { visibility: 'visible' } : { display: 'none' }}
-          onClick={(event) => event.stopPropagation()}
+          onClick={(event) => event.stopPropagation()} // a 태그 눌리는거 방지
         >
           <button
             onClick={handleClickEdit}

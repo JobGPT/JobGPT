@@ -45,7 +45,7 @@ export default function ChatList() {
                   </button>
                 </div>
               </div>
-            )}
+            )} {/* 필요없음 */}
           </ol>
         </div>
         <div className="profile">

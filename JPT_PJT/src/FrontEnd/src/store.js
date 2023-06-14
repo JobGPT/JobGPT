@@ -3,7 +3,6 @@ import chatimg from './assets/chatimg.svg';
 
 const store = (set) => ({
   chats: [],
-  active: false,
   img: chatimg,
   setButtonImage: (image) => set({ img: image }),
   addChat: (title) =>

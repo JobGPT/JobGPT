@@ -9,8 +9,10 @@
   left: 50%;
 }
 
+
 #chatinsection {
   position: absolute;
+  top: auto;
   bottom: 30px;
   left: 0;
   width: 100%;
