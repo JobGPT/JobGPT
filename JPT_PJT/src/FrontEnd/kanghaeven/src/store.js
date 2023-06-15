@@ -4,6 +4,7 @@ import chatimg from './assets/chatimg.svg';
 const store = (set) => ({
   chats: [],
   img: chatimg,
+  showOffcanvas01: true,
   setButtonImage: (image) => set({ img: image }),
   addChat: (title) =>
     set((store) => ({
@@ -33,6 +34,11 @@ const store = (set) => ({
         }),
       }));
     }
+  },
+  handleToggleOffcanvas01: () => {
+    set((store) => ({
+      showOffcanvas01: !store.showOffcanvas01,
+    }));
   },
 });
 

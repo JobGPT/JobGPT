@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '../store';
-import Button from 'react-bootstrap/Button';
 
+import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
@@ -18,33 +18,31 @@ function NewChatBtn() {
     <div className="NewChatBtn w-100 me-4">
       <Container>
         <Row>
-          <Button variant="outline-dark">
-            <a
-              className="newchat"
-              onClick={() => {
-                setOpen(true);
-              }}
-            >
-              <img src={plus} />
-              New chat
-            </a>
-            {open && (
-              <div className="Modal">
-                <div className="modalContent">
-                  <input onChange={(e) => setText(e.target.value)} value={text} />
-                  <button
-                    onClick={() => {
-                      addChat(text);
-                      setText('');
-                      setOpen(false);
-                    }}
-                  >
-                    Submit
-                  </button>
-                </div>
+          <a
+            className="newchat"
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            <img src={plus} />
+            New chat
+          </a>
+          {open && (
+            <div className="Modal">
+              <div className="modalContent">
+                <input onChange={(e) => setText(e.target.value)} value={text} />
+                <button
+                  onClick={() => {
+                    addChat(text);
+                    setText('');
+                    setOpen(false);
+                  }}
+                >
+                  Submit
+                </button>
               </div>
-            )}
-          </Button>
+            </div>
+          )}
         </Row>
       </Container>
     </div>

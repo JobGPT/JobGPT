@@ -48,7 +48,7 @@ export default function NewChat({ title }) {
   };
 
   return (
-    <div className="relative" style={{ height: 'auto', opacity: 1 }}>
+    <div className="relative">
       <a
         className={
           'flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all )} pr-14 )} bg-gray-800 hover:bg-gray-800 group' +
@@ -61,7 +61,7 @@ export default function NewChat({ title }) {
         }}
       >
         <img src={active ? img : chatimg} />
-        <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative">
+        <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative" style={{ flexGrow: 1 }}>
           {edit_active ? (
             <input
               type="text"
