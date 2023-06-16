@@ -9,7 +9,7 @@ import editimg from '../assets/edit.svg';
 import cancleimg from '../assets/cancle.svg';
 import checkimg from '../assets/check.svg';
 
-export default function NewChat({ title }) {
+export default function NewChat({ title, index }) {
   const [is_active, setActive] = useState(false); // a 태그 활성화
   const [edit_active, setEdit] = useState(false);
   const [delete_active, setDelete] = useState(false);
@@ -90,9 +90,9 @@ export default function NewChat({ title }) {
           <button
             onClick={() => {
               if (edit_active) {
-                confirmClick(title, editedTitle, delete_active, edit_active);
+                confirmClick(title, editedTitle, delete_active, edit_active, index);
               } else {
-                confirmClick(title, editedTitle, delete_active, edit_active);
+                confirmClick(title, editedTitle, delete_active, edit_active, index);
               }
             }}
             style={(delete_active || edit_active) && active ? { visibility: 'visible' } : { display: 'none' }}

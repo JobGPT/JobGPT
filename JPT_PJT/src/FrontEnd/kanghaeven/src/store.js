@@ -1,15 +1,19 @@
 import { create } from 'zustand';
 import chatimg from './assets/chatimg.svg';
 
-const store = (set) => ({
+const store = (set) => {
+  let index = 0;
+  return{
   chats: [],
   img: chatimg,
   showOffcanvas01: true,
   setButtonImage: (image) => set({ img: image }),
-  addChat: (title) =>
+  addChat: (title) =>{
+    const newChat = {title, index};
+    index ++;
     set((store) => ({
-      chats: [...store.chats, { title }],
-    })),
+      chats: [...store.chats, newChat],
+    }))},
   btnClick: (id) => {
     const buttonElement = document.getElementById(`button-${id}`);
     const imgElement = buttonElement.querySelector('img');
@@ -19,16 +23,16 @@ const store = (set) => ({
       img: imgSource,
     }));
   },
-  confirmClick: (title, newTitle, deleteActive, editActive) => {
+  confirmClick: (title, newTitle, deleteActive, editActive, index) => {
     if (deleteActive) {
       set((store) => ({
-        chats: store.chats.filter((chat) => chat.title !== title),
+        chats: store.chats.filter((chat) => chat.index !== index),
       }));
     } else if (editActive) {
       set((store) => ({
         chats: store.chats.map((chat) => {
           if (chat.title === title) {
-            return { title: newTitle };
+            return { title: newTitle, index: chat.index};
           }
           return chat;
         }),
@@ -40,6 +44,7 @@ const store = (set) => ({
       showOffcanvas01: !store.showOffcanvas01,
     }));
   },
-});
+  };
+};
 
 export const useStore = create(store, { name: 'store' });

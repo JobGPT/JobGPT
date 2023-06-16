@@ -36,9 +36,9 @@ function ChatList({ handleCloseOffcanvas }) {
         <Container>
           <div className="relative" style={{ height: 'auto', opacity: 1 }}>
             <ol style={{ flexDirection: 'column' }}>
-              {chats.map((chat, index) => (
+              {chats.map((chat) => (
                 <li className="relative items-center">
-                  <NewChat title={chat.title} key={index} />
+                  <NewChat title={chat.title} index={chat.index} key={chat.index} />
                 </li>
               ))}
             </ol>
