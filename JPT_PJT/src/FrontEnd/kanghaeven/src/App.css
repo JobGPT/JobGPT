@@ -1,6 +1,9 @@
 .App {
-  /* display: grid; */
-  /* grid-template-columns: 260px auto; */
+  height: 100%;
+  width: 100%;
+}
+
+#app_container{
   height: 100%;
   width: 100%;
 }

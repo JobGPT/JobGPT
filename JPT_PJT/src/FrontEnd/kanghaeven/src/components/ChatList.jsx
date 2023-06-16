@@ -4,16 +4,21 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import'./ChatList.css';
+
 import NewChatBtn from './NewChatBtn';
 import NewChat from './NewChat';
 import close from '../assets/close.svg';
 
 import { CloseButton } from 'react-bootstrap';
 import { useStore } from '../store.js';
+import { useMediaQuery } from 'react-responsive';
+
 
 function ChatList({ handleCloseOffcanvas }) {
   const chats = useStore((store) => store.chats);
   const handleToggleOffcanvas01 = useStore((store) => store.handleToggleOffcanvas01);
+  const isLgBreakpoint = useMediaQuery({ minWidth: 992 });
 
   return (
     <div className="bg-dark" style={{ height: '100%' }}>
@@ -22,13 +27,12 @@ function ChatList({ handleCloseOffcanvas }) {
           <Col xs={9}>
             <NewChatBtn />
           </Col>
-          <Col xs={3}>
+          {!isLgBreakpoint ? (<Col xs={3}><CloseButton onClick={handleCloseOffcanvas} /></Col>) : (<Col xs={3}>
             <Button onClick={handleToggleOffcanvas01} variant="outline-secondary">
               <img src={close} />
             </Button>
-          </Col>
+          </Col>)}
         </Row>
-        <CloseButton onClick={handleCloseOffcanvas} />
         <Container>
           <div className="relative" style={{ height: 'auto', opacity: 1 }}>
             <ol style={{ flexDirection: 'column' }}>

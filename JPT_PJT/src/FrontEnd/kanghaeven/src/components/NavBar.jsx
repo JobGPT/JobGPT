@@ -16,6 +16,9 @@ function NavBar() {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const isLgBreakpoint = useMediaQuery({ minWidth: 992 });
 
+  const divStyle = {
+    height: isLgBreakpoint ? '100%' : 'auto',
+  };
   const showOffcanvas01 = useStore((store) => store.showOffcanvas01);
   const handleToggleOffcanvas01 = useStore((store) => store.handleToggleOffcanvas01);
 
@@ -30,15 +33,15 @@ function NavBar() {
   };
 
   return (
-    <div style={{ height: '100%' }}>
+    <div style={divStyle}>
       {/* 작은 화면에서 보이는 네비게이션 바 */}
-      <Navbar key="lg" bg="light" expand="lg" className="p-3 d-lg-none">
+      <Navbar key="lg" bg="light" expand="lg" className="p-3 d-lg-none" sticky='top'>
         <Container fluid>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} onClick={handleToggleOffcanvas} />
 
           <Offcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="start">
             <Offcanvas.Body className="p-0">
-              <ChatList handleCloseOffcanvas={handleCloseOffcanvas} />
+              <ChatList handleCloseOffcanvas={handleCloseOffcanvas}/>
             </Offcanvas.Body>
           </Offcanvas>
 
@@ -52,7 +55,7 @@ function NavBar() {
 
       {/* 큰 화면에서만 보이는 사이드 바 채팅 목록 */}
       {isLgBreakpoint ? (
-        <div style={{ height: '100%', width: '20%' }}>
+        <div style={{ height: '100%', width: '100%' }}>
           {!showOffcanvas01 && (
             <Button onClick={handleToggleOffcanvas01} variant="outline-dark">
               <img src={close} />
