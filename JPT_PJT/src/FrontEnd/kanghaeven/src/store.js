@@ -3,6 +3,7 @@ import chatimg from './assets/chatimg.svg';
 
 const store = (set) => {
   let index = 0;
+
   return{
   chats: [],
   img: chatimg,
@@ -23,7 +24,7 @@ const store = (set) => {
       img: imgSource,
     }));
   },
-  confirmClick: (title, newTitle, deleteActive, editActive, index) => {
+  confirmClick: (newTitle, deleteActive, editActive, index) => {
     if (deleteActive) {
       set((store) => ({
         chats: store.chats.filter((chat) => chat.index !== index),
@@ -31,7 +32,7 @@ const store = (set) => {
     } else if (editActive) {
       set((store) => ({
         chats: store.chats.map((chat) => {
-          if (chat.title === title) {
+          if (chat.index === index) {
             return { title: newTitle, index: chat.index};
           }
           return chat;

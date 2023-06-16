@@ -1,5 +1,5 @@
 import './ChatSection.css';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import sendimg from '../assets/send.svg';
 
 import MyChat from './MyChat';
@@ -7,6 +7,7 @@ import MyChat from './MyChat';
 export default function ChatSection() {
   const [message, setMessage] = useState('');
   const [sendmessage, setSendMessage] = useState([]);
+  const textareaRef = useRef(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -17,6 +18,17 @@ export default function ChatSection() {
 
   const handleChange = (event) => {
     setMessage(event.target.value);
+  };
+
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [message]);
+
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
   };
 
   return (
@@ -34,7 +46,7 @@ export default function ChatSection() {
         <form id="chatingform" onSubmit={handleSubmit}>
           <div className="chatsection">
             <textarea
-              tabIndex="0"
+              ref={textareaRef}
               id="textarea"
               rows="1"
               placeholder="Send a message."
