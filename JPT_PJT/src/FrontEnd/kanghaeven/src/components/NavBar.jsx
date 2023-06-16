@@ -30,7 +30,7 @@ function NavBar() {
   };
 
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       {/* 작은 화면에서 보이는 네비게이션 바 */}
       <Navbar key="lg" bg="light" expand="lg" className="p-3 d-lg-none">
         <Container fluid>
@@ -52,7 +52,7 @@ function NavBar() {
 
       {/* 큰 화면에서만 보이는 사이드 바 채팅 목록 */}
       {isLgBreakpoint ? (
-        <div style={{ height: '100%' }}>
+        <div style={{ height: '100%', width: '20%' }}>
           {!showOffcanvas01 && (
             <Button onClick={handleToggleOffcanvas01} variant="outline-dark">
               <img src={close} />
