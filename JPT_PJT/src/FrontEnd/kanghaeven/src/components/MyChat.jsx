@@ -7,7 +7,7 @@ export default function MyChat({ message }) {
         <div id="profile">
           <img src={profileimg} alt="" />
         </div>
-        <div id="current_chat">{message}</div>
+        <div id="current_chat"><div dangerouslySetInnerHTML={{ __html: message }} /></div>
       </div>
       <hr />
     </div>
