@@ -52,7 +52,7 @@ export default function NewChat({ title, index }) {
     <div className="relative">
       <a
         className={
-          'flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all )} pr-14 )} bg-gray-800 hover:bg-gray-800 group' +
+          'flex items-center gap-3 relative rounded-md cursor-pointer break-all )} pr-14 )} bg-gray-800 hover:bg-gray-800 group' +
           (is_active ? ' active' : '')
         }
         onClick={(event) => {

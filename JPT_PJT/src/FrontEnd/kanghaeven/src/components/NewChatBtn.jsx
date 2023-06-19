@@ -15,18 +15,18 @@ function NewChatBtn() {
   const [text, setText] = useState('');
 
   return (
-    <div className="NewChatBtn w-100 me-4">
-      <Container>
+    <div className="NewChatBtn w-100">
+      <Container style={{ padding: '0px' }}>
         <Row>
-          <a
+          <div
             className="newchat"
             onClick={() => {
               setOpen(true);
             }}
           >
-            <img src={plus} />
+            <img src={plus} className='me-2'/>
             New chat
-          </a>
+          </div>
           {open && (
             <div className="Modal">
               <div className="modalContent">
