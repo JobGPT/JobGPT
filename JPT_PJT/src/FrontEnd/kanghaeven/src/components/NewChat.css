@@ -1,5 +1,4 @@
 a {
-  text-decoration: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -8,7 +7,7 @@ a {
   border-radius: 0.25rem;
   background-color: #212529;
   color: #fff;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 a:hover {
@@ -26,4 +25,8 @@ ol {
 button {
   border: none;
   background-color: transparent;
+}
+
+#chatTitle{
+  color: white;
 }

@@ -59,7 +59,7 @@
   box-shadow: none;
   resize: none;
   overflow-y: hidden;
-  height: 24px;
+  min-height: 24px;
   max-height: 200px;
 }
 

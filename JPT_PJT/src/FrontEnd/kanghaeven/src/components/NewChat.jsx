@@ -9,7 +9,7 @@ import editimg from '../assets/edit.svg';
 import cancleimg from '../assets/cancle.svg';
 import checkimg from '../assets/check.svg';
 
-export default function NewChat({ title }) {
+export default function NewChat({ title, index }) {
   const [is_active, setActive] = useState(false); // a 태그 활성화
   const [edit_active, setEdit] = useState(false);
   const [delete_active, setDelete] = useState(false);
@@ -21,6 +21,7 @@ export default function NewChat({ title }) {
     setBtnActive(false);
     setDelete(false);
     setEdit(false);
+    setEditedTitle(title);
   };
   const handleClick = () => {
     setActive(!is_active);
@@ -72,7 +73,7 @@ export default function NewChat({ title }) {
               onClick={(event) => event.stopPropagation()} // a 태그 눌리는거 방지
             />
           ) : (
-            <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative">{title}</div>
+            <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative" id="chatTitle">{title}</div>
           )}
         </div>
         <div
@@ -90,9 +91,10 @@ export default function NewChat({ title }) {
           <button
             onClick={() => {
               if (edit_active) {
-                confirmClick(title, editedTitle, delete_active, edit_active);
+                confirmClick(editedTitle, delete_active, edit_active, index);
+                setEdit(false);
               } else {
-                confirmClick(title, editedTitle, delete_active, edit_active);
+                confirmClick(editedTitle, delete_active, edit_active, index);
               }
             }}
             style={(delete_active || edit_active) && active ? { visibility: 'visible' } : { display: 'none' }}
