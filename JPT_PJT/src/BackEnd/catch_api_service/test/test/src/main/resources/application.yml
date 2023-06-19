@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/jobGPT;
+    url: jdbc:h2:tcp://localhost/~/test;
     # 이름바꿔주기
     username: sa
     password:
@@ -11,7 +11,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
         #        show_sql: true

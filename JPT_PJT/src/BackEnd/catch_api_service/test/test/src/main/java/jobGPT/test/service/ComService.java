@@ -26,44 +26,6 @@ public class ComService {
     private final RecomendTableRepository recomendTableRepository;
     private final RecomendCompRepository recomendCompRepository;
 
-//    @Transactional
-//    public CompanyResponseDTO create(CompanyRequestDTO companyDTO) { // 생성하고 해당 id 반환하기
-////        Company holi = companyRepository.findByCompName(companyDTO.getCompName());
-//        Company company = Company.builder()
-//                .compName(companyDTO.getCompName())
-//                .area(companyDTO.getArea())
-//                .size(companyDTO.getSize()).build();
-//        Company savedCompany = companyRepository.save(company);
-//
-//        CompInfo compInfo = CompInfo.builder()
-//                .company(savedCompany)
-//                .field(companyDTO.getField())
-//                .compinfo(companyDTO.getCompinfo()).build();
-//        CompInfo savedCompinfo = compinfoRepository.save(compInfo);
-//
-//        for (String reco : companyDTO.getRecomendComps()) {
-//            RecomendComp recomendComp = RecomendComp.builder()
-//                    .title(reco).build();
-//            RecomendComp savedReco = recomendCompRepository.save(recomendComp);
-//
-//            RecomendTable recomendTable = RecomendTable.builder()
-//                    .company(savedCompany)
-//                    .recomendComp(savedReco).build();
-//            recomendTableRepository.save(recomendTable);
-//        }
-//        List<RecomendTable> sendReco = recomendTableRepository.findByCompany(savedCompany);
-//        List<RecomendTitleDTO> sendRecoDTO = sendReco.stream().map(o -> new RecomendTitleDTO(o.getRecomendComp().getTitle())).collect(Collectors.toList());
-//
-//        return CompanyResponseDTO.builder()
-//                .companyId(savedCompany.getId())
-//                .area(savedCompany.getArea())
-//                .size(savedCompany.getSize())
-//                .field(savedCompinfo.getField())
-//                .compinfo(savedCompinfo.getCompinfo())
-//                .compName(savedCompany.getCompName())
-//                .recomendComps(sendRecoDTO).build();
-//    }
-
     @Transactional
     public CompanyResponseDTO create(CompanyRequestDTO companyDTO) { // 생성하고 해당 id 반환하기
         if (companyRepository.existsByCompName(companyDTO.getCompName()) == true) {
@@ -94,14 +56,24 @@ public class ComService {
         CompInfo savedCompinfo = compinfoRepository.save(compInfo);
 
         for (String reco : companyDTO.getRecomendComps()) {
-            RecomendComp recomendComp = RecomendComp.builder()
-                    .title(reco).build();
-            RecomendComp savedReco = recomendCompRepository.save(recomendComp);
 
-            RecomendTable recomendTable = RecomendTable.builder()
-                    .company(savedCompany)
-                    .recomendComp(savedReco).build();
-            recomendTableRepository.save(recomendTable);
+            if (recomendCompRepository.existsByTitle(reco) == true) {
+                RecomendComp savedReco = recomendCompRepository.findByTitle(reco);
+                RecomendTable recomendTable = RecomendTable.builder()
+                        .company(savedCompany)
+                        .recomendComp(savedReco).build();
+                recomendTableRepository.save(recomendTable);
+            }
+            else {
+                RecomendComp recomendComp = RecomendComp.builder()
+                        .title(reco).build();
+                RecomendComp savedReco = recomendCompRepository.save(recomendComp);
+                RecomendTable recomendTable = RecomendTable.builder()
+                        .company(savedCompany)
+                        .recomendComp(savedReco).build();
+                recomendTableRepository.save(recomendTable);
+            }
+
         }
         List<RecomendTable> sendReco = recomendTableRepository.findByCompany(savedCompany);
         List<RecomendTitleDTO> sendRecoDTO = sendReco.stream().map(o -> new RecomendTitleDTO(o.getRecomendComp().getTitle())).collect(Collectors.toList());
@@ -117,9 +89,10 @@ public class ComService {
     }
 
     public RecoCompResponseDTO recoList(String name) {
-        List<RecomendComp> recomendComp = recomendCompRepository.findByTitle(name);
-        List<RecomendTable> recomendTables = recomendTableRepository.findByRecomendComp(recomendComp.get(0));
-        List<RecoCompDTO> sendRecoDTO = recomendTables.stream().map(o -> new RecoCompDTO(o.getCompany().getCompName())).collect(Collectors.toList());
+        RecomendComp recomendComp = recomendCompRepository.findByTitle(name);
+        List<RecomendTable> recomendTables = recomendTableRepository.findByRecomendComp(recomendComp);
+        List<RecoCompDTO> sendRecoDTO = recomendTables.stream().map(o ->
+                new RecoCompDTO(o.getCompany().getCompName())).collect(Collectors.toList());
         return RecoCompResponseDTO.builder()
                 .title(name)
                 .compName(sendRecoDTO).build();
