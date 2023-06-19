@@ -88,14 +88,5 @@ public class ComService {
                 .recomendComps(sendRecoDTO).build();
     }
 
-    public RecoCompResponseDTO recoList(String name) {
-        RecomendComp recomendComp = recomendCompRepository.findByTitle(name);
-        List<RecomendTable> recomendTables = recomendTableRepository.findByRecomendComp(recomendComp);
-        List<RecoCompDTO> sendRecoDTO = recomendTables.stream().map(o ->
-                new RecoCompDTO(o.getCompany().getCompName())).collect(Collectors.toList());
-        return RecoCompResponseDTO.builder()
-                .title(name)
-                .compName(sendRecoDTO).build();
-    } // 이거 안나옴
 
 }

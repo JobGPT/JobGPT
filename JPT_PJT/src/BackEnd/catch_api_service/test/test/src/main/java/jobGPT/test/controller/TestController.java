@@ -20,6 +20,7 @@ import java.util.List;
 public class TestController {
 
     private final ComService comService;
+    private final RecomendService recomendService;
 
     @PostMapping("/postreco")
     public ResponseEntity<CompanyResponseDTO> createCompany(CompanyRequestDTO companyRequestDTO) {
@@ -28,6 +29,6 @@ public class TestController {
 
     @PostMapping("/recoList/{name}")
     public ResponseEntity<RecoCompResponseDTO> SearchRecoCompany(@PathVariable("name") String name) {
-        return ResponseEntity.ok(comService.recoList(name));
-    } // 이거 안댐 -> 고쳐야 함 (RecomendComp constructor 문제)
+        return ResponseEntity.ok(recomendService.recoList(name));
+    }
 }
