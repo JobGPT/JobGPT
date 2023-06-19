@@ -38,24 +38,7 @@ function NavBar() {
 
   return (
     <div style={divStyle}>
-      {/* 작은 화면에서 보이는 네비게이션 바 */}
-      <Navbar key="lg" bg="light" expand="lg" className="p-3 d-lg-none" sticky='top'>
-        <Container fluid>
-          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} onClick={handleToggleOffcanvas} style={{ alignItems: 'center' }}/>
-
-          <Offcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="start">
-            <Offcanvas.Body className="p-0">
-              <ChatList handleCloseOffcanvas={handleCloseOffcanvas}/>
-            </Offcanvas.Body>
-          </Offcanvas>
-
-          <h5>New chat</h5>
-
-          <Button className="px-3" variant="outline-dark">
-            <img src={plus} alt="새채팅생성버튼" />
-          </Button>
-        </Container>
-      </Navbar>
+      
 
       {/* 큰 화면에서만 보이는 사이드 바 채팅 목록 */}
       {isLgBreakpoint ? (
@@ -71,7 +54,24 @@ function NavBar() {
             </div>
           )}
         </div>
-      ) : null}
+      ) : 
+      <Navbar key="lg" bg="light" expand="lg" className="p-3 d-lg-none" sticky='top'>
+      <Container fluid>
+        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} onClick={handleToggleOffcanvas} style={{ alignItems: 'center' }}/>
+
+        <Offcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="start" style={{ width: '16.5rem', display: 'flex', justifyContents: 'center'}}>
+          <Offcanvas.Body className="p-0">
+            <ChatList handleCloseOffcanvas={handleCloseOffcanvas}/>
+          </Offcanvas.Body>
+        </Offcanvas>
+
+        <h5>New chat</h5>
+
+        <Button className="px-3" variant="outline-dark">
+          <img src={plus} alt="새채팅생성버튼" />
+        </Button>
+      </Container>
+    </Navbar>}
     </div>
   );
 }

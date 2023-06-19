@@ -30,7 +30,11 @@ function NewChatBtn() {
           {open && (
             <div className="Modal">
               <div className="modalContent">
-                <input onChange={(e) => setText(e.target.value)} value={text} />
+                <input 
+                onChange={(e) => setText(e.target.value)} 
+                value={text}
+                placeholder='Set a title.'
+                />
                 <button
                   onClick={() => {
                     addChat(text);
