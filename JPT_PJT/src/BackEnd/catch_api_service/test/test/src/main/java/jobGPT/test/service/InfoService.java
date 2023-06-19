@@ -19,8 +19,8 @@ public class InfoService {
     public void save(CompInfo compinfo) {
         compinfoRepository.save(compinfo);
     }
-
-    public List<CompInfo> findName(Company company) {
-        return compinfoRepository.findByName(company);
-    }
+//
+//    public List<CompInfo> findName(Company company) {
+//        return compinfoRepository.findByName(company);
+//    }
 }

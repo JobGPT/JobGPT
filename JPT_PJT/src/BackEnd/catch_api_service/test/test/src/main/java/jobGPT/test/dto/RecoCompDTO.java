@@ -5,12 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+import java.util.List;
+
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyDTO {
+public class RecoCompDTO {
     private String compName;
-    private String area;
-    private String size;
-
 }
