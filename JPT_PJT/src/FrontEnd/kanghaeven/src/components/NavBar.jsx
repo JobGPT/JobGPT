@@ -15,12 +15,16 @@ import ChatList from './ChatList';
 function NavBar() {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const isLgBreakpoint = useMediaQuery({ minWidth: 992 });
+  const showOffcanvas01 = useStore((store) => store.showOffcanvas01);
 
   const divStyle = {
-    height: isLgBreakpoint ? '100%' : 'auto',
+    height: isLgBreakpoint ? showOffcanvas01 ? '100%' : '0%' : 'auto',
   };
-  const showOffcanvas01 = useStore((store) => store.showOffcanvas01);
   const handleToggleOffcanvas01 = useStore((store) => store.handleToggleOffcanvas01);
+
+  const handleStyle = {
+    height: showOffcanvas01 ? '100%' : '0%'
+  }
 
   const handleCloseOffcanvas = () => {
     console.log('닫기버튼 클릭');
@@ -55,7 +59,7 @@ function NavBar() {
 
       {/* 큰 화면에서만 보이는 사이드 바 채팅 목록 */}
       {isLgBreakpoint ? (
-        <div style={{ height: '100%', width: '100%' }}>
+        <div style={{ height: '100%', width: '100%'}}>
           {!showOffcanvas01 && (
             <Button onClick={handleToggleOffcanvas01} variant="outline-dark">
               <img src={close} />

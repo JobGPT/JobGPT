@@ -23,9 +23,9 @@ function ChatList({ handleCloseOffcanvas }) {
   return (
     <div className="bg-dark" style={{ height: '100%' }}>
       <Offcanvas.Header style={{ flexDirection: 'column' }}>
-        <Row>
+        <Row style={{ width: '100%'}}>
           <Col xs={9} style={{ padding: '0px' }}>
-            <NewChatBtn />
+            <NewChatBtn/>
           </Col>
           {!isLgBreakpoint ? (<Col xs={3}><CloseButton onClick={handleCloseOffcanvas} /></Col>) : (<Col xs={3}>
             <Button onClick={handleToggleOffcanvas01} variant="outline-secondary">
@@ -34,8 +34,8 @@ function ChatList({ handleCloseOffcanvas }) {
           </Col>)}
         </Row>
         {/* <Container> */}
-          <div className="relative" style={{ height: 'auto', opacity: 1 }}>
-            <ol style={{ flexDirection: 'column' }}>
+          <div className="relative" style={{ height: 'auto', width: '100%' }}>
+            <ol style={{ flexDirection: 'column', padding: '0px' }}>
               {chats.map((chat) => (
                 <li className="relative items-center">
                   <NewChat title={chat.title} index={chat.index} key={chat.index} />

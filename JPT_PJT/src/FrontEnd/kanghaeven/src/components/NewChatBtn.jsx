@@ -15,8 +15,8 @@ function NewChatBtn() {
   const [text, setText] = useState('');
 
   return (
-    <div className="NewChatBtn w-100">
-      <Container style={{ padding: '0px' }}>
+    <div className="NewChatBtn" style={{ width: '100%'}}>
+      <div style={{ padding: '0px 5px' }}>
         <Row>
           <div
             className="newchat"
@@ -44,7 +44,7 @@ function NewChatBtn() {
             </div>
           )}
         </Row>
-      </Container>
+      </div>
     </div>
   );
 }

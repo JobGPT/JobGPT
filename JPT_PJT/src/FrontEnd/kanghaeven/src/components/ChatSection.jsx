@@ -12,7 +12,7 @@ export default function ChatSection() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const messageWithLineBreaks = message.replace(/\n/g, "<br>");
-    console.log('Chat:', messageWithLineBreaks);
+    console.log('Chat:', message);
     setSendMessage((prevMessage) => [...prevMessage, messageWithLineBreaks]);
     setMessage('');
   };
@@ -55,8 +55,6 @@ export default function ChatSection() {
               ref={textareaRef}
               id="textarea"
               rows="1"
-              wrap='hard'
-              cols='20'
               placeholder="Send a message."
               value={message}
               onChange={handleChange}

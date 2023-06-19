@@ -69,24 +69,24 @@ export default function NewChat({ title, index }) {
               value={editedTitle}
               onChange={handleChangeTitle}
               className="text-white bg-transparent outline-none"
-              style={{ width: '40px' }}
+              style={{ width: '100%' }}
               onClick={(event) => event.stopPropagation()} // a 태그 눌리는거 방지
             />
           ) : (
-            <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative" id="chatTitle">{title}</div>
+            <div id="chatTitle">{title}</div>
           )}
         </div>
         <div
-          className="absolute flex right-1 z-10 text-gray-300"
+          className="btns"
           style={is_active ? { visibility: 'visible' } : { display: 'none' }}
           onClick={(event) => event.stopPropagation()} // a 태그 눌리는거 방지
         >
           <button
             onClick={handleClickEdit}
             id="button-edit"
-            style={(edit_active && active) || delete_active ? { display: 'none' } : { visibility: 'visible' }}
+            style={(edit_active && active) || delete_active ? { display: 'none' } : { visibility: 'visible', heigth: '15px', width: '15px'}}
           >
-            <img src={editimg} />
+            <img src={editimg} style={{ height: '15px', width: '15px'}} />
           </button>
           <button
             onClick={() => {
@@ -97,22 +97,22 @@ export default function NewChat({ title, index }) {
                 confirmClick(editedTitle, delete_active, edit_active, index);
               }
             }}
-            style={(delete_active || edit_active) && active ? { visibility: 'visible' } : { display: 'none' }}
+            style={(delete_active || edit_active) && active ? { visibility: 'visible', heigth: '15px', width: '15px' } : { display: 'none' }}
           >
-            <img src={checkimg} />
+            <img src={checkimg} style={{ height: '15px', width: '15px'}} />
           </button>
           <button
             onClick={handleClickDelete}
             id="button-delete"
-            style={(delete_active && active) || edit_active ? { display: 'none' } : { visibility: 'visible' }}
+            style={(delete_active && active) || edit_active ? { display: 'none' } : { visibility: 'visible', heigth: '15px', width: '15px' }}
           >
-            <img src={deleteimg} />
+            <img src={deleteimg} style={{ height: '15px', width: '15px'}} />
           </button>
           <button
             onClick={cancle_confirmClick}
-            style={(delete_active || edit_active) && active ? { visibility: 'visible' } : { display: 'none' }}
+            style={(delete_active || edit_active) && active ? { visibility: 'visible', heigth: '15px', width: '15px' } : { display: 'none' }}
           >
-            <img src={cancleimg} />
+            <img src={cancleimg} style={{ height: '15px', width: '15px'}} />
           </button>
         </div>
       </a>
