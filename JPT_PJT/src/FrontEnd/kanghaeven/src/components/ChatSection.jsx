@@ -11,8 +11,9 @@ export default function ChatSection() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const messageWithLineBreaks = message.replace(/\n/g, "<br>");
     console.log('Chat:', message);
-    setSendMessage((prevMessage) => [...prevMessage, message]);
+    setSendMessage((prevMessage) => [...prevMessage, messageWithLineBreaks]);
     setMessage('');
   };
 
