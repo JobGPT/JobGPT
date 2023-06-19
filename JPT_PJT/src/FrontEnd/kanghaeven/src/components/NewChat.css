@@ -22,12 +22,17 @@ ol {
   list-style-type: none;
 }
 
-button {
+div > button {
   border: none;
   background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 15px;
 }
 
 #chatTitle{
+  flex: 1;
   color: white;
   display: flex;
   overflow: hidden;
