@@ -39,7 +39,7 @@ function NavBar() {
         <Container fluid>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} onClick={handleToggleOffcanvas} style={{ alignItems: 'center' }}/>
 
-          <Offcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="start">
+          <Offcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="start" style={{ width: '16.5rem', display: 'flex', justifyContents: 'center'}}>
             <Offcanvas.Body className="p-0">
               <ChatList handleCloseOffcanvas={handleCloseOffcanvas}/>
             </Offcanvas.Body>
