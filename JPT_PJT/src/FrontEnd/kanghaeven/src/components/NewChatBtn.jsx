@@ -16,7 +16,7 @@ function NewChatBtn() {
 
   return (
     <div className="NewChatBtn w-100">
-      <Container>
+      <Container style={{ padding: '0px' }}>
         <Row>
           <div
             className="newchat"
@@ -24,7 +24,7 @@ function NewChatBtn() {
               setOpen(true);
             }}
           >
-            <img src={plus} />
+            <img src={plus} className='me-2'/>
             New chat
           </div>
           {open && (

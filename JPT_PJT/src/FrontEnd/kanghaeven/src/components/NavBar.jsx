@@ -37,7 +37,7 @@ function NavBar() {
       {/* 작은 화면에서 보이는 네비게이션 바 */}
       <Navbar key="lg" bg="light" expand="lg" className="p-3 d-lg-none" sticky='top'>
         <Container fluid>
-          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} onClick={handleToggleOffcanvas} />
+          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} onClick={handleToggleOffcanvas} style={{ alignItems: 'center' }}/>
 
           <Offcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="start">
             <Offcanvas.Body className="p-0">

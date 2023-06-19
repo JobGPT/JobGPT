@@ -24,16 +24,16 @@ function ChatList({ handleCloseOffcanvas }) {
     <div className="bg-dark" style={{ height: '100%' }}>
       <Offcanvas.Header style={{ flexDirection: 'column' }}>
         <Row>
-          <Col xs={9}>
+          <Col xs={9} style={{ padding: '0px' }}>
             <NewChatBtn />
           </Col>
           {!isLgBreakpoint ? (<Col xs={3}><CloseButton onClick={handleCloseOffcanvas} /></Col>) : (<Col xs={3}>
             <Button onClick={handleToggleOffcanvas01} variant="outline-secondary">
-              <img src={close} />
+              <img src={close} className='closeimg'/>
             </Button>
           </Col>)}
         </Row>
-        <Container>
+        {/* <Container> */}
           <div className="relative" style={{ height: 'auto', opacity: 1 }}>
             <ol style={{ flexDirection: 'column' }}>
               {chats.map((chat) => (
@@ -43,7 +43,7 @@ function ChatList({ handleCloseOffcanvas }) {
               ))}
             </ol>
           </div>
-        </Container>
+        {/* </Container> */}
       </Offcanvas.Header>
     </div>
   );

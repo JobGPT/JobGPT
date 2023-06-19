@@ -7,8 +7,12 @@ Button {
   border: 1px solid;
   border-color: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
+  height: 2.95rem;
 }
 
+.closeimg {
+  margin-bottom: 0.1rem;
+}
 
 .btn-close{
   visibility: none;
