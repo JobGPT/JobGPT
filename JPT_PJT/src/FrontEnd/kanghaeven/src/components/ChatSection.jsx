@@ -27,9 +27,14 @@ export default function ChatSection() {
           Here Is ChatSection
         </div>
       )}
-      {sendmessage.map((msg, index) => (
-        <MyChat key={index} message={msg} />
-      ))}
+      <div className="messagemap">
+        {sendmessage.map((msg, index) => (
+          <div className="message">
+            <MyChat key={index} message={msg} />
+          </div>
+       ))}
+      </div>
+
       <div id="chatinsection">
         <form id="chatingform" onSubmit={handleSubmit}>
           <div className="chatsection">
