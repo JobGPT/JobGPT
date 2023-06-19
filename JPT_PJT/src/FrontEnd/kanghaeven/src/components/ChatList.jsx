@@ -22,7 +22,7 @@ function ChatList({ handleCloseOffcanvas }) {
 
   return (
     <div className="bg-dark" style={{ height: '100%' }}>
-      <Offcanvas.Header className="mx-2 mb-2" style={{ flexDirection: 'column' }}>
+      <Offcanvas.Header style={{ flexDirection: 'column' }}>
         <Row>
           <Col xs={9}>
             <NewChatBtn />
