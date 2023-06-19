@@ -22,8 +22,11 @@ public class Company {
     @Column(name="company_id")
     private Long id;
 
+    @Column(nullable = false, length = 50)
     private String compName; // 회사이름
+    @Column(nullable = false, length = 50)
     private String area; // 회사 지역
+    @Column(nullable = false, length = 20)
     private String size; // 회사 규모
 
     @JsonIgnore

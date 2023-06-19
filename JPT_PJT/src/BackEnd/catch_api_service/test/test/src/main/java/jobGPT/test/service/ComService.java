@@ -29,18 +29,18 @@ public class ComService {
     @Transactional
     public CompanyResponseDTO create(CompanyRequestDTO companyDTO) { // 생성하고 해당 id 반환하기
         if (companyRepository.existsByCompName(companyDTO.getCompName()) == true) {
-            List<Company> savedCompany = companyRepository.findByCompName(companyDTO.getCompName());
-            CompInfo savedCompinfo = compinfoRepository.findByCompany(savedCompany.get(0));
-            List<RecomendTable> sendReco = recomendTableRepository.findByCompany(savedCompany.get(0));
+            Company savedCompany = companyRepository.findByCompName(companyDTO.getCompName());
+            CompInfo savedCompinfo = compinfoRepository.findByCompany(savedCompany);
+            List<RecomendTable> sendReco = recomendTableRepository.findByCompany(savedCompany);
             List<RecomendTitleDTO> sendRecoDTO = sendReco.stream().map(o -> new RecomendTitleDTO(o.getRecomendComp().getTitle())).collect(Collectors.toList());
 
             return CompanyResponseDTO.builder()
-                    .companyId(savedCompany.get(0).getId())
-                    .area(savedCompany.get(0).getArea())
-                    .size(savedCompany.get(0).getSize())
+                    .companyId(savedCompany.getId())
+                    .area(savedCompany.getArea())
+                    .size(savedCompany.getSize())
                     .field(savedCompinfo.getField())
                     .compinfo(savedCompinfo.getCompinfo())
-                    .compName(savedCompany.get(0).getCompName())
+                    .compName(savedCompany.getCompName())
                     .recomendComps(sendRecoDTO).build();
         }
         Company company = Company.builder()

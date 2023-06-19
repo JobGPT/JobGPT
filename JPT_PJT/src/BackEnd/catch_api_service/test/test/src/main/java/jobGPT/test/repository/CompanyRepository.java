@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CompanyRepository extends JpaRepository<Company,Long> {
     boolean existsByCompName(String compName);
-    List<Company> findByCompName(String compName);
+    Company findByCompName(String compName);
 }

@@ -18,6 +18,7 @@ public class CompInfo {
     @JoinColumn(name="company_id")
     private Company company;
 
+    @Column(nullable = false, length = 100)
     private String compinfo; // 회사 정보
 
     @Lob

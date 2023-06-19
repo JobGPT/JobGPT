@@ -22,6 +22,7 @@ public class RecomendComp {
     @Column(name = "recomendcomp_id")
     private Long id;
 
+    @Column(nullable = false, length = 20)
     private String title; // 추천 종류 이름
 
     @Builder.Default

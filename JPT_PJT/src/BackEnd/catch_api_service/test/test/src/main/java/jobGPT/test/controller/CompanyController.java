@@ -3,7 +3,6 @@ package jobGPT.test.controller;
 import jobGPT.test.dto.CompanyRequestDTO;
 import jobGPT.test.dto.CompanyResponseDTO;
 import jobGPT.test.dto.RecoCompResponseDTO;
-import jobGPT.test.repository.RecomendTableRepository;
 import jobGPT.test.service.ComService;
 import jobGPT.test.service.RecomendService;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
-public class TestController {
+public class CompanyController {
 
     private final ComService comService;
     private final RecomendService recomendService;
