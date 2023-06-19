@@ -28,7 +28,7 @@ function ChatList({ handleCloseOffcanvas }) {
             <NewChatBtn/>
           </Col>
           {!isLgBreakpoint ? (<Col xs={3} className='colclose'><CloseButton onClick={handleCloseOffcanvas} /></Col>) : (<Col xs={3}>
-            <Button onClick={handleToggleOffcanvas01} variant="outline-secondary">
+            <Button id="closebtn" onClick={handleToggleOffcanvas01} variant="outline-secondary">
               <img src={close} className='closeimg'/>
             </Button>
           </Col>)}
