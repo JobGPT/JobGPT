@@ -44,7 +44,7 @@ function NavBar() {
       {isLgBreakpoint ? (
         <div style={{ height: '100%', width: '100%'}}>
           {!showOffcanvas01 && (
-            <Button onClick={handleToggleOffcanvas01} variant="outline-dark">
+            <Button onClick={handleToggleOffcanvas01} variant="outline-dark" className='m-3'>
               <img src={close} />
             </Button>
           )}
