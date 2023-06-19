@@ -46,7 +46,7 @@ export default function ChatSection() {
               value={message}
               onChange={handleChange}
             ></textarea>
-            <button type="submit" disabled={!message}>
+            <button type="submit" disabled={!message} >
               <img src={sendimg} alt="" />
             </button>
           </div>
