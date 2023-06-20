@@ -1,4 +1,4 @@
-a {
+#box {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -10,11 +10,11 @@ a {
   text-decoration: none !important;
 }
 
-a:hover {
+a#box:hover {
   background-color: #1d2124;
 }
 
-a.active {
+a#box.active {
   background-color: #1d2124;
 }
 
@@ -31,7 +31,7 @@ div > button {
   padding: 0px 15px;
 }
 
-#chatTitle{
+#chatTitle {
   flex: 1;
   color: white;
   display: flex;
@@ -42,7 +42,7 @@ div > button {
   white-space: nowrap;
 }
 
-.btns{
+.btns {
   display: flex;
   position: relative;
   z-index: 10;

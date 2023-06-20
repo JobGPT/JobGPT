@@ -51,6 +51,7 @@ export default function NewChat({ title, index }) {
   return (
     <div className="relative">
       <a
+        id="box"
         className={
           'flex items-center gap-3 relative rounded-md cursor-pointer break-all )} pr-14 )} bg-gray-800 hover:bg-gray-800 group' +
           (is_active ? ' active' : '')
@@ -62,7 +63,7 @@ export default function NewChat({ title, index }) {
         }}
       >
         <img src={active ? img : chatimg} />
-        <div id='chatTitle'>
+        <div id="chatTitle">
           {edit_active ? (
             <input
               type="text"
@@ -84,9 +85,13 @@ export default function NewChat({ title, index }) {
           <button
             onClick={handleClickEdit}
             id="button-edit"
-            style={(edit_active && active) || delete_active ? { display: 'none' } : { visibility: 'visible', height: '15px', width: '15px'}}
+            style={
+              (edit_active && active) || delete_active
+                ? { display: 'none' }
+                : { visibility: 'visible', height: '15px', width: '15px' }
+            }
           >
-            <img src={editimg} style={{ height: '15px', width: '15px'}} />
+            <img src={editimg} style={{ height: '15px', width: '15px' }} />
           </button>
           <button
             onClick={() => {
@@ -97,22 +102,34 @@ export default function NewChat({ title, index }) {
                 confirmClick(editedTitle, delete_active, edit_active, index);
               }
             }}
-            style={(delete_active || edit_active) && active ? { visibility: 'visible', height: '20px', width: '20px' } : { display: 'none' }}
+            style={
+              (delete_active || edit_active) && active
+                ? { visibility: 'visible', height: '20px', width: '20px' }
+                : { display: 'none' }
+            }
           >
-            <img src={checkimg} style={{ height: '15px', width: '15px'}} />
+            <img src={checkimg} style={{ height: '15px', width: '15px' }} />
           </button>
           <button
             onClick={handleClickDelete}
             id="button-delete"
-            style={(delete_active && active) || edit_active ? { display: 'none' } : { visibility: 'visible', height: '15px', width: '15px' }}
+            style={
+              (delete_active && active) || edit_active
+                ? { display: 'none' }
+                : { visibility: 'visible', height: '15px', width: '15px' }
+            }
           >
-            <img src={deleteimg} style={{ height: '15px', width: '15px'}} />
+            <img src={deleteimg} style={{ height: '15px', width: '15px' }} />
           </button>
           <button
             onClick={cancle_confirmClick}
-            style={(delete_active || edit_active) && active ? { visibility: 'visible', height: '20px', width: '20px' } : { display: 'none' }}
+            style={
+              (delete_active || edit_active) && active
+                ? { visibility: 'visible', height: '20px', width: '20px' }
+                : { display: 'none' }
+            }
           >
-            <img src={cancleimg} style={{ height: '15px', width: '15px'}} />
+            <img src={cancleimg} style={{ height: '15px', width: '15px' }} />
           </button>
         </div>
       </a>
