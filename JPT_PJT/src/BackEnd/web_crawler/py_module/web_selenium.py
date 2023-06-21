@@ -56,6 +56,7 @@ import re
 
 def find_table(html_: str) -> dict:
     table_items = html_.find('table')
+    print(table_items)
     if not table_items: return dict()
     rows = table_items.find_all('tr')
     table_dict = {}
