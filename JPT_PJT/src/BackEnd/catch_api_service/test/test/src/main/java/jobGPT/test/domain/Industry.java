@@ -1,5 +1,6 @@
 package jobGPT.test.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +16,8 @@ public class Industry {
     @Column(name="industry_code")
     private Long code;
     private String industryName;
-
+    @OneToOne(mappedBy = "industry")
+    private Company company; // 상세 정보
     @OneToOne(mappedBy = "industry")
     private IndustryFigure industryFigure;
 
