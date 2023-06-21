@@ -5,6 +5,14 @@ import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 import axios from 'axios'
 import xml2js from 'xml2js'
+
+import  {
+  fetchCorpCode,
+  fetchDisclosInform,
+  fetchDocumentData
+} from './api/Dart/Dart/index.js'
+import { type } from 'os';
+
 class Server{
   constructor(){
     this.app = express();
@@ -34,16 +42,38 @@ class Server{
 
   async get_companyInfo(req, res){
     const name = req.params.comp;
+    let data_form = {
+      'summery' : "입력한 회사의 정보가 없습니다.",
+      'detail' : "입력한 회사의 정보가 없습니다."
+    }
     if (!name) {
       res.status(400).send('Missing company name.');
       return;
     }
 
     try {
+      // Catch 채용정보 분석
       const companyContent = await this.getCompanyInfoFromAPI(name);
       const {SummaryURL} = companyContent.Data.Companys[0].Company[0];
-      const result = await this.executePythonScript('web_beautifulsoup.py', SummaryURL);
-      res.json(result);
+      const catch_inform = await this.executePythonScript('web_beautifulsoup.py', SummaryURL);
+      data_form.summery = catch_inform
+
+      // DART 회사정보 분석
+      const {corp_code} = name ? await fetchCorpCode({target : name}) : data_form.detail = "회사명을 입력해주세요"
+      const corp_data = corp_code._text ? await fetchDisclosInform({corp_code : corp_code._text}) : data_form.detail = "Dart에 회사 정보가 없습니다."
+      
+      let businessReports = corp_data.filter(item => item.report_nm.includes("분기보고서"))[0];
+
+      if (businessReports){
+        console.log(`${businessReports.corp_name}의 ${businessReports.report_nm}을 탐색합니다`)
+      }
+
+      const dart_inform = await fetchDocumentData({rcept_no : businessReports.rcept_no})
+      
+      data_form.detail = dart_inform ? dart_inform : "찾은 정보가 없습니다."
+
+
+      res.json(data_form);
     } catch (error) {
       console.error(error);
       res.status(500).send(error.message);
