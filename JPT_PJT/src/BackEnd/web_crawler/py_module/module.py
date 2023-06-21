@@ -71,7 +71,8 @@ class WebCrawler:
                 print("Error: The provided Google API key is invalid or missing.")
             else:
                 print(f"Error: {e}")
-                
+            
+            raise print(f"Error: {e}")
             return search_by_selenium(self.driver, query, num_results)
             
         # google_result can be a list or a string depending on the search results

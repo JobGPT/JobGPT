@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, WebDriverException
+from web_selenium import scrape_catch
 # from driver_update import chromedriver_update
 # chromedriver_update()
 ## 나중에 Model 을활용해 해결 예정
@@ -96,6 +97,7 @@ def main(target):
 
 # url='https://www.catch.co.kr/Comp/CompSummary/380954'
 # print(search_at_CATCH(url))
+# search_at_CATCH(url)
 if __name__ == "__main__":
     import sys
     import io

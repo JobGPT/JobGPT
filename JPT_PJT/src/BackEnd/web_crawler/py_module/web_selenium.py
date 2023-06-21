@@ -5,12 +5,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, WebDriverException
 from bs4 import BeautifulSoup
 import time
+import requests
 import json
+
 
 from driver_update import chromedriver_update
 chromedriver_update()
 
-
+target_url = 'https://www.catch.co.kr'
 
 # options = None
 # driver = None
@@ -106,9 +108,6 @@ def scrape_catch(driver, url, idx):
         return scrape_company_info(soup)
     
 
-    # brandList:[{CompID:i,Num:d,BrandImg:W,BrandName:"플랫폼",BrandDesc:"온라인 검색포털, 모바일 메신저 LINE",AppStore:a,GooglePlay:a,RegDate:y},{CompID:i,Num:h,BrandImg:"https:\u002F\u002Fimgorg.catch.co.kr\u002Fjob\u002Fcorp\u002Fico_biztype_G02.png",BrandName:"콘텐츠",BrandDesc:"네이버웹툰, 네이버뮤직, SNOW",AppStore:a,GooglePlay:a,RegDate:y},{CompID:i,Num:l,BrandImg:W,BrandName:"핀테크",BrandDesc:"네이버페이\r\n오프라인 포인트 QR 결제 출시",AppStore:a,GooglePlay:a,RegDate:y}],salaryList:[{Name:k,IsJinhakCodeAvg:b,Salary:P,yyyymm:"2021.12"},{Name:m,IsJinhakCodeAvg:d,Salary:"4114",yyyymm:e}]
-
-
 
 def scrape_common(soup):
     # 공통으로 수행되는 작업
@@ -116,9 +115,45 @@ def scrape_common(soup):
     table = find_table(corp_detail_boxes)
     return table
 
+def get_employment_url(soup):
+    corp_detail_boxes = soup.find('div', class_='corp_detail_box')
+    table = corp_detail_boxes.find('table')
+    tr_elements = table.find_all('tr')
+    
+    site_link = []
+    
+    for tr_element in tr_elements:
+        a_element = tr_element.find('td', class_='al1').find('a')
+        href = a_element['href']
+        detail_url = target_url + href
+        response = requests.get(detail_url)
+        if response.status_code == 200:
+            html = response.text
+            detail_soup = BeautifulSoup(html, 'html.parser')
+            link_holder = detail_soup.find('li', class_="howto", id="view2")
+
+            a_element = link_holder.find('a')
+            href = a_element['href']
+            employ_id = href.split('_')[1]
+            _href = f'/controls/recruitLink/{employ_id}?gubun=1'
+            site_link.append(target_url+_href)
+            
+    return site_link
+
 def scrape_recruit(soup):
+    global target_url
     # 채용공고에 필요한 추가 작업
-    return [scrape_common(soup)]
+    
+    # 채용 사이트 받아오기
+
+    site_link = get_employment_url(soup)
+    table_items = scrape_common(soup)
+    
+    for idx, item in enumerate(table_items):
+        
+        table_items[item]['link'] = site_link[idx]
+    
+    return [table_items]
 
 
 def extract_list(soup):
