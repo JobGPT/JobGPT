@@ -11,13 +11,13 @@ export default function ChatSection() {
   const addmessage = useStore((store) => store.addMessage);
   const addchat = useStore((store) => store.addChat);
   const textareaRef = useRef(null);
-  const isFirstMessage = sendmessage === 0;
+  const isFirstMessage = sendmessage.length === 0;
 
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const messageWithLineBreaks = message.replace(/\n/g, '<br>');
-    if(!isFirstMessage){
+    if(isFirstMessage){
       console.log('Chat:', message);
       addchat(messageWithLineBreaks);
       addmessage(messageWithLineBreaks);
@@ -52,9 +52,9 @@ export default function ChatSection() {
         </div>
       )}
       <div className="messagemap">
-        {sendmessage.map((msg, index) => (
+        {sendmessage.map((msg) => (
           <div className="message">
-            <MyChat key={index} message={msg} />
+            <MyChat key={msg} message={msg} />
           </div>
         ))}
       </div>
