@@ -1,0 +1,20 @@
+#panel {
+  border: none;
+  border-radius: 4px;
+}
+
+div > a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  background-color: rgb(5, 5, 9);
+  color: #fff;
+  text-decoration: none !important;
+}
+
+div > a:hover {
+  cursor: pointer;
+  background-color: rgba(64, 64, 79, 1);
+}

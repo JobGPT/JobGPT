@@ -14,8 +14,8 @@
   text-decoration: none;
 }
 
-a {
-  text-decoration: none;
+.newchat:hover {
+  background-color: #6c757d;
 }
 
 .modalContent {
