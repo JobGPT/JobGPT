@@ -1,19 +1,21 @@
 import './ChatSection.css';
 import { useState, useEffect, useRef } from 'react';
+import { useStore } from '../store.js';
 import sendimg from '../assets/send.svg';
 
 import MyChat from './MyChat';
 
 export default function ChatSection() {
   const [message, setMessage] = useState('');
-  const [sendmessage, setSendMessage] = useState([]);
+  const sendmessage = useStore((store) => store.sendmessage);
+  const addmessage = useStore((store) => store.addMessage);
   const textareaRef = useRef(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const messageWithLineBreaks = message.replace(/\n/g, "<br>");
+    const messageWithLineBreaks = message.replace(/\n/g, '<br>');
     console.log('Chat:', message);
-    setSendMessage((prevMessage) => [...prevMessage, messageWithLineBreaks]);
+    addmessage(messageWithLineBreaks);
     setMessage('');
   };
 
@@ -45,7 +47,7 @@ export default function ChatSection() {
           <div className="message">
             <MyChat key={index} message={msg} />
           </div>
-       ))}
+        ))}
       </div>
 
       <div id="chatinsection">
@@ -59,7 +61,7 @@ export default function ChatSection() {
               value={message}
               onChange={handleChange}
             ></textarea>
-            <button type="submit" disabled={!message} >
+            <button type="submit" disabled={!message}>
               <img src={sendimg} alt="" />
             </button>
           </div>

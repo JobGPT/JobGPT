@@ -1,23 +1,15 @@
 import './App.css';
-import NavBar from './components/NavBar';
-import ChatSection from './components/ChatSection';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-import { useMediaQuery } from 'react-responsive';
-import {useStore} from './store.js';
+import HomePage from './components/HomePage';
 
 function App() {
-  const isLgBreakpoint = useMediaQuery({ minWidth: 992 });
-  const showOffCanvas01 = useStore((store) => store.showOffcanvas01);
-  const containerStyle = {
-    display: isLgBreakpoint ? showOffCanvas01 ? 'grid' : null : null,
-    gridTemplateColumns: isLgBreakpoint ? (showOffCanvas01 ? '260px auto' : null) : null
-  };
   return (
     <div className="App">
-      <div id="app_container" style={containerStyle}>
-        <NavBar />
-        <ChatSection />
-      </div>
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
     </div>
   );
 }

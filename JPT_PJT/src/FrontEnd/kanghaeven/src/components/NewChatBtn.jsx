@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '../store';
 
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 import plus from '../assets/plus.svg';
@@ -15,7 +13,7 @@ function NewChatBtn() {
   const [text, setText] = useState('');
 
   return (
-    <div className="NewChatBtn" style={{ width: '100%'}}>
+    <div className="NewChatBtn" style={{ width: '100%' }}>
       <div style={{ padding: '0px 5px' }}>
         <Row>
           <div
@@ -24,17 +22,13 @@ function NewChatBtn() {
               setOpen(true);
             }}
           >
-            <img src={plus} className='me-2'/>
+            <img src={plus} className="me-2" />
             New chat
           </div>
-          {open && (
+          {/* {open && (
             <div className="Modal">
               <div className="modalContent">
-                <input 
-                onChange={(e) => setText(e.target.value)} 
-                value={text}
-                placeholder='Set a title.'
-                />
+                <input onChange={(e) => setText(e.target.value)} value={text} placeholder="Set a title." />
                 <button
                   onClick={() => {
                     addChat(text);
@@ -46,7 +40,7 @@ function NewChatBtn() {
                 </button>
               </div>
             </div>
-          )}
+          )} */}
         </Row>
       </div>
     </div>

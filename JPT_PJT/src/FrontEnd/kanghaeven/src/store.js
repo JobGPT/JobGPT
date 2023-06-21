@@ -8,6 +8,7 @@ const store = (set) => {
     chats: [],
     img: chatimg,
     showOffcanvas01: true,
+    sendmessage: [],
     setButtonImage: (image) => set({ img: image }),
     addChat: (title) => {
       const newChat = { title, index };
@@ -49,6 +50,11 @@ const store = (set) => {
     ClearConversation: () => {
       set(() => ({
         chats: [],
+      }));
+    },
+    addMessage: (message) => {
+      set((state) => ({
+        sendmessage: [...state.sendmessage, message],
       }));
     },
   };

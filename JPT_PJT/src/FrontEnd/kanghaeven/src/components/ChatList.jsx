@@ -14,6 +14,8 @@ import { CloseButton } from 'react-bootstrap';
 import { useStore } from '../store.js';
 import { useMediaQuery } from 'react-responsive';
 
+import { Link } from 'react-router-dom';
+
 function ChatList({ handleCloseOffcanvas }) {
   const chats = useStore((store) => store.chats);
   const handleToggleOffcanvas01 = useStore((store) => store.handleToggleOffcanvas01);
@@ -24,7 +26,9 @@ function ChatList({ handleCloseOffcanvas }) {
       <Offcanvas.Header style={{ flexDirection: 'column' }}>
         <Row style={{ width: '100%' }}>
           <Col xs={9} style={{ padding: '0px' }}>
-            <NewChatBtn />
+            <Link to="/">
+              <NewChatBtn />
+            </Link>
           </Col>
           {!isLgBreakpoint ? (
             <Col xs={3} className="colclose">
