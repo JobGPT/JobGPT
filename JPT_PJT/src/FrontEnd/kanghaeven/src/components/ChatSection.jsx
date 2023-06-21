@@ -9,14 +9,23 @@ export default function ChatSection() {
   const [message, setMessage] = useState('');
   const sendmessage = useStore((store) => store.sendmessage);
   const addmessage = useStore((store) => store.addMessage);
+  const addchat = useStore((store) => store.addChat);
   const textareaRef = useRef(null);
+  const isFirstMessage = sendmessage === 0;
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const messageWithLineBreaks = message.replace(/\n/g, '<br>');
-    console.log('Chat:', message);
-    addmessage(messageWithLineBreaks);
-    setMessage('');
+    if(!isFirstMessage){
+      console.log('Chat:', message);
+      addchat(messageWithLineBreaks);
+      addmessage(messageWithLineBreaks);
+      setMessage('');
+    } else {
+      addmessage(messageWithLineBreaks);
+      setMessage('');
+    }
   };
 
   const handleChange = (event) => {
