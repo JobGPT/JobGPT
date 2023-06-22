@@ -2,6 +2,7 @@ import './ChatSection.css';
 import { useState, useEffect, useRef } from 'react';
 import { useStore } from '../store.js';
 import sendimg from '../assets/send.svg';
+import axios from 'axios';
 
 import MyChat from './MyChat';
 
@@ -16,7 +17,11 @@ export default function ChatSection() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const messageWithLineBreaks = message.replace(/\n/g, '<br>');
-    if(isFirstMessage){
+    if (isFirstMessage) {
+      const Json = `{"comp": "${messageWithLineBreaks}"}`;
+      const obj = JSON.parse(Json); // JSON 형식으로 바꾸기
+      console.log(obj);
+      axios.post('/catch', obj).then((response) => console.log(response.data));
       console.log('Chat:', message);
       addchat(messageWithLineBreaks);
       addmessage(messageWithLineBreaks);

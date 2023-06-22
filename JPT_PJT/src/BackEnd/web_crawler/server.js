@@ -177,19 +177,8 @@ async function openPython(module_name, target) {
     const currentModuleDir = path.dirname(currentModulePath);
     const addScriptPath = path.join(currentModuleDir, 'py_module', module_name);
 
-    const pythonInterpreterPath = path.join(
-      currentModuleDir,
-      '..',
-      '..',
-      '..',
-      '..',
-      'venv',
-      'Scripts',
-      'python'
-    );
-    const pythonProcess = spawn('python', [addScriptPath, target], {
-      encoding: 'utf8',
-    });
+    // const pythonInterpreterPath = path.join(currentModuleDir, '..', '..', '..', '..', 'venv', 'Scripts', 'python');
+    const pythonProcess = spawn('python', [addScriptPath, target], { encoding: 'utf8' });
 
     let output = '';
 
