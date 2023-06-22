@@ -3,15 +3,18 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
-import axios from 'axios'
-import xml2js from 'xml2js'
 
 import  {
   fetchCorpCode,
   fetchDisclosInform,
   fetchDocumentData
 } from './api/Dart/Dart/index.js'
-import { type } from 'os';
+
+import  {
+  get_summery,
+} from './api/Catch/Catch/index.js'
+
+import { db, dbQuery } from './lib/database.js'
 
 class Server{
   constructor(){
@@ -53,15 +56,50 @@ class Server{
 
     try {
       // Catch 채용정보 분석
-      const companyContent = await this.getCompanyInfoFromAPI(name);
-      const {SummaryURL} = companyContent.Data.Companys[0].Company[0];
-      const catch_inform = await this.executePythonScript('web_beautifulsoup.py', SummaryURL);
+      const {CompName, catch_inform} = await this.CatchData(name)
       data_form.summery = catch_inform
+      
+      // DB에 정보 저장.
+      dbQuery("INSERT INTO companyInfo (companyName, compInfo) VALUES (?, ?)", 
+      [CompName._text, JSON.stringify(catch_inform.company_overview)])
+      .then(result => {
+          console.log("Data inserted successfully");
+      })
+      .catch(error => {
+          console.error("Error inserting data: ", error);
+      });
 
       // DART 회사정보 분석
-      const {corp_code} = name ? await fetchCorpCode({target : name}) : data_form.detail = "회사명을 입력해주세요"
-      const corp_data = corp_code._text ? await fetchDisclosInform({corp_code : corp_code._text}) : data_form.detail = "Dart에 회사 정보가 없습니다."
+      const detail = await this.DartData(CompName._text)
+      data_form.detail = detail
       
+      res.json(data_form);
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(error.message);
+    }
+  }
+
+  async CatchData(name){
+    const {Data} = await this.getCompanyFromCatch(name);
+    const {CompName, SummaryURL} = Data.Companys.Company[0];
+    const data = await this.executePythonScript('web_beautifulsoup.py', SummaryURL._text);
+    // 0. 채용공고, 1. 기업개요, 2. 재무평가, 3. 현직자리뷰, 4. 면접후기
+    const catch_inform = {
+      'job_Posting' : data[0],
+      'company_overview' : data[1]
+    }
+    return { CompName, catch_inform }
+  }
+
+  async DartData(name){
+    let detail = "Dart에 회사 정보가 없습니다."
+    const corp_referance = await fetchCorpCode({target : name})
+
+    if (corp_referance){
+      const {corp_code} = corp_referance
+      const corp_data = await fetchDisclosInform({corp_code : corp_code._text})
       let businessReports = corp_data.filter(item => item.report_nm.includes("분기보고서"))[0];
 
       if (businessReports){
@@ -70,31 +108,14 @@ class Server{
 
       const dart_inform = await fetchDocumentData({rcept_no : businessReports.rcept_no})
       
-      data_form.detail = dart_inform ? dart_inform : "찾은 정보가 없습니다."
-
-
-      res.json(data_form);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send(error.message);
+      detail = dart_inform ? dart_inform : "찾은 정보가 없습니다."
     }
+
+    return detail
   }
 
-  async getCompanyInfoFromAPI(name) {
-    const CATCH_API_URL="https://www.catch.co.kr/apiGuide/guide/openAPIGuide/apiCompList";
-    const CATCH_API_KEY="OKi0USF3nvPj8a7RqbTErJqAeUNEt0YnkpKixpoEB2QcQ";
-    
-    const {data} = await axios({
-      method:'get',
-      url:CATCH_API_URL,
-      params:{
-        Service:1,
-        CompName:`${name}`,
-        SortCode:1,
-        APIKey:CATCH_API_KEY
-      }
-    });
-    return await fetchAndParseXML(data);
+  async getCompanyFromCatch(name) {
+    return await get_summery(name);
   }
 
   async executePythonScript(scriptName, target) {
@@ -150,19 +171,6 @@ server.start();
 
 // 아래는 Server를 구동하기위한 Promise 함수들 입니다.
 
-async function fetchAndParseXML(res_data) {
-  // API로부터 XML 데이터를 가져옵니다.
-      return new Promise((resolve, reject) => {
-          // XML 데이터를 JSON으로 변환합니다.
-          xml2js.parseString(res_data, (err, result) => {
-          if (err) {
-              reject(err);
-          } else {
-              resolve(result);
-          }
-          });
-      });
-}
 
 async function openPython(module_name, target){
   
