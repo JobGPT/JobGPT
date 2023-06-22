@@ -1,0 +1,39 @@
+#authsection {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logoimg {
+  margin-bottom: 1rem;
+}
+
+.text {
+  margin-bottom: 0.5rem;
+}
+
+.buttons {
+  margin: 0.5rem 0rem;
+}
+
+.buttonlogin {
+  margin-right: 1rem;
+}
+
+.button {
+  display: inline;
+  padding: 0;
+  background-color: transparent;
+}
+
+.button:hover{
+  background-color: transparent;
+}

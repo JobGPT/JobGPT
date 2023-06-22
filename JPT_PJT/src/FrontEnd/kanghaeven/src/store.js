@@ -1,10 +1,70 @@
 import { create } from 'zustand';
 import chatimg from './assets/chatimg.svg';
+import { fetchLoginUser, fetchSignupUser } from './api/auth';
+
+
 
 const store = (set) => {
+  
   let index = 0;
-
+  
   return {
+    email: '',
+    emailMessage: '',
+    password: '',
+    passwordMessage: '',
+    confirmPassword: '',
+    confirmPasswordMessage: '',
+    nickname: '',
+    nicknameMessage: '',
+    setEmail: (email) => set({ email }),
+    setEmailMessage: (emailMessage) => set({ emailMessage }),
+    setPassword: (password) => set({ password }),
+    setPasswordMessage: (passwordMessage) => set({ passwordMessage }),
+    setConfirmPassword: (confirmPassword) => set({ confirmPassword }),
+    setConfirmPasswordMessage: (confirmPasswordMessage) => set({ confirmPasswordMessage }),
+    setNickname: (nickname) => set({ nickname }),
+    setNicknameMessage: (nicknameMessage) => set({ nicknameMessage }),
+    loginUser: async () => {
+      try {
+        console.log('Email:', useStore.getState().email);
+        console.log('Password:', useStore.getState().password);
+        const data = {
+          'Email' : useStore.getState().email,
+          'Password' : useStore.getState().password,
+        }
+        fetchLoginUser(data)
+        .then((res) => {
+          console.log(res.data);
+          return true;
+        })
+      } catch (error) {
+        console.log(error);
+        return true;
+      }
+    },
+    signupUser: async () => {
+      try {
+        console.log('Email:', useStore.getState().email);
+        console.log('Password:', useStore.getState().password);
+        console.log('Nickname:', useStore.getState().nickname);
+        const data = {
+          'Email' : useStore.getState().email,
+          'Password' : useStore.getState().password,
+          'Nickname' : useStore.getState().nickname,
+        }
+        fetchSignupUser(data)
+        .then((res) => {
+          console.log(res.data);
+          return true;
+          
+        })
+      } catch(error) {
+        console.log(error);
+        return true;
+      }
+    },
+    
     chats: [],
     img: chatimg,
     showOffcanvas01: true,
