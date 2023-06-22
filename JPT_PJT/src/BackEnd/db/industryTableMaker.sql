@@ -10,15 +10,9 @@ CREATE TABLE Company (
     FOREIGN KEY (industryCode) REFERENCES Industry(code)
 );
 
-CREATE TABLE Industry (
-    code INT PRIMARY KEY,
-    industryName VARCHAR(255)
-);
-
 CREATE TABLE companyInfo (
     companyID INT,
     compInfo JSON,
-    fieldInfo JSON,
     FOREIGN KEY (companyID) REFERENCES Company(companyID)
 );
 
@@ -42,20 +36,20 @@ CREATE TABLE IndustryDetail (
 );
 
 
-LOAD DATA INFILE './UpperIndustryCodes.txt'
-INTO TABLE Industry
-FIELDS TERMINATED BY '\t'
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS;
+-- LOAD DATA INFILE './UpperIndustryCodes.txt'
+-- INTO TABLE Industry
+-- FIELDS TERMINATED BY '\t'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 ROWS;
 
-LOAD DATA INFILE './IndustryCodes.txt'
-INTO TABLE IndustryFigure
-FIELDS TERMINATED BY '\t'
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS;
+-- LOAD DATA INFILE './IndustryCodes.txt'
+-- INTO TABLE IndustryFigure
+-- FIELDS TERMINATED BY '\t'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 ROWS;
 
-LOAD DATA INFILE './KeywordCodes.txt'
-INTO TABLE IndustryDetail
-FIELDS TERMINATED BY '\t'
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS;
+-- LOAD DATA INFILE './KeywordCodes.txt'
+-- INTO TABLE IndustryDetail
+-- FIELDS TERMINATED BY '\t'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 ROWS;
