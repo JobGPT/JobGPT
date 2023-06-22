@@ -26,7 +26,7 @@ function ChatList({ handleCloseOffcanvas }) {
       <Offcanvas.Header style={{ flexDirection: 'column' }}>
         <Row style={{ width: '100%' }}>
           <Col xs={9} style={{ padding: '0px' }}>
-            <Link to="/">
+            <Link to="/mainpage">
               <NewChatBtn />
             </Link>
           </Col>
@@ -45,9 +45,9 @@ function ChatList({ handleCloseOffcanvas }) {
         <div className="relative" style={{ height: 'auto', width: '100%' }}>
           <ol style={{ flexDirection: 'column', padding: '0px' }}>
             {chats.map((chat) => (
-              <li className="relative items-center">
-                <NewChat title={chat.title} index={chat.index} key={chat.index} />
-              </li>
+                <li className="relative items-center">
+                  <NewChat title={chat.title} index={chat.index} key={chat.index} />
+                </li>
             ))}
           </ol>
         </div>

@@ -22,10 +22,6 @@ function NavBar() {
   };
   const handleToggleOffcanvas01 = useStore((store) => store.handleToggleOffcanvas01);
 
-  const handleStyle = {
-    height: showOffcanvas01 ? '100%' : '0%'
-  }
-
   const handleCloseOffcanvas = () => {
     console.log('닫기버튼 클릭');
     setShowOffcanvas(false);

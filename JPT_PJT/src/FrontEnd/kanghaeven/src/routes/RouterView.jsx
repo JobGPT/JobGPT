@@ -5,6 +5,8 @@ import AuthPage from './AuthPage';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
 import MainPage from './MainPage';
+import Login from './LogIn';
+import ChatPage from './ChatPage';
 
 export default function RouterView() {
   return (
@@ -12,8 +14,8 @@ export default function RouterView() {
       <Route path={'/'} element={<AuthPage />} />
       <Route path={'/login'} element={<LogIn />} />
       <Route path={'/signup'} element={<SignUp />} />
-      <Route path={'/mainpage'} element={<MainPage />} />
-      
+      <Route path={'/mainpage'} exact element={<MainPage/>} />
+      <Route path={'/mainpage/:index'} exact element={<ChatPage/>} />
     </Routes>
   );
 }

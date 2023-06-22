@@ -10,11 +10,11 @@
   text-decoration: none !important;
 }
 
-a#box:hover {
+#box:hover {
   background-color: #1d2124;
 }
 
-a#box.active {
+#box.active {
   background-color: #1d2124;
 }
 

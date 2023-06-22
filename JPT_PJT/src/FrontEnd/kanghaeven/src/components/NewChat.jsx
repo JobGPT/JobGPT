@@ -3,13 +3,14 @@ import chatimg from '../assets/chatimg.svg';
 
 import { useState } from 'react';
 import { useStore } from '../store';
+import {Link} from 'react-router-dom'
 
 import deleteimg from '../assets/delete.svg';
 import editimg from '../assets/edit.svg';
 import cancleimg from '../assets/cancle.svg';
 import checkimg from '../assets/check.svg';
 
-export default function NewChat({ title, index }) {
+export default function NewChat ({ title, index }) {
   const [is_active, setActive] = useState(false); // a 태그 활성화
   const [edit_active, setEdit] = useState(false);
   const [delete_active, setDelete] = useState(false);
@@ -17,47 +18,48 @@ export default function NewChat({ title, index }) {
   const [editedTitle, setEditedTitle] = useState(title); // 추가된 상태
 
   const btnClick = useStore((store) => store.btnClick);
-  const cancle_confirmClick = () => {
+  const cancle_confirmClick = (event) => {
+    event.preventDefault();
     setBtnActive(false);
     setDelete(false);
     setEdit(false);
     setEditedTitle(title);
   };
   const handleClick = () => {
-    setActive(!is_active);
-    if (!is_active) {
-      setBtnActive(false);
-    }
+    setActive(true);
   };
   const confirmClick = useStore((store) => store.confirmClick);
+
   const img = useStore((store) => store.img);
 
   const handleChangeTitle = (event) => {
     setEditedTitle(event.target.value);
   };
 
-  const handleClickEdit = () => {
+  const handleClickEdit = (event) => {
+    event.preventDefault();
     btnClick('edit');
     setBtnActive(!active);
     setEdit(!edit_active);
   };
 
-  const handleClickDelete = () => {
+  const handleClickDelete = (event) => {
+    event.preventDefault();
     btnClick('delete');
     setBtnActive(!active);
     setDelete(!delete_active);
   };
 
   return (
-    <div className="relative">
-      <a
+    <>
+      <Link
+        to={`/mainpage/${index}`}
         id="box"
         className={
           'flex items-center gap-3 relative rounded-md cursor-pointer break-all )} pr-14 )} bg-gray-800 hover:bg-gray-800 group' +
           (is_active ? ' active' : '')
         }
         onClick={(event) => {
-          event.preventDefault();
           console.log(`is_active : ${is_active}`);
           handleClick();
         }}
@@ -71,7 +73,6 @@ export default function NewChat({ title, index }) {
               onChange={handleChangeTitle}
               className="text-white bg-transparent outline-none"
               style={{ width: '100%' }}
-              onClick={(event) => event.stopPropagation()} // a 태그 눌리는거 방지
             />
           ) : (
             <div id="chatTitle">{title}</div>
@@ -80,7 +81,7 @@ export default function NewChat({ title, index }) {
         <div
           className="btns"
           style={is_active ? { visibility: 'visible', height: '15px', width: 'auto' } : { display: 'none' }}
-          onClick={(event) => event.stopPropagation()} // a 태그 눌리는거 방지
+          onClick={(event) => event.stopPropagation()}
         >
           <button
             onClick={handleClickEdit}
@@ -94,12 +95,12 @@ export default function NewChat({ title, index }) {
             <img src={editimg} style={{ height: '15px', width: '15px' }} />
           </button>
           <button
-            onClick={() => {
+            onClick={  (event) => {
               if (edit_active) {
-                confirmClick(editedTitle, delete_active, edit_active, index);
+                confirmClick(editedTitle, delete_active, edit_active, index, event);
                 setEdit(false);
               } else {
-                confirmClick(editedTitle, delete_active, edit_active, index);
+                confirmClick(editedTitle, delete_active, edit_active, index, event);
               }
             }}
             style={
@@ -132,7 +133,7 @@ export default function NewChat({ title, index }) {
             <img src={cancleimg} style={{ height: '15px', width: '15px' }} />
           </button>
         </div>
-      </a>
-    </div>
+      </Link>
+    </>
   );
 }
