@@ -22,10 +22,6 @@ function NavBar() {
   };
   const handleToggleOffcanvas01 = useStore((store) => store.handleToggleOffcanvas01);
 
-  const handleStyle = {
-    height: showOffcanvas01 ? '100%' : '0%'
-  }
-
   const handleCloseOffcanvas = () => {
     console.log('닫기버튼 클릭');
     setShowOffcanvas(false);
@@ -44,7 +40,7 @@ function NavBar() {
       {isLgBreakpoint ? (
         <div style={{ height: '100%', width: '100%'}}>
           {!showOffcanvas01 && (
-            <Button onClick={handleToggleOffcanvas01} variant="outline-dark" className='m-3'>
+            <Button onClick={handleToggleOffcanvas01} variant="outline-dark" className='m-3' style={{ height: '2.95rem' }}>
               <img src={close} />
             </Button>
           )}

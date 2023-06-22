@@ -13,7 +13,6 @@ export default function ChatSection() {
   const textareaRef = useRef(null);
   const isFirstMessage = sendmessage.length === 0;
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const messageWithLineBreaks = message.replace(/\n/g, '<br>');

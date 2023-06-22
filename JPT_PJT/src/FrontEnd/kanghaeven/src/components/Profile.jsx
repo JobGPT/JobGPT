@@ -4,6 +4,7 @@ import './Profile.css';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
+
 import { useStore } from '../store.js';
 
 export default function Profile() {

@@ -21,12 +21,12 @@ const store = (set) => {
       const buttonElement = document.getElementById(`button-${id}`);
       const imgElement = buttonElement.querySelector('img');
       const imgSource = imgElement.getAttribute('src');
-      console.log(imgSource);
       set(() => ({
         img: imgSource,
       }));
     },
-    confirmClick: (newTitle, deleteActive, editActive, index) => {
+    confirmClick: (newTitle, deleteActive, editActive, index, event) => {
+      event.preventDefault();
       if (deleteActive) {
         set((store) => ({
           chats: store.chats.filter((chat) => chat.index !== index),
