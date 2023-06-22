@@ -5,7 +5,6 @@ import AuthPage from './AuthPage';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
 import MainPage from './MainPage';
-import Login from './LogIn';
 import ChatPage from './ChatPage';
 
 export default function RouterView() {
