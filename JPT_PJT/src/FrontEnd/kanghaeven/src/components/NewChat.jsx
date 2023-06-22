@@ -3,19 +3,21 @@ import chatimg from '../assets/chatimg.svg';
 
 import { useState } from 'react';
 import { useStore } from '../store';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import deleteimg from '../assets/delete.svg';
 import editimg from '../assets/edit.svg';
 import cancleimg from '../assets/cancle.svg';
 import checkimg from '../assets/check.svg';
 
-export default function NewChat ({ title, index }) {
+export default function NewChat({ title, index }) {
   const [is_active, setActive] = useState(false); // a 태그 활성화
   const [edit_active, setEdit] = useState(false);
   const [delete_active, setDelete] = useState(false);
   const [active, setBtnActive] = useState(false); // 아무 버튼이나 활성화 되있는 상태
   const [editedTitle, setEditedTitle] = useState(title); // 추가된 상태
+  const navigate = useNavigate();
 
   const btnClick = useStore((store) => store.btnClick);
   const cancle_confirmClick = (event) => {
@@ -50,6 +52,17 @@ export default function NewChat ({ title, index }) {
     setDelete(!delete_active);
   };
 
+  const handleConfirmClick = (event) => {
+    if (delete_active) {
+      confirmClick(editedTitle, delete_active, edit_active, index, event);
+      navigate('/mainpage');
+    } else if (edit_active) {
+      confirmClick(editedTitle, delete_active, edit_active, index, event);
+      setEdit(false);
+      console.log(edit_active);
+    }
+  };
+
   return (
     <>
       <Link
@@ -80,7 +93,11 @@ export default function NewChat ({ title, index }) {
         </div>
         <div
           className="btns"
-          style={is_active ? { visibility: 'visible', height: '15px', width: 'auto' } : { display: 'none' }}
+          style={
+            is_active
+              ? { visibility: 'visible', height: '15px', width: 'auto' }
+              : { display: 'none' }
+          }
           onClick={(event) => event.stopPropagation()}
         >
           <button
@@ -95,13 +112,8 @@ export default function NewChat ({ title, index }) {
             <img src={editimg} style={{ height: '15px', width: '15px' }} />
           </button>
           <button
-            onClick={  (event) => {
-              if (edit_active) {
-                confirmClick(editedTitle, delete_active, edit_active, index, event);
-                setEdit(false);
-              } else {
-                confirmClick(editedTitle, delete_active, edit_active, index, event);
-              }
+            onClick={() => {
+              handleConfirmClick;
             }}
             style={
               (delete_active || edit_active) && active
