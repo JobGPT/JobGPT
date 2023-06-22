@@ -1,6 +1,9 @@
 package jobGPT.test.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -10,24 +13,26 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter @Setter
+@Builder
+@NoArgsConstructor
 public class RecomendComp {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recomendcomp_id")
     private Long id;
 
+    @Column(nullable = false, length = 20)
     private String title; // 추천 종류 이름
 
+    @Builder.Default
+    @JsonIgnore
     @OneToMany(mappedBy = "recomendComp")
     private List<RecomendTable> recomendTable = new ArrayList<>();
 
-//    @Transient
-//    public List<String> getRecomendations() {
-//        return recomendTable.stream()
-//                .map(RecomendTable::getCompany)
-//                .map(Company::getCompName)
-//                .collect(Collectors.toList());
-//    }
-
+    public RecomendComp(Long id, String title, List<RecomendTable> recomendTable) {
+        this.id = id;
+        this.title = title;
+        this.recomendTable = recomendTable;
+    }
 }

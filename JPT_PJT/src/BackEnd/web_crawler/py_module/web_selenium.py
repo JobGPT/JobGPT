@@ -192,8 +192,21 @@ def extract_list(soup):
 
 def scrape_company_info(soup):
     # 기업정보에 필요한 추가 작업
+    
+    # # Search for the pattern
+    # script = soup.find('script', text=re.compile(r'window.__NUXT__'))
+    # pattern = r'benefitList":"([^"]*)"'
+    # print("어엉",script)
+    # match = re.search(pattern, str(script))
+    # benefit_list_json = dict()
+    # if match:
+    #     # Extract the matched text and convert it to valid JSON
+    #     benefit_list_str = match.group(1).replace("'", '"')
+    #     benefit_list_json = json.loads(benefit_list_str)
+    #     print(benefit_list_json)
+    
     script = soup.find('script', {'type':"application/ld+json"})
-
+    
     script_info = json.loads(script.string)
     recom_reason_div = soup.find('div', {'class': 'recom_reason'})
     text_list = dict()

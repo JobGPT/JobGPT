@@ -1,17 +1,17 @@
 package jobGPT.test.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class RecomendTable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="recomendtable_id")
     private Long id;
 
@@ -24,22 +24,20 @@ public class RecomendTable {
     private RecomendComp recomendComp; // 추천명 과 다대일
 
 
-    // 연관관계 메서드
-//    public void setCompany(Company company) {
-//        this.company = company;
-//        company.getRecomendTable().add(this);
-//    }
-//
-//    public void setReco(RecomendComp recomendComp) {
-//        this.recomendComp = recomendComp;
-//        recomendComp.getRecomendTable().add(this);
-//    }
+//     연관관계 메서드
+    public void setCompany(Company company) {
+        this.company = company;
+        company.getRecomendTable().add(this);
+    }
 
-    // 회사별 추천 항목 메서드
-//    public static RecomendTable createReco(Company company, RecomendComp... recos) {
-//        RecomendTable recomendTable = new RecomendTable();
-//        recomendTable.setCompany(company);
-//        recomendTable.setReco(recos);
-//    }
-
+    public void setRecomendComp(RecomendComp recomendComp) {
+        this.recomendComp = recomendComp;
+        recomendComp.getRecomendTable().add(this);
+    }
+    @Builder
+    public RecomendTable(Long id, Company company, RecomendComp recomendComp) {
+        this.id = id;
+        this.company = company;
+        this.recomendComp = recomendComp;
+    }
 }

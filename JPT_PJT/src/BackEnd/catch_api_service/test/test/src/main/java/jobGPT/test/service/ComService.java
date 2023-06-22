@@ -1,15 +1,20 @@
 package jobGPT.test.service;
 
+import jobGPT.test.domain.CompInfo;
 import jobGPT.test.domain.Company;
-import jobGPT.test.dto.CompanyDTO;
+import jobGPT.test.domain.RecomendComp;
+import jobGPT.test.domain.RecomendTable;
+import jobGPT.test.dto.*;
 import jobGPT.test.repository.CompanyRepository;
 import jobGPT.test.repository.CompinfoRepository;
 import jobGPT.test.repository.RecomendCompRepository;
+import jobGPT.test.repository.RecomendTableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -17,41 +22,70 @@ import java.util.List;
 public class ComService {
 
     private final CompanyRepository companyRepository;
+    private final CompinfoRepository compinfoRepository;
+    private final RecomendTableRepository recomendTableRepository;
+    private final RecomendCompRepository recomendCompRepository;
 
     @Transactional
-    public CompanyDTO create(CompanyDTO companyDTO) { // 생성하고 해당 id 반환하기
-        List<Company> findcompany = companyRepository.findByName(companyDTO.getCompName());
-        if (!findcompany.isEmpty()) { // 만약 해당 이름이 이미 존재한다면
-            System.out.println("이미 있어요");
-            Company already = findcompany.get(0);
-            return convertToDTO(already); // 해당 이름의 Company를 DTO로 변환하여 반환
-        } else {
-            Company company = convertToEntity(companyDTO); // DTO를 Entity로 변환
-            companyRepository.save(company);
-            return convertToDTO(company); // 저장된 Company를 DTO로 변환하여 반환
+    public CompanyResponseDTO create(CompanyRequestDTO companyDTO) { // 생성하고 해당 id 반환하기
+        if (companyRepository.existsByCompName(companyDTO.getCompName()) == true) {
+            Company savedCompany = companyRepository.findByCompName(companyDTO.getCompName());
+            CompInfo savedCompinfo = compinfoRepository.findByCompany(savedCompany);
+            List<RecomendTable> sendReco = recomendTableRepository.findByCompany(savedCompany);
+            List<RecomendTitleDTO> sendRecoDTO = sendReco.stream().map(o -> new RecomendTitleDTO(o.getRecomendComp().getTitle())).collect(Collectors.toList());
+
+            return CompanyResponseDTO.builder()
+                    .companyId(savedCompany.getId())
+                    .area(savedCompany.getArea())
+                    .size(savedCompany.getSize())
+                    .field(savedCompinfo.getField())
+                    .compinfo(savedCompinfo.getCompinfo())
+                    .compName(savedCompany.getCompName())
+                    .recomendComps(sendRecoDTO).build();
         }
-    }
+        Company company = Company.builder()
+                .compName(companyDTO.getCompName())
+                .area(companyDTO.getArea())
+                .size(companyDTO.getSize()).build();
+        Company savedCompany = companyRepository.save(company);
 
-    private CompanyDTO convertToDTO(Company company) {
-        // ModelMapper 또는 수동으로 DTO 객체를 생성하고 값을 설정하여 반환
-        CompanyDTO dto = new CompanyDTO();
-        dto.setCompName(company.getCompName());
-        // 필요한 나머지 정보도 설정
-        return dto;
-    }
+        CompInfo compInfo = CompInfo.builder()
+                .company(savedCompany)
+                .field(companyDTO.getField())
+                .compinfo(companyDTO.getCompinfo()).build();
+        CompInfo savedCompinfo = compinfoRepository.save(compInfo);
 
-    private Company convertToEntity(CompanyDTO dto) {
-        // ModelMapper 또는 수동으로 Entity 객체를 생성하고 값을 설정하여 반환
-        Company entity = new Company();
-        entity.setCompName(dto.getCompName());
-        entity.setArea(dto.getArea());
-        entity.setSize(dto.getSize());
-        // 필요한 나머지 정보도 설정
-        return entity;
-    }
+        for (String reco : companyDTO.getRecomendComps()) {
 
-    public List<Company> findCom(String compname) {
-        return companyRepository.findByName(compname);
+            if (recomendCompRepository.existsByTitle(reco) == true) {
+                RecomendComp savedReco = recomendCompRepository.findByTitle(reco);
+                RecomendTable recomendTable = RecomendTable.builder()
+                        .company(savedCompany)
+                        .recomendComp(savedReco).build();
+                recomendTableRepository.save(recomendTable);
+            }
+            else {
+                RecomendComp recomendComp = RecomendComp.builder()
+                        .title(reco).build();
+                RecomendComp savedReco = recomendCompRepository.save(recomendComp);
+                RecomendTable recomendTable = RecomendTable.builder()
+                        .company(savedCompany)
+                        .recomendComp(savedReco).build();
+                recomendTableRepository.save(recomendTable);
+            }
+
+        }
+        List<RecomendTable> sendReco = recomendTableRepository.findByCompany(savedCompany);
+        List<RecomendTitleDTO> sendRecoDTO = sendReco.stream().map(o -> new RecomendTitleDTO(o.getRecomendComp().getTitle())).collect(Collectors.toList());
+
+        return CompanyResponseDTO.builder()
+                .companyId(savedCompany.getId())
+                .area(savedCompany.getArea())
+                .size(savedCompany.getSize())
+                .field(savedCompinfo.getField())
+                .compinfo(savedCompinfo.getCompinfo())
+                .compName(savedCompany.getCompName())
+                .recomendComps(sendRecoDTO).build();
     }
 
 

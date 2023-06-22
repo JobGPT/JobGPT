@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecomendCompDTO {
+public class RecomendTitleDTO {
     private String title;
 }

@@ -1,16 +1,16 @@
 package jobGPT.test.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class CompInfo {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "compinfo_id")
     private Long id;
 
@@ -18,7 +18,17 @@ public class CompInfo {
     @JoinColumn(name="company_id")
     private Company company;
 
+    @Column(nullable = false, length = 100)
     private String compinfo; // 회사 정보
 
+    @Lob
     private String field; // 사업 구성
+
+    @Builder
+    public CompInfo(Long id, Company company, String compinfo, String field) {
+        this.id = id;
+        this.company = company;
+        this.compinfo = compinfo;
+        this.field = field;
+    }
 }
