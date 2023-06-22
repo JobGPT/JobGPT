@@ -10,11 +10,18 @@ CREATE TABLE Company (
     FOREIGN KEY (industryCode) REFERENCES Industry(code)
 );
 
+-- DROP TABLE IF EXISTS `companyInfo`;
 CREATE TABLE companyInfo (
-    companyID INT,
-    compInfo JSON,
-    FOREIGN KEY (companyID) REFERENCES Company(companyID)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    companyName VARCHAR(100),
+    compInfo JSON
 );
+
+-- CREATE TABLE companyInfo (
+--     companyName VARCHAR(100)
+--     compInfo JSON,
+--     FOREIGN KEY (companyID) REFERENCES Company(companyID)
+-- );
 
 CREATE TABLE Industry (
     code INT PRIMARY KEY,
