@@ -33,25 +33,30 @@ def search_at_CATCH(URL : str):
     domain = find_domain(URL)
     response = requests.get(URL)
     
-    soup = BeautifulSoup(response.content, 'html.parser') if response.status_code == 200 \
-        else print(f"Error: received status code {response.status_code}")
-    
-
-    btns = soup.find('ul', class_="menu")
-    menu = find_menu(btns)
-    
-    set_driver()
     rlt = []
-    for idx, key in enumerate(menu):
-        path = menu[key]
-        url = domain+path
-        x = search_info(driver, url, idx)
-        
-        rlt.append(x)
-        if key == "기업개요":
-            break # 23.05.15 - 추후 논의 후 추가 개발 예정
-    driver.quit()
+    if response.status_code == 200 :
+        soup = BeautifulSoup(response.content, 'html.parser')
     
+        btns = soup.find('ul', class_="menu")
+        menu = find_menu(btns)
+        
+        set_driver()
+        for idx, key in enumerate(menu):
+            path = menu[key]
+            url = domain+path
+            x = search_info(driver, url, idx)
+            
+            rlt.append(x)
+            if key == "기업개요":
+                break # 23.05.15 - 추후 논의 후 추가 개발 예정
+        driver.quit()
+    else:
+        
+        e = f"Error: received status code {response.status_code}"
+        print("Catch에서 크롤링을 실패했습니다.")
+        print(e)
+        rlt = [e]
+        
     return rlt
 
 
