@@ -1,7 +1,7 @@
 import api from '../base.js'
 import JSZip from 'jszip';
 import convert from 'xml-js'
-import xml2js from 'xml2js'
+import cheerio from 'cheerio';
 
 // 회사의 고유번호를 챙겨옴
 const fetchCorpCode = async ({target}) =>{
@@ -20,6 +20,7 @@ const fetchCorpCode = async ({target}) =>{
 
         let target_inform_dart = corpCodes.result.list.find(item => item.corp_name._text === target);
         return await target_inform_dart;
+
     } catch (err) {
         console.error(err);
         return null
@@ -54,7 +55,7 @@ const fetchDisclosInform  = async ({corp_code}) =>{
     }
 }
 
-import cheerio from 'cheerio';
+
 const fetchDocumentData = async ({rcept_no}) => {
     try{
         const res = await api.get('/document.xml', {
