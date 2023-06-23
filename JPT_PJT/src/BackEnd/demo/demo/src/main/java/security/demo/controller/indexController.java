@@ -2,21 +2,20 @@ package security.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import security.demo.model.User;
-import security.demo.repository.UserRepository;
-import security.demo.service.UserService;
+import org.springframework.web.bind.annotation.*;
+import security.demo.domain.DTO.SignUpDto;
+import security.demo.domain.Entity.User;
+import security.demo.domain.repository.UserRepository;
+import security.demo.domain.service.UserService;
 
-@Controller
+@RestController
 public class indexController {
 
     @Autowired UserRepository userRepository;
@@ -35,10 +34,6 @@ public class indexController {
         return "정보 확인";
     }
 
-    @GetMapping({"","/"})
-    public String index() {
-        return "index";
-    }
 
     @GetMapping("/admin")
     public @ResponseBody String admin() {
@@ -64,9 +59,14 @@ public class indexController {
     }
 
     @PostMapping("/joinProc")
-    public String joinProc(User user) throws Exception{
-        System.out.println("회원가입 진행 : " + user);
-        userService.signUp(user);
+    public String joinProc(SignUpDto signUpDto) throws Exception{
+        System.out.println("회원가입 진행 : " + signUpDto);
+        userService.signUp(signUpDto);
         return "redirect:/login";
+    }
+
+    @PostMapping("/search/{username}")
+    public ResponseEntity<User>search(@PathVariable("username") String username) throws Exception{
+        return ResponseEntity.ok(userService.search(username));
     }
 }
