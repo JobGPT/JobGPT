@@ -5,6 +5,7 @@ import sendimg from '../assets/send.svg';
 import axios from 'axios';
 
 import MyChat from './MyChat';
+import GptChat from './GptChat';
 
 export default function ChatSection() {
   const [message, setMessage] = useState('');
@@ -13,6 +14,8 @@ export default function ChatSection() {
   const addchat = useStore((store) => store.addChat);
   const textareaRef = useRef(null);
   const isFirstMessage = sendmessage.length === 0;
+  const company_info = useStore((store) => store.company_info);
+  const save_company_info = useStore((store) => store.save_company_info);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,7 +24,12 @@ export default function ChatSection() {
       const Json = `{"comp": "${messageWithLineBreaks}"}`;
       const obj = JSON.parse(Json); // JSON 형식으로 바꾸기
       console.log(obj);
-      axios.post('/catch', obj).then((response) => console.log(response.data));
+      axios.post('/catch', obj).then((response) => {
+        const data = response.data;
+        console.log(data);
+        save_company_info(data);
+        console.log(company_info);
+      });
       console.log('Chat:', message);
       addchat(messageWithLineBreaks);
       addmessage(messageWithLineBreaks);
@@ -62,6 +70,8 @@ export default function ChatSection() {
           </div>
         ))}
       </div>
+
+      <GptChat />
 
       <div id="chatinsection">
         <form id="chatingform" onSubmit={handleSubmit}>
