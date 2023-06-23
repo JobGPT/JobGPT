@@ -71,7 +71,7 @@ export default function ChatSection() {
         ))}
       </div>
 
-      <GptChat />
+      {company_info.length !== 0 ? <GptChat /> : null}
 
       <div id="chatinsection">
         <form id="chatingform" onSubmit={handleSubmit}>
