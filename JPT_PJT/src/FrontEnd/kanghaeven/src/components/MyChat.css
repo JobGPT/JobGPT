@@ -14,11 +14,11 @@
 #current_chat {
   display: flex;
   gap: 1rem;
+  margin: 0.5rem 0;
 }
 
 .profileimg {
-  background-color: grey;
+  background-color: #adb5bd;
   height: 26px;
-  margin: 0 1.5rem 1.5rem 1.5rem;
   border-radius: 5%;
 }
