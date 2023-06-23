@@ -73,10 +73,10 @@ export default function ChatSection() {
             key={index}
           >
             <MyChat message={msg} />
+            <div id="info">{company_info.length !== 0 ? <GptChat msg={msg} /> : null}</div>
           </div>
         ))}
       </div>
-      <div id="info">{company_info.length !== 0 ? <GptChat /> : null}</div>
 
       <div id="chatinsection">
         <form id="chatingform" onSubmit={handleSubmit}>

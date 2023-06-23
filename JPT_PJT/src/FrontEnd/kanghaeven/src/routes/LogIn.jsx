@@ -2,7 +2,7 @@ import './LogIn.css';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 
 
@@ -11,6 +11,17 @@ export default function Login() {
   const { email, password, setEmail, setPassword, loginUser } = useStore();
   const { emailMessage, passwordMessage, setEmailMessage, setPasswordMessage } = useStore();
   const navigate = useNavigate();
+
+  const Reset = () => {
+    setEmail('');
+    setPassword('');
+    setEmailMessage('');
+    setPasswordMessage('');
+  }
+
+  useEffect(() => {
+    Reset();
+  }, [])
 
   const validateEmail = (email) => {
     return email.toLowerCase().match(/([\w-.]+)@(([\w-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
