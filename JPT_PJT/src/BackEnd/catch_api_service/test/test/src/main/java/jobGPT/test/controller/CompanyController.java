@@ -9,6 +9,7 @@ import jobGPT.test.repository.IndustryRepository;
 import jobGPT.test.service.ComService;
 import jobGPT.test.service.RecomendService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.json.JSONParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
@@ -36,11 +37,14 @@ public class CompanyController {
     public ResponseEntity<RecoCompResponseDTO> SearchRecoCompany(@PathVariable("name") String name) {
         return ResponseEntity.ok(recomendService.recoList(name));
     }
-
-    @GetMapping("company/{companyName}")
+    /*
+    **** catch API 회사 정보 가져오기
+     */
+    @GetMapping("/catch/{companyName}")
     @ResponseBody
-    public Map<String, Object> fetchCompanyFromCatchAPI(@PathVariable String companyName) {
+    public Map<String, Object> getCompanyFromCatchAPI(@PathVariable String companyName) {
         Map<String, Object> map = new HashMap<>();
+        System.out.println("catch");
         try {
             String apiKey = "OKi0USF3nvPj8a7RqbTErJqAeUNEt0YnkpKixpoEB2QcQ";
             String apiUrl = "https://www.catch.co.kr/apiGuide/guide/openAPIGuide/apiCompList?Service=1&CompName=" + companyName + "&SortCode=1&APIKey=" + apiKey;
@@ -74,7 +78,37 @@ public class CompanyController {
         }
         return map;
     }
+    /*
+     **** saramin API 채용공고 가져오기
+     */
+    @GetMapping("/saramin/{companyName}")
+    @ResponseBody
+    public Map<String, Object> getPostingFromSaraminAPI(@PathVariable String companyName) {
+        Map<String, Object> map = new HashMap<>();
+        System.out.println("-----------------");
+        System.out.println("in saramin");
+        System.out.println("-----------------");
+        try {
+            String apiKey = "ozkKjcwlTgbbugp6v7q54ql1YbRlvMAU7Zy4ieMmAJCkfiC";
+            System.out.println(apiKey);
+            String apiUrl = "https://oapi.saramin.co.kr/job-search?access-key=" + apiKey + "&ind_cd="
+                    + companyRepository.findByCompName(companyName).getIndustry().getCode();
+            System.out.println(apiUrl);
 
+            RestTemplate restTemplate = new RestTemplate();
+            String response = restTemplate.getForObject(apiUrl, String.class);
+
+            JSONObject responseToJSON = new JSONObject(response);
+
+            System.out.println(responseToJSON);
+            System.out.println(responseToJSON.getJSONObject("jobs").getJSONArray("job"));
+            System.out.println(responseToJSON.getJSONObject("jobs").getJSONArray("job").getClass().getSimpleName());
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
     private static String getIndustyName(JSONObject compData) {
         String industryName = compData.getString("JinhakCodeName");
         String manufacturing = "기계장비,반도체·디스플레이,생활용품·화장품,섬유·의류,식품·음료,에너지·화학" +
