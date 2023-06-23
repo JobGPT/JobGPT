@@ -4,14 +4,23 @@
   position: relative;
   height: 100%;
   width: 100%;
+  overflow: auto;
 }
 
 
 .messagemap {
   height: 100%;
   width: 90%;
+}
+
+.firstmargin {
   margin-top: 1rem;
 }
+
+.lastmargin {
+  padding-bottom: 8rem;
+}
+
 
 .first {
   position: absolute;
@@ -22,10 +31,12 @@
 
 #chatinsection {
   position: fixed;
-  bottom: 30px;
+  bottom: 0;
   width: 70vw;
-  border-top: 1px solid;
-  border-color: rgba(255, 255, 255, 0.2);
+  /* border-top: 1px solid;
+  border-color: rgba(255, 255, 255, 0.2); */
+  padding: 2rem;
+  background-image: linear-gradient(to bottom, transparent 30%, #fff 70%);
 }
 
 #chatform {
@@ -65,19 +76,28 @@
   outline: none;
   box-shadow: none;
   resize: none;
-  overflow-y: hidden;
+  -ms-overflow-style: none;
   min-height: 24px;
   max-height: 200px;
 }
 
-button {
+#textarea::-webkit-scrollbar{
+  display:none;
+}
+
+.sendbutton {
   display: flex;
-  align-items: center;
-  justify-content: end;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  padding: 1rem;
+  align-items: end;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  margin-bottom: 0.5rem;
+  margin-right: 0.3rem;
+}
+
+.sendbutton button {
+  border-radius: 0.3rem;
 }
 
 button img {
@@ -85,7 +105,21 @@ button img {
   height: 20px;
 }
 
-.disabled {
-  background-color: lightgray;
+.sendbutton button:hover {
+  border: 2px solid rgba(197, 217, 255, 1);
+  border-radius: 0.3rem;
+}
+
+.sendbutton button:hover img {
+  padding-left: 2px;
+}
+
+.sendbutton button:active {
+  background-color: rgba(197, 217, 255, 1);
+  border: 2px solid rgba(197, 217, 255, 1);
+}
+
+.sendbutton button:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }

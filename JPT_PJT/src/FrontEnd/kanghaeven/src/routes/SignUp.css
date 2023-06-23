@@ -6,7 +6,7 @@
   color: red;
 }
 
-#loginsectionwrapper {
+#signupsectionwrapper {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -14,7 +14,7 @@
   align-items: center;
 }
 
-.loginsection {
+.signupsection {
   width: 25rem;
   display: flex;
   flex-direction: column;
@@ -59,7 +59,7 @@ Button {
   margin: 1rem 0;
 }
 
-.signupbutton {
+.loginbutton {
   width: 4rem;
   height: 2rem;
   display: flex;
@@ -70,7 +70,7 @@ Button {
   background-color: transparent;
 }
 
-.signupbutton:hover {
+.loginbutton:hover {
   background-color: transparent;
   font-weight: bold;
 }
