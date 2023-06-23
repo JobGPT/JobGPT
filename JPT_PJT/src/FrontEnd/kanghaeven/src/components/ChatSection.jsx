@@ -4,7 +4,6 @@ import { useStore } from '../store.js';
 import sendimg from '../assets/send.svg';
 import axios from 'axios';
 
-
 import MyChat from './MyChat';
 import GptChat from './GptChat';
 
@@ -66,18 +65,18 @@ export default function ChatSection() {
       )}
       <div className="messagemap">
         {sendmessage.map((msg, index) => (
-          <div 
-          className={`message
+          <div
+            className={`message
           ${index === 0 ? 'firstmargin' : ''}
           ${index === sendmessage.length - 1 ? 'lastmargin' : ''}
           `}
-          key={index}>
+            key={index}
+          >
             <MyChat message={msg} />
           </div>
         ))}
       </div>
-
-      {company_info.length !== 0 ? <GptChat /> : null}
+      <div id="info">{company_info.length !== 0 ? <GptChat /> : null}</div>
 
       <div id="chatinsection">
         <form id="chatingform" onSubmit={handleSubmit}>
@@ -90,7 +89,7 @@ export default function ChatSection() {
               value={message}
               onChange={handleChange}
             ></textarea>
-            <div className='sendbutton'>
+            <div className="sendbutton">
               <button type="submit" disabled={!message}>
                 <img src={sendimg} alt="" />
               </button>

@@ -7,7 +7,6 @@
   overflow: auto;
 }
 
-
 .messagemap {
   height: 100%;
   width: 90%;
@@ -21,13 +20,11 @@
   padding-bottom: 8rem;
 }
 
-
 .first {
   position: absolute;
   top: 42.5%;
   left: 42.5%;
 }
-
 
 #chatinsection {
   position: fixed;
@@ -81,8 +78,8 @@
   max-height: 200px;
 }
 
-#textarea::-webkit-scrollbar{
-  display:none;
+#textarea::-webkit-scrollbar {
+  display: none;
 }
 
 .sendbutton {
@@ -122,4 +119,9 @@ button img {
 .sendbutton button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+#info {
+  height: 100%;
+  width: 90%;
 }

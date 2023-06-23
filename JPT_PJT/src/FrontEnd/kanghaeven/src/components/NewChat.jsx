@@ -101,7 +101,7 @@ export default function NewChat({ title, index }) {
           onClick={(event) => event.stopPropagation()}
         >
           <button
-            onClick={handleClickEdit}
+            onClick={() => handleClickEdit}
             id="button-edit"
             style={
               (edit_active && active) || delete_active
