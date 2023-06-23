@@ -3,7 +3,7 @@ import './SignUp.css'
 import { Button } from "react-bootstrap"
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 
 
@@ -11,6 +11,17 @@ export default function SignUp() {
   const { email, password, confirmPassword, nickname, setEmail, setPassword, setConfirmPassword, setNickname, signupUser} = useStore();
   const { emailMessage, passwordMessage, confirmPasswordMessage, nicknameMessage, setEmailMessage, setPasswordMessage, setConfirmPasswordMessage, setNicknameMessage } = useStore();
   const navigate = useNavigate();
+
+  const Reset = () => {
+    setEmail('');
+    setPassword('');
+    setEmailMessage('');
+    setPasswordMessage('');
+  }
+
+  useEffect(() => {
+    Reset();
+  }, [])
 
   // 이메일, 비밀번호, 닉네임 유효성 검사
   // 이메일 형식이 맞는지 ex) english@email.com
