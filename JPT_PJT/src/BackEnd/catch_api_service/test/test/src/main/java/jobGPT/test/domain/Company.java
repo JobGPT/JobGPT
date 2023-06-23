@@ -28,7 +28,10 @@ public class Company {
     private String area; // 회사 지역
     @Column(nullable = false, length = 20)
     private String size; // 회사 규모
-
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "industry_id")
+    private Industry industry; // 상세 정보
     @JsonIgnore
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<RecomendTable> recomendTable = new ArrayList<>(); // 추천 테이블
