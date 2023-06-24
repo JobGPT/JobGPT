@@ -3,7 +3,7 @@ import './Profile.css';
 
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
-
+import {Link} from 'react-router-dom';
 
 import { useStore } from '../store.js';
 
@@ -16,7 +16,7 @@ export default function Profile() {
           <div id="panel" style={{ color: 'white', marginBottom: '20px' }}>
             <Disclosure.Panel>
               <a onClick={ClearConversation}>Clear conversation</a>
-              <a>Log out</a>
+              <Link to='/'>Log out</Link>
             </Disclosure.Panel>
           </div>
           <Disclosure.Button>
