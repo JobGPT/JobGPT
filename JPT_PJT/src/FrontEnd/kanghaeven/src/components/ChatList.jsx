@@ -14,7 +14,6 @@ import { CloseButton } from 'react-bootstrap';
 import { useStore } from '../store.js';
 import { useMediaQuery } from 'react-responsive';
 
-import { Link } from 'react-router-dom';
 
 function ChatList({ handleCloseOffcanvas }) {
   const chats = useStore((store) => store.chats);

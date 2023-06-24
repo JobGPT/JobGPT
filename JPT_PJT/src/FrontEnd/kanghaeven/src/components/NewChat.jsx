@@ -58,6 +58,7 @@ export default function NewChat({ title, index }) {
       navigate('/mainpage');
     } else if (edit_active) {
       setBtnActive(false);
+      setEdit(false);
       confirmClick(editedTitle, delete_active, edit_active, index, event);
     }
   };
