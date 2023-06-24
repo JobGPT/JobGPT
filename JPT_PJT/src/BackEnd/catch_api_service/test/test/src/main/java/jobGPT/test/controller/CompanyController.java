@@ -44,13 +44,11 @@ public class CompanyController {
     @ResponseBody
     public Map<String, Object> getCompanyFromCatchAPI(@PathVariable String companyName) {
         Map<String, Object> map = new HashMap<>();
-        System.out.println("catch");
         try {
             String apiKey = "OKi0USF3nvPj8a7RqbTErJqAeUNEt0YnkpKixpoEB2QcQ";
             String apiUrl = "https://www.catch.co.kr/apiGuide/guide/openAPIGuide/apiCompList?Service=1&CompName=" + companyName + "&SortCode=1&APIKey=" + apiKey;
 
             RestTemplate restTemplate = new RestTemplate();
-
             String response = restTemplate.getForObject(apiUrl, String.class);
 
             JSONObject jobj = XML.toJSONObject(response);
@@ -99,11 +97,17 @@ public class CompanyController {
             String response = restTemplate.getForObject(apiUrl, String.class);
 
             JSONObject responseToJSON = new JSONObject(response);
+            JSONArray postings = responseToJSON.getJSONObject("jobs").getJSONArray("job");
 
-            System.out.println(responseToJSON);
-            System.out.println(responseToJSON.getJSONObject("jobs").getJSONArray("job"));
-            System.out.println(responseToJSON.getJSONObject("jobs").getJSONArray("job").getClass().getSimpleName());
-            
+            // JSON 배열 순회
+            for (int i = 0; i < postings.length(); i++) {
+                // JSON 객체 추출
+                JSONObject jsonObject = postings.getJSONObject(i);
+                System.out.println("name " + jsonObject.getJSONObject("company").getJSONObject("detail").getString("name"));
+                System.out.println("href " + jsonObject.getJSONObject("company").getJSONObject("detail").getString("href"));
+                System.out.println("title " + jsonObject.getJSONObject("position").getString("title"));
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
