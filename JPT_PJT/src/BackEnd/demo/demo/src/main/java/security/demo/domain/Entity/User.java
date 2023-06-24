@@ -1,25 +1,22 @@
 package security.demo.domain.Entity;
 
 import java.sql.Timestamp;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import lombok.Data;
 
-@Builder
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class User {
     @Id // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_id")
     private int id;
     private String username;
     private String password;
@@ -32,7 +29,24 @@ public class User {
     @CreationTimestamp
     private Timestamp createDate;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Chatbox> chatlist = new ArrayList<>();
+
     public void updateRefreshToken(String updateRefreshToken) {
         this.refreshToken = updateRefreshToken;
+    }
+    @Builder
+    public User(int id, String username, String password, String email, String role, String provider, String providerId, String refreshToken, Timestamp createDate, List<Chatbox> chatlist) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.provider = provider;
+        this.providerId = providerId;
+        this.refreshToken = refreshToken;
+        this.createDate = createDate;
+        this.chatlist = chatlist;
     }
 }

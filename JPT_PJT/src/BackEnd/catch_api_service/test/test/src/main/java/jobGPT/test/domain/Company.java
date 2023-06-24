@@ -28,6 +28,7 @@ public class Company {
     private String area; // 회사 지역
     @Column(nullable = false, length = 20)
     private String size; // 회사 규모
+
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "industry_id")

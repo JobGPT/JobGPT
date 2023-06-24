@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
     PrincipalOauth2UserService principalOauth2UserService;
+    @Autowired
     private final JwtService jwtService;
     @Autowired
     private CorsConfig corsConfig;
