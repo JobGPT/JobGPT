@@ -2,7 +2,7 @@ package security.demo.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import security.demo.domain.DTO.SignUpDto;
@@ -15,10 +15,8 @@ import security.demo.domain.repository.UserRepository;
 public class UserService {
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
     private final UserRepository userRepository;
-
+    private final PasswordEncoder passwordEncoder;
     public void signUp(SignUpDto signUpDto) throws Exception{
         if (userRepository.existsByUsername(signUpDto.getUsername())) {
             throw new Exception("이미 존재하는 닉네임입니다.");
@@ -26,13 +24,13 @@ public class UserService {
         if (userRepository.existsByEmail(signUpDto.getEmail())) {
             throw new Exception("이미 존재하는 이메일입니다.");
         }
-        User newuser = new User();
-        String rawPassword = signUpDto.getPassword();
-        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
-        newuser.setPassword(encPassword);
-        newuser.setRole("ROLE_USER");
-        newuser.setUsername(signUpDto.getUsername());
-        newuser.setEmail(signUpDto.getEmail());
+        User newuser = User.builder()
+                .email(signUpDto.getEmail())
+                .password(signUpDto.getPassword())
+                .username(signUpDto.getUsername())
+                .role("ROLE_USER")
+                .build();
+        newuser.passwordEncode(passwordEncoder);
         userRepository.save(newuser);
     }
 

@@ -16,7 +16,7 @@ import security.demo.domain.repository.UserRepository;
 public class PrincipalDetailsService implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

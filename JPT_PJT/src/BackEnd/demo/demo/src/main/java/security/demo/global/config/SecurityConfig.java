@@ -13,10 +13,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import security.demo.global.config.auth.PrincipalDetails;
+import security.demo.global.config.auth.PrincipalDetailsService;
 import security.demo.global.jwt.filter.JwtAuthenticationFilter;
 import security.demo.global.jwt.filter.JwtAuthenticationProcessingFilter;
 import security.demo.global.jwt.filter.JwtAuthorizationFilter;
@@ -46,13 +47,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private final JwtService jwtService;
     @Autowired
     private CorsConfig corsConfig;
+    private final PrincipalDetailsService principalDetailsService;
     private final UserRepository userRepository;
     private final OAuth2LoginFailHandler oAuth2LoginFailHandler;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final ObjectMapper objectMapper;
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
 
@@ -95,16 +94,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .userService(principalOauth2UserService); // 구글 로그인이 완료된 뒤의 후처리가 필요함 -> 팁. 코드x, (엑세스 토큰 + 사용자 프로필 정보O)
     }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//    }
-//
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
 
     @Bean
     public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(bCryptPasswordEncoder);
+        provider.setPasswordEncoder(passwordEncoder());
+        provider.setUserDetailsService(principalDetailsService);
         return new ProviderManager(provider);
     }
 

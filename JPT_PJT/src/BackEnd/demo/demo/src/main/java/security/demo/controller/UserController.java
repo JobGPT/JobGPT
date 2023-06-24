@@ -6,19 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import security.demo.domain.DTO.SignUpDto;
 import security.demo.domain.Entity.User;
-import security.demo.domain.repository.UserRepository;
 import security.demo.domain.service.UserService;
 
 @RestController
 public class UserController {
-
-    @Autowired UserRepository userRepository;
-    @Autowired BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     UserService userService;
