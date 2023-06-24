@@ -57,9 +57,8 @@ export default function NewChat({ title, index }) {
       confirmClick(editedTitle, delete_active, edit_active, index, event);
       navigate('/mainpage');
     } else if (edit_active) {
+      setBtnActive(false);
       confirmClick(editedTitle, delete_active, edit_active, index, event);
-      setEdit(false);
-      console.log(edit_active);
     }
   };
 
@@ -101,7 +100,7 @@ export default function NewChat({ title, index }) {
           onClick={(event) => event.stopPropagation()}
         >
           <button
-            onClick={() => handleClickEdit}
+            onClick={() => handleClickEdit(event)}
             id="button-edit"
             style={
               (edit_active && active) || delete_active
@@ -112,9 +111,7 @@ export default function NewChat({ title, index }) {
             <img src={editimg} style={{ height: '15px', width: '15px' }} />
           </button>
           <button
-            onClick={() => {
-              handleConfirmClick;
-            }}
+            onClick={(event) => handleConfirmClick(event)}
             style={
               (delete_active || edit_active) && active
                 ? { visibility: 'visible', height: '20px', width: '20px' }
@@ -124,7 +121,7 @@ export default function NewChat({ title, index }) {
             <img src={checkimg} style={{ height: '15px', width: '15px' }} />
           </button>
           <button
-            onClick={handleClickDelete}
+            onClick={() => handleClickDelete(event)}
             id="button-delete"
             style={
               (delete_active && active) || edit_active
@@ -135,7 +132,7 @@ export default function NewChat({ title, index }) {
             <img src={deleteimg} style={{ height: '15px', width: '15px' }} />
           </button>
           <button
-            onClick={cancle_confirmClick}
+            onClick={(event) => cancle_confirmClick(event)}
             style={
               (delete_active || edit_active) && active
                 ? { visibility: 'visible', height: '20px', width: '20px' }

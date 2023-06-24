@@ -5,12 +5,12 @@ import './GptChat.css';
 
 export default function GptChat({msg}) {
   const company_info = useStore((store) => store.company_info);
-
+  const current_msg = msg.split(/은|는|이|가|을|를|에/)[0];
   const renderObject = (obj) => {
     if (obj && obj.summery.company_overview && obj.summery.company_overview['table-1']) {
       const companyInfo = obj.summery.company_overview['table-1'];
       const jobPostings = obj.summery.job_Posting['table-0'];
-    if(msg === obj.summery.company_overview['table-1'].name){
+    if(current_msg == obj.summery.company_overview['table-1'].name){
         return (
           <div>
             <img src={companyInfo.logo} alt="" />
@@ -24,7 +24,7 @@ export default function GptChat({msg}) {
             {Object.keys(jobPostings).length}
           </div>
         );
-      } else if (msg == '채용공고') {
+      } else if (current_msg == '채용공고') {
         return (
           <div>
             {Object.entries(jobPostings).map(([key, value]) => (
