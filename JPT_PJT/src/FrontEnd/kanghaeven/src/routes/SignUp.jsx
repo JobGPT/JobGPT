@@ -15,8 +15,12 @@ export default function SignUp() {
   const Reset = () => {
     setEmail('');
     setPassword('');
+    setConfirmPassword('');
+    setNickname('');
     setEmailMessage('');
     setPasswordMessage('');
+    setConfirmPasswordMessage('');
+    setNicknameMessage('');
   }
 
   useEffect(() => {
