@@ -20,8 +20,9 @@ export default function ChatSection() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const messageWithLineBreaks = message.replace(/\n/g, '<br>');
+    const Requestmessage =  message.split(/은|는|이|가|을|를|에/)[0];
     if (isFirstMessage) {
-      const Json = `{"comp": "${messageWithLineBreaks}"}`;
+      const Json = `{"comp": "${Requestmessage}"}`;
       const obj = JSON.parse(Json); // JSON 형식으로 바꾸기
       console.log(obj);
       axios.post('/catch', obj).then((response) => {
