@@ -35,7 +35,7 @@ public class UserService {
     }
 
     public User search(String username) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).get();
         return user;
     }
 }

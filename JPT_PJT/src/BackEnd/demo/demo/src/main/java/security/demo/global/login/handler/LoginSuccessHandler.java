@@ -22,24 +22,25 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) {
-        String username = extractUsername(authentication); // 인증 정보에서 Username(email) 추출
+        String username = extractUsername(authentication); // 인증 정보에서 Username 추출
         String accessToken = jwtService.createAccessToken(username); // JwtService의 createAccessToken을 사용하여 AccessToken 발급
         String refreshToken = jwtService.createRefreshToken(); // JwtService의 createRefreshToken을 사용하여 RefreshToken 발급
 
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken); // 응답 헤더에 AccessToken, RefreshToken 실어서 응답
 
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).get();
         if (userRepository.existsByUsername(username)) {
             user.updateRefreshToken(refreshToken);
             userRepository.saveAndFlush(user);
         }
-        log.info("로그인에 성공하였습니다. username : {}", username);
-        log.info("로그인에 성공하였습니다. JwtToken : {}", accessToken);
+        System.out.println("login success, username : "+ username);
+        System.out.println("login success, JwtToken : "+ accessToken);
     }
 
     private String extractUsername(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return userDetails.getUsername();
     }
+
 
 }

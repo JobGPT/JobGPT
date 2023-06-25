@@ -48,7 +48,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         String username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
                 .getClaim("username").asString();
         if (username != null) {
-            User user = userRepository.findByUsername(username);
+            User user = userRepository.findByUsername(username).get();
             PrincipalDetails principalDetails = new PrincipalDetails(user);
 
             // Jwt 토큰 서명의 정상이면 authentication 객체를 만들어 준다

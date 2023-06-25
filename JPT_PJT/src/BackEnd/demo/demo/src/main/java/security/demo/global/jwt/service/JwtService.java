@@ -23,12 +23,12 @@ public class JwtService {
 
     private final UserRepository userRepository;
 
-    public String createAccessToken(String email) {
+    public String createAccessToken(String username) {
         Date now = new Date();
         return JWT.create()
-                .withSubject(JwtProperties.HEADER_REF)
+                .withSubject(JwtProperties.HEADER_STRING)
                 .withExpiresAt(new Date(System.currentTimeMillis()+ JwtProperties.EXPIRATION_TIME))
-                .withClaim("email", email)
+                .withClaim("username", username)
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
     }
 
@@ -42,37 +42,46 @@ public class JwtService {
 
     public void sendAccessToken(HttpServletResponse response, String accessToken) {
         response.setStatus(HttpServletResponse.SC_OK);
-        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+accessToken);
+        response.setHeader(JwtProperties.HEADER_STRING, accessToken);
+//        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+accessToken);
         log.info("재발급된 Access Token : {}", accessToken);
     }
 
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
         response.setStatus(HttpServletResponse.SC_OK);
 
-        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+accessToken);
-        response.addHeader(JwtProperties.HEADER_REF, JwtProperties.TOKEN_PREFIX+refreshToken);
+        setAccessTokenHeader(response, accessToken);
+        setRefreshTokenHeader(response, refreshToken);
         log.info("Access Token, Refresh Token 헤더 설정 완료");
     }
 
+    public void setAccessTokenHeader(HttpServletResponse response, String accessToken) {
+        response.setHeader(JwtProperties.HEADER_STRING, accessToken);
+    }
+
+    public void setRefreshTokenHeader(HttpServletResponse response, String refreshToken) {
+        response.setHeader(JwtProperties.HEADER_REF, refreshToken);
+    }
+
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(JwtProperties.HEADER_REF))
-                .filter(refreshToken -> refreshToken.startsWith(JwtProperties.SECRET))
-                .map(refreshToken -> refreshToken.replace(JwtProperties.SECRET, ""));
+        return Optional.ofNullable(request.getHeader(JwtProperties.TOKEN_REF))
+                .filter(refreshToken -> refreshToken.startsWith(JwtProperties.TOKEN_PREFIX))
+                .map(refreshToken -> refreshToken.replace(JwtProperties.TOKEN_PREFIX, ""));
     }
 
     public Optional<String> extractAccessToken(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(JwtProperties.HEADER_STRING))
-                .filter(refreshToken -> refreshToken.startsWith(JwtProperties.SECRET))
-                .map(refreshToken -> refreshToken.replace(JwtProperties.SECRET, ""));
+        return Optional.ofNullable(request.getHeader(JwtProperties.TOKEN_ACC ))
+                .filter(accessToken -> accessToken.startsWith(JwtProperties.TOKEN_PREFIX))
+                .map(accessToken -> accessToken.replace(JwtProperties.TOKEN_PREFIX, ""));
     }
 
-    public Optional<String> extractEmail(String accessToken) {
+    public Optional<String> extractUsername(String accessToken) {
         try {
             // 토큰 유효성 검사하는 데에 사용할 알고리즘이 있는 JWT verifier builder 반환
             return Optional.ofNullable(JWT.require(Algorithm.HMAC512(JwtProperties.SECRET))
                     .build() // 반환된 빌더로 JWT verifier 생성
                     .verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
-                    .getClaim("email") // claim(Emial) 가져오기
+                    .getClaim("username") // claim(username) 가져오기
                     .asString());
         } catch (Exception e) {
             log.error("액세스 토큰이 유효하지 않습니다.");
@@ -80,8 +89,8 @@ public class JwtService {
         }
     }
 
-    public void updateRefreshToken(String email, String refreshToken) {
-        userRepository.findByEmail(email)
+    public void updateRefreshToken(String username, String refreshToken) {
+        userRepository.findByUsername(username)
                 .ifPresentOrElse(
                         user -> user.updateRefreshToken(refreshToken),
                         () -> new Exception("일치하는 회원이 없습니다.")

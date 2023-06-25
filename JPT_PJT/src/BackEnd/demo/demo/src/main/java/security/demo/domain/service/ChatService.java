@@ -26,7 +26,7 @@ public class ChatService {
     @Transactional
     public ChatBoxResponseDto createChatBox(ChatBoxRequestDto chatBoxRequestDto) {
         System.out.println("find user");
-        User user = userRepository.findByUsername(chatBoxRequestDto.getUsername());
+        User user = userRepository.findByUsername(chatBoxRequestDto.getUsername()).get();
         System.out.println(user.getUsername());
         Chatbox chatbox = Chatbox.builder()
                 .user(user)
@@ -52,7 +52,7 @@ public class ChatService {
     }
 
     public UserSearchChatBoxDto searchChatbox(String username) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).get();
         List<Chatbox> chatboxes = chatboxRepository.findByUser(user);
         List<ChatBoxResponseDto> newchatbox = new ArrayList<>();
         for (Chatbox chatbox : chatboxes) {
