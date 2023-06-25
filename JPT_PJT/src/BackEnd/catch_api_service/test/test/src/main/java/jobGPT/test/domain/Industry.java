@@ -1,6 +1,7 @@
 package jobGPT.test.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,5 @@ public class Industry {
     private Company company; // 상세 정보
     @OneToOne(mappedBy = "industry")
     private IndustryFigure industryFigure;
-
 
 }

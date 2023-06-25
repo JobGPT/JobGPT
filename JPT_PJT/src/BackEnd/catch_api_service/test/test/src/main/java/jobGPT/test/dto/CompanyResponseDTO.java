@@ -17,6 +17,7 @@ public class CompanyResponseDTO {
     private String size;
     private String compinfo;
     private String field;
+    private Long industryId;
     @Builder.Default
     private List<RecomendTitleDTO> recomendComps = new ArrayList<>();
 }
