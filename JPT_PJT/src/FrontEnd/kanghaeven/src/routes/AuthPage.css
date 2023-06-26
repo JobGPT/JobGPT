@@ -13,7 +13,7 @@
 }
 
 .logoimg {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .text {
@@ -21,14 +21,20 @@
 }
 
 .buttons {
-  margin: 0.5rem 0rem;
+  margin: 1.5rem 0rem 0.5rem 0rem;
 }
 
 .buttonlogin {
   margin-right: 1rem;
+  width: 7.5rem;
+}
+
+.buttonsignup {
+  width: 7.5rem;
 }
 
 .button {
+  width: 5rem;
   display: inline;
   padding: 0;
   background-color: transparent;
@@ -36,4 +42,31 @@
 
 .button:hover{
   background-color: transparent;
+}
+
+.socialbutton {
+  width: 16rem;
+  margin: 0.5rem 0;
+  outline: 1px solid;
+}
+
+.social {
+  display: flex;
+  align-items: center;
+}
+
+.googleimg {
+  margin: 0rem 0.5rem;
+}
+
+.naverimg {
+  margin: 0rem 0.2rem;
+  width: 1.9rem;
+  height: 1.9rem;
+}
+
+.kakaoimg {
+  margin: 0rem 0.55rem;
+  width: 1.2rem;
+  height: 1.2rem;
 }
