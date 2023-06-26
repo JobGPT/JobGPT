@@ -21,10 +21,5 @@ public class Industry {
     @OneToOne(mappedBy = "industry")
     private IndustryFigure industryFigure;
 
-    public Industry(Long code, String industryName, Company company, IndustryFigure industryFigure) {
-        this.code = code;
-        this.industryName = industryName;
-        this.company = company;
-        this.industryFigure = industryFigure;
-    }
+
 }

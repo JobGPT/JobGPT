@@ -15,6 +15,7 @@ public class CompanyRequestDTO {
     private String size;
     private String field;
     private String compinfo;
+    private String industryName;
     @Builder.Default
     private List<String> recomendComps = new ArrayList<>();
 
