@@ -10,11 +10,18 @@ CREATE TABLE Company (
     FOREIGN KEY (industryCode) REFERENCES Industry(code)
 );
 
+-- DROP TABLE IF EXISTS `companyInfo`;
 CREATE TABLE companyInfo (
-    companyID INT,
-    compInfo JSON,
-    FOREIGN KEY (companyID) REFERENCES Company(companyID)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    companyName VARCHAR(100),
+    compInfo JSON
 );
+
+-- CREATE TABLE companyInfo (
+--     companyName VARCHAR(100)
+--     compInfo JSON,
+--     FOREIGN KEY (companyID) REFERENCES Company(companyID)
+-- );
 
 CREATE TABLE Industry (
     code INT PRIMARY KEY,
@@ -36,6 +43,25 @@ CREATE TABLE IndustryDetail (
 );
 
 
+<<<<<<< HEAD
+LOAD DATA INFILE './UpperIndustryCodes.txt'
+INTO TABLE Industry
+FIELDS TERMINATED BY '\t'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA INFILE './IndustryCodes.txt'
+INTO TABLE IndustryFigure
+FIELDS TERMINATED BY '\t'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA INFILE './KeywordCodes.txt'
+INTO TABLE IndustryDetail
+FIELDS TERMINATED BY '\t'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+=======
 -- LOAD DATA INFILE './UpperIndustryCodes.txt'
 -- INTO TABLE Industry
 -- FIELDS TERMINATED BY '\t'
@@ -53,3 +79,4 @@ CREATE TABLE IndustryDetail (
 -- FIELDS TERMINATED BY '\t'
 -- LINES TERMINATED BY '\n'
 -- IGNORE 1 ROWS;
+>>>>>>> f5b8443d4b9ad97f2534829d937704b862f93482

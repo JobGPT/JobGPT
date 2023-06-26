@@ -5,42 +5,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, WebDriverException
 from bs4 import BeautifulSoup
 import time
+import requests
 import json
+
 
 from driver_update import chromedriver_update
 chromedriver_update()
 
-
-
-# options = None
-# driver = None
-
-
-# if not options:
-#     options = webdriver.ChromeOptions()
-#     options.add_experimental_option("excludeSwitches", ["enable-logging"])
-
-# driver = webdriver.Chrome(
-#             executable_path='chromedriver', 
-#             options=options
-#             )
-
-# def search_by_selenium(driver, query : str|list[str], num_results : int) -> str | list[str]:
-#     print('Crawling start with selenium')
-    
-#     if isinstance(query, str):       # 구글 검색 실패로 우회해서 들어올 경우 타겟 문구인 query가 들어옴
-#         '''
-#         우회하여 검색하는 코드는 아직 완성되지 않았습니다.
-#         현재 작업 진행 중.
-#         '''
-#         raise f'Issue : have to make a code to bypass and access'
-#     else : #isinstance(query, list)  # 구글 검색 성공시, list 안에 url이 담겨서 query가 들어옴
-#         for url in query:
-#             driver.get(url=url)
-#             WebDriverWait(driver, 10).until(
-#                 EC.presence_of_element_located((By.TAG_NAME, "body"))
-#             )
-#             html_source = driver.execute_script("return document.body.outerHTML;")
+target_url = 'https://www.catch.co.kr'
             
 
 from selenium import webdriver
@@ -54,6 +26,7 @@ import re
 
 def find_table(html_: str) -> dict:
     table_items = html_.find('table')
+
     if not table_items: return dict()
     rows = table_items.find_all('tr')
     table_dict = {}
@@ -87,27 +60,36 @@ def scrape_catch(driver, url, idx):
     
     # 2. 1초 대기 후
     if idx == 0: # idx == 0 -> 채용공고 일 경우 
-        element = WebDriverWait(driver, 1).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "label[for='ckSortA1']"))
-        )
+        element = WebDriverWait(driver, 1)
+        
+        # try:
+        #     # 모달 창의 닫기 버튼을 찾아서 클릭
+        #     close_buttons = driver.find_element(By.CSS_SELECTOR, '.modal_wrap .close')
+        #     print("야호!",len(close_buttons))
+        # except Exception as e:
+        #     print('!!!! no MODAL !!!!!!!')
+        close_buttons = driver.find_elements(By.CSS_SELECTOR, '.modal_wrap .close')
+        for button in close_buttons:
+            try: button.click()
+            except : pass
+        element = driver.find_element(By.CSS_SELECTOR, "label[for='ckSortA1']")
         element.click()
     elif idx == 1: # idx == 0 -> 기업정보 일 경우 
         element = WebDriverWait(driver, 0)
         
     # 4. 1초간 대기
     # time.sleep(0)
-
-    # 5. 해당 table을 찾음
     soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+        # 4.1 모달 있는지 확인 후 있으면 닫기
+    
+    # 5. 해당 table을 찾음
     
     if idx == 0:
         return scrape_recruit(soup)
     elif idx == 1:
         return scrape_company_info(soup)
     
-
-    # brandList:[{CompID:i,Num:d,BrandImg:W,BrandName:"플랫폼",BrandDesc:"온라인 검색포털, 모바일 메신저 LINE",AppStore:a,GooglePlay:a,RegDate:y},{CompID:i,Num:h,BrandImg:"https:\u002F\u002Fimgorg.catch.co.kr\u002Fjob\u002Fcorp\u002Fico_biztype_G02.png",BrandName:"콘텐츠",BrandDesc:"네이버웹툰, 네이버뮤직, SNOW",AppStore:a,GooglePlay:a,RegDate:y},{CompID:i,Num:l,BrandImg:W,BrandName:"핀테크",BrandDesc:"네이버페이\r\n오프라인 포인트 QR 결제 출시",AppStore:a,GooglePlay:a,RegDate:y}],salaryList:[{Name:k,IsJinhakCodeAvg:b,Salary:P,yyyymm:"2021.12"},{Name:m,IsJinhakCodeAvg:d,Salary:"4114",yyyymm:e}]
-
 
 
 def scrape_common(soup):
@@ -116,9 +98,44 @@ def scrape_common(soup):
     table = find_table(corp_detail_boxes)
     return table
 
+def get_employment_url(soup):
+    corp_detail_boxes = soup.find('div', class_='corp_detail_box')
+    table = corp_detail_boxes.find('table')
+    tr_elements = table.find_all('tr')
+    
+    site_link = []
+    
+    for tr_element in tr_elements:
+        a_element = tr_element.find('td', class_='al1').find('a')
+        href = a_element['href']
+        detail_url = target_url + href
+        response = requests.get(detail_url)
+        if response.status_code == 200:
+            html = response.text
+            detail_soup = BeautifulSoup(html, 'html.parser')
+            link_holder = detail_soup.find('li', class_="howto", id="view2")
+
+            a_element = link_holder.find('a')
+            href = a_element['href']
+            employ_id = href.split('_')[1]
+            _href = f'/controls/recruitLink/{employ_id}?gubun=1'
+            site_link.append(target_url+_href)
+            
+    return site_link
+
 def scrape_recruit(soup):
+    global target_url
     # 채용공고에 필요한 추가 작업
-    return [scrape_common(soup)]
+    
+    # 채용 사이트 받아오기
+    site_link = get_employment_url(soup) # 채용 공고 링크
+    table_items = scrape_common(soup) # 채용 공고 및 정보
+    
+    for idx, item in enumerate(table_items):
+        
+        table_items[item]['link'] = site_link[idx]
+    
+    return [table_items]
 
 
 def extract_list(soup):
@@ -152,7 +169,6 @@ def extract_list(soup):
         
     return [competitor, brandlist]
 
-    return # competitor, brandlist
 
 def scrape_company_info(soup):
     # 기업정보에 필요한 추가 작업
