@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -109,19 +109,21 @@ public class ComService {
 
             RestTemplate restTemplate = new RestTemplate();
             String response = restTemplate.getForObject(apiUrl, String.class);
-
             JSONObject jsonObj = XML.toJSONObject(response);
             JSONObject jsonCompObj = jsonObj.getJSONObject("Data").getJSONObject("Companys");
-            JSONObject compData;
 
-            if (jsonCompObj.length() == 1) {
+            System.out.println(jsonCompObj);
+            System.out.println(jsonCompObj.get("Company"));
+            System.out.println(jsonCompObj.get("Company") instanceof JSONObject);
+            System.out.println(jsonCompObj.get("Company").getClass().getSimpleName());
+
+            JSONObject compData;
+            if (jsonCompObj.get("Company") instanceof JSONObject) {
                 compData = jsonCompObj.getJSONObject("Company");
             } else {
                 compData = jsonCompObj.getJSONArray("Company").getJSONObject(0);
             }
-
             String companyIndustryName = getIndustyName(compData);
-
             Company company = new Company();
             company.setCompName(compData.getString("CompName"));
             company.setSize(compData.getString("CompSizeName"));
@@ -129,11 +131,16 @@ public class ComService {
             company.setIndustry(industryRepository.findByIndustryName(companyIndustryName));
             companyRepository.save(company);
 
+            Company company2 = companyRepository.findByCompName(companyName);
+            System.out.println("company1 company1" + company);
+            System.out.println("company2 company2" + company2);
+
         } catch (Exception e) {
             System.out.println("올바른 회사이름을 입력해주세요");
             e.printStackTrace();
         }
         Company company = companyRepository.findByCompName(companyName);
+        System.out.println("build company" + company);
         return CompanyResponseDTO.builder()
                 .companyId(company.getId())
                 .area(company.getArea())
@@ -141,8 +148,11 @@ public class ComService {
                 .compName(company.getCompName())
                 .industryId(company.getIndustry().getCode()).build();
     }
+
     private static String getIndustyName(JSONObject compData) {
+
         String industryName = compData.getString("JinhakCodeName");
+
         String manufacturing = "기계장비,반도체·디스플레이,생활용품·화장품,섬유·의류,식품·음료,에너지·화학" +
                 ",자동차·운송장비,전기·전자,제약·바이오,조선,철강·금속,제조업 기타,운송장비 부품,목재·제지,가구·인테리어";
         String sales = "무역·상사,운송,도소매·유통";

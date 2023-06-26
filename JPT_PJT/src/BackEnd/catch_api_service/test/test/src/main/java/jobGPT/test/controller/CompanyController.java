@@ -10,7 +10,7 @@ import jobGPT.test.repository.IndustryRepository;
 import jobGPT.test.service.ComService;
 import jobGPT.test.service.RecomendService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.json.JSONParser;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
