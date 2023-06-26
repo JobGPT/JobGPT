@@ -16,3 +16,24 @@
   gap: 1rem;
   margin: 0.5rem 0;
 }
+
+
+table{
+  width: 100%;
+  border: 0.5px solid;
+  text-align: center;
+}
+
+tr, td{
+  border: 0.5px solid black !important;
+  padding: 15px;
+}
+
+#description_box{
+  border: 0.5px solid black;
+}
+
+#description{
+  padding: 0.5rem;
+  border-top: 0.5px solid black;
+}

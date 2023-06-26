@@ -15,7 +15,7 @@ export default function Profile() {
         <>
           <div id="panel" style={{ color: 'white', marginBottom: '20px' }}>
             <Disclosure.Panel>
-              <a onClick={ClearConversation}>Clear conversation</a>
+              <a id='profile_btn' onClick={ClearConversation}>Clear conversation</a>
               <Link to='/'>Log out</Link>
             </Disclosure.Panel>
           </div>
