@@ -2,6 +2,7 @@ import React from 'react';
 import { useStore } from '../store.js';
 
 import KaKaoMap from './KaKaoMap.jsx';
+import Corporation from './Corporation.jsx';
 
 import './GptChat.css';
 
@@ -26,28 +27,7 @@ export default function GptChat({ msg }) {
               </a>
             </div>{' '}
             {/* 정리 필요 */}
-            <table id="info_container">
-              <tbody>
-                <tr>
-                  <td style={{ backgroundColor: 'lightgray' }}>기업명</td>
-                  <td>{companyInfo.name}</td>
-                  <td style={{ backgroundColor: 'lightgray' }}>설립일</td>
-                  <td>{obj.summery.company_overview['table-0']['설립일']}</td>
-                </tr>
-                <tr>
-                  <td style={{ backgroundColor: 'lightgray' }}>대표자</td>
-                  <td>{obj.summery.company_overview['table-0']['대표자']}</td>
-                  <td style={{ backgroundColor: 'lightgray' }}>사원 수</td>
-                  <td>{companyInfo.numberOfEmployees}명</td>
-                </tr>
-                <tr>
-                  <td style={{ backgroundColor: 'lightgray' }}>기업규모</td>
-                  <td>{obj.summery.company_overview['table-0']['기업규모']}</td>
-                  <td style={{ backgroundColor: 'lightgray' }}>채용공고 수</td>
-                  <td>{Object.keys(jobPostings).length}</td>
-                </tr>
-              </tbody>
-            </table>
+            <Corporation companyInfo={companyInfo} obj={obj} jobPostings={jobPostings} />
             <br />
             <div id="description_box">
               <span style={{ fontWeight: 'bold', padding: '5px' }}>
