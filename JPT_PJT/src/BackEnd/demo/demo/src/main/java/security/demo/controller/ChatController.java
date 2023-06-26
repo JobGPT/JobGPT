@@ -3,20 +3,17 @@ package security.demo.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import security.demo.domain.DTO.*;
 import security.demo.domain.Entity.User;
 import security.demo.domain.service.ChatService;
-import security.demo.domain.service.UserService;
 import security.demo.global.jwt.annotation.JwtAuth;
 
 @RestController
 @RequiredArgsConstructor
 public class ChatController {
 
-//    private final UserService userService;
     private final ChatService chatService;
 
     @PostMapping("/create/chatbox")
