@@ -10,7 +10,7 @@ import javax.persistence.Lob;
 @NoArgsConstructor
 @Builder
 public class ChatRequestDto {
-    private String username;
+
     @Lob
     private String talk;
     private Long talkboxId;

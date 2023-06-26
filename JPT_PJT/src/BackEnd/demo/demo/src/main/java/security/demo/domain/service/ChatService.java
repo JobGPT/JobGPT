@@ -24,9 +24,9 @@ public class ChatService {
     private final ChatRepository chatRepository;
 
     @Transactional
-    public ChatBoxResponseDto createChatBox(ChatBoxRequestDto chatBoxRequestDto) {
+    public ChatBoxResponseDto createChatBox(ChatBoxRequestDto chatBoxRequestDto, String username) {
         System.out.println("find user");
-        User user = userRepository.findByUsername(chatBoxRequestDto.getUsername()).get();
+        User user = userRepository.findByUsername(username).get();
         System.out.println(user.getUsername());
         Chatbox chatbox = Chatbox.builder()
                 .user(user)
@@ -38,10 +38,10 @@ public class ChatService {
                 .title(savedChatbox.getTitle()).build();
     }
 
-    public ChatResponseDto createChat(ChatRequestDto chatRequestDto) {
+    public ChatResponseDto createChat(ChatRequestDto chatRequestDto, String username) {
         Chatbox chatbox = chatboxRepository.findByIdAndTitle(chatRequestDto.getTalkboxId(), chatRequestDto.getTitle());
         Chat chat = Chat.builder()
-                .writer(chatRequestDto.getUsername())
+                .writer(username)
                 .talk(chatRequestDto.getTalk())
                 .chatbox(chatbox).build();
         Chat savedChat = chatRepository.save(chat);

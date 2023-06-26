@@ -1,5 +1,6 @@
 package security.demo.global.config.auth;
 
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+@Builder
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private static final long serialVersionUID = 1L;

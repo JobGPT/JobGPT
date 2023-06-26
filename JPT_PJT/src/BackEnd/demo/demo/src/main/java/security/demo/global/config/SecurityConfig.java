@@ -16,19 +16,19 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import security.demo.global.config.auth.PrincipalDetails;
 import security.demo.global.config.auth.PrincipalDetailsService;
-import security.demo.global.jwt.filter.JwtAuthenticationFilter;
 import security.demo.global.jwt.filter.JwtAuthenticationProcessingFilter;
-import security.demo.global.jwt.filter.JwtAuthorizationFilter;
 import security.demo.global.jwt.service.JwtService;
 import security.demo.global.login.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import security.demo.global.login.handler.LoginFailHandler;
 import security.demo.global.login.handler.LoginSuccessHandler;
+import security.demo.global.logout.handler.LogoutSuccessHandler;
 import security.demo.global.oauth2.PrincipalOauth2UserService;
 import security.demo.domain.repository.UserRepository;
 import security.demo.global.oauth2.handler.OAuth2LoginFailHandler;
 import security.demo.global.oauth2.handler.OAuth2LoginSuccessHandler;
+
+import javax.servlet.http.HttpSession;
 
 // 구글 로그인이 완료된 뒤의 후처리가 필요함  1.코드받기, 2.엑세스 토큰(권한)
 // 3.사용자프로필 정보를 가져오고 4.정보를 토대로 회원가입을 자동으로 진행시킴
@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private final OAuth2LoginFailHandler oAuth2LoginFailHandler;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final ObjectMapper objectMapper;
+    private final LogoutSuccessHandler logoutSuccessHandler;
 
 
 
@@ -71,11 +72,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
                         // 권한 관리
                 .authorizeRequests()
-                .antMatchers("/user/**").authenticated() // user ~~로 들어오면 인증 필요
+                        .antMatchers("/user/**").authenticated() // user ~~로 들어오면 인증 필요
                 //.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
                 //.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN') and hasRole('ROLE_USER')")
 //                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')") // role_admin 권한 있어야 들어올 수 있음
-                .anyRequest().permitAll() // 다른 url -> 모두 들어갈 수 있음
+                        .anyRequest().permitAll() // 다른 url -> 모두 들어갈 수 있음
 
                         // auth
                 .and()
@@ -91,7 +92,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                         .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
                         .failureHandler(oAuth2LoginFailHandler)
                 .userInfoEndpoint()
-                .userService(principalOauth2UserService); // 구글 로그인이 완료된 뒤의 후처리가 필요함 -> 팁. 코드x, (엑세스 토큰 + 사용자 프로필 정보O)
+                .userService(principalOauth2UserService);// 구글 로그인이 완료된 뒤의 후처리가 필요함 -> 팁. 코드x, (엑세스 토큰 + 사용자 프로필 정보O)
+
+        http.logout()
+                .logoutUrl("/logout")
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .deleteCookies("JSESSIONID","remember-me");
+
+
+
     }
 
     @Bean

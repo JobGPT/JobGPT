@@ -8,6 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class ChatBoxRequestDto {
-    private String username;
     private String title;
 }

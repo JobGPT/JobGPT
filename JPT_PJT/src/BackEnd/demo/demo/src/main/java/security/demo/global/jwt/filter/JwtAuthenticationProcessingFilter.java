@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import security.demo.domain.Entity.User;
 import security.demo.domain.repository.UserRepository;
+import security.demo.global.config.auth.PrincipalDetails;
+import security.demo.global.jwt.JwtProperties;
 import security.demo.global.jwt.service.JwtService;
 import security.demo.global.jwt.util.PasswordUtil;
 
@@ -19,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -41,6 +44,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         String refreshToken = jwtService.extractRefreshToken(request)
                 .filter(jwtService::isTokenValid)
                 .orElse(null);
+        log.info("refreshtoken: " + refreshToken);
 
         // 리프레시 토큰이 요청 헤더에 존재했다면, 사용자가 AccessToken이 만료되어서
         // RefreshToken까지 보낸 것이므로 리프레시 토큰이 DB의 리프레시 토큰과 일치하는지 판단 후,
@@ -66,7 +70,8 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
      *  그 후 JwtService.sendAccessTokenAndRefreshToken()으로 응답 헤더에 보내기
      */
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
-        userRepository.findByRefreshToken(refreshToken)
+        log.info("refresh is found");
+        userRepository.findByRefreshToken(refreshToken).filter(jwtService::TimeToRefresh)
                 .ifPresent(user -> {
                     String reIssuedRefreshToken = reIssueRefreshToken(user);
                     jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(user.getUsername()),
@@ -81,7 +86,9 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
      */
     private String reIssueRefreshToken(User user) {
         String reIssuedRefreshToken = jwtService.createRefreshToken();
-        user.updateRefreshToken(reIssuedRefreshToken);
+        Date now = new Date();
+        Date tokenExpirationTime = new Date(now.getTime() + JwtProperties.REFRESHTOKEN_TIME);
+        user.updateRefreshToken(reIssuedRefreshToken, tokenExpirationTime);
         userRepository.saveAndFlush(user);
         return reIssuedRefreshToken;
     }
@@ -98,7 +105,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                                                   FilterChain filterChain) throws ServletException, IOException {
         log.info("checkAccessTokenAndAuthentication() 호출");
         jwtService.extractAccessToken(request)
-                .filter(jwtService::isTokenValid)
+                .filter(jwtService::isAccessTokenValid)
                 .ifPresent(accessToken -> jwtService.extractUsername(accessToken)
                         .ifPresent(username -> userRepository.findByUsername(username)
                                 .ifPresent(this::saveAuthentication)));
@@ -127,14 +134,16 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             password = PasswordUtil.generateRandomPassword();
         }
 
-        UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
-                .username(myUser.getUsername())
-                .password(password)
-                .build();
+        PrincipalDetails principalDetails = new PrincipalDetails(myUser);
+
+//        UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
+//                .username(myUser.getUsername())
+//                .password(password)
+//                .build();
 
         Authentication authentication =
-                new UsernamePasswordAuthenticationToken(userDetailsUser, null,
-                        authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
+                new UsernamePasswordAuthenticationToken(principalDetails, null,
+                        authoritiesMapper.mapAuthorities(principalDetails.getAuthorities()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }

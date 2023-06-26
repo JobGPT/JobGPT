@@ -2,9 +2,12 @@ package security.demo.global.jwt.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import security.demo.domain.Entity.User;
 import security.demo.domain.repository.UserRepository;
@@ -12,6 +15,8 @@ import security.demo.global.jwt.JwtProperties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
@@ -40,12 +45,7 @@ public class JwtService {
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
     }
 
-    public void sendAccessToken(HttpServletResponse response, String accessToken) {
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setHeader(JwtProperties.HEADER_STRING, accessToken);
-//        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+accessToken);
-        log.info("재발급된 Access Token : {}", accessToken);
-    }
+
 
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
         response.setStatus(HttpServletResponse.SC_OK);
@@ -64,13 +64,13 @@ public class JwtService {
     }
 
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(JwtProperties.TOKEN_REF))
+        return Optional.ofNullable(request.getHeader(JwtProperties.HEADER_REF))
                 .filter(refreshToken -> refreshToken.startsWith(JwtProperties.TOKEN_PREFIX))
                 .map(refreshToken -> refreshToken.replace(JwtProperties.TOKEN_PREFIX, ""));
     }
 
     public Optional<String> extractAccessToken(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(JwtProperties.TOKEN_ACC ))
+        return Optional.ofNullable(request.getHeader(JwtProperties.HEADER_STRING ))
                 .filter(accessToken -> accessToken.startsWith(JwtProperties.TOKEN_PREFIX))
                 .map(accessToken -> accessToken.replace(JwtProperties.TOKEN_PREFIX, ""));
     }
@@ -84,17 +84,29 @@ public class JwtService {
                     .getClaim("username") // claim(username) 가져오기
                     .asString());
         } catch (Exception e) {
-            log.error("액세스 토큰이 유효하지 않습니다.");
+            log.error("there is not username from accesstoken.");
             return Optional.empty();
         }
     }
+//
+//    public void updateRefreshToken(String username, String refreshToken) {
+//        userRepository.findByUsername(username)
+//                .ifPresentOrElse(
+//                        user -> user.updateRefreshToken(refreshToken),
+//                        () -> new Exception("일치하는 회원이 없습니다.")
+//                );
+//    }
 
-    public void updateRefreshToken(String username, String refreshToken) {
-        userRepository.findByUsername(username)
-                .ifPresentOrElse(
-                        user -> user.updateRefreshToken(refreshToken),
-                        () -> new Exception("일치하는 회원이 없습니다.")
-                );
+    public boolean isAccessTokenValid(String token) {
+        try {
+//            JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token);
+            Jwts.parser().setSigningKey(JwtProperties.SECRET.getBytes(StandardCharsets.UTF_8))
+                    .parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            log.error("not valid access token : ", e.getMessage());
+            return false;
+        }
     }
 
     public boolean isTokenValid(String token) {
@@ -102,9 +114,31 @@ public class JwtService {
             JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token);
             return true;
         } catch (Exception e) {
-            log.error("유효하지 않은 토큰입니다. {}", e.getMessage());
+            log.error("token is not valid : ", e.getMessage());
             return false;
         }
     }
+
+    public boolean TimeToRefresh(User user) {
+        LocalDateTime time = user.getTokenExpirationTime();
+        if (LocalDateTime.now().isBefore(time)) {
+            return true;
+        }
+        return false;
+
+    }
+
+//    public void validateToken(String token) {
+//        try {
+//            Jwts.parser().setSigningKey(JwtProperties.SECRET.getBytes(StandardCharsets.UTF_8))
+//                    .parseClaimsJws(token);
+//        } catch (ExpiredJwtException e) {
+//            log.info("token 만료", e);
+//            throw new AuthenticationException(ErrorCode.TOKEN_EXPIRED);
+//        } catch (Exception e) {
+//            log.info("유효하지 않은 token", e);
+//            throw new AuthenticationException(ErrorCode.NOT_VALID_TOKEN);
+//        }
+//    }
 
 }

@@ -1,7 +1,9 @@
 package security.demo.domain.Entity;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
@@ -9,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import security.demo.global.jwt.util.DateTimeUtils;
 
 @Getter
 @Setter
@@ -27,6 +30,7 @@ public class User {
     private String provider;
     private String providerId;
     private String refreshToken;
+    private LocalDateTime tokenExpirationTime;
     @CreationTimestamp
     private Timestamp createDate;
 
@@ -34,11 +38,12 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Chatbox> chatlist = new ArrayList<>();
 
-    public void updateRefreshToken(String updateRefreshToken) {
+    public void updateRefreshToken(String updateRefreshToken, Date tokenExpirationTime) {
         this.refreshToken = updateRefreshToken;
+        this.tokenExpirationTime = DateTimeUtils.convertToLocalDateTime(tokenExpirationTime);
     }
     @Builder
-    public User(int id, String username, String password, String email, String role, String provider, String providerId, String refreshToken, Timestamp createDate, List<Chatbox> chatlist) {
+    public User(int id, String username, String password, String email, String role, String provider, String providerId, String refreshToken, LocalDateTime tokenExpirationTime ,Timestamp createDate, List<Chatbox> chatlist) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -47,10 +52,15 @@ public class User {
         this.provider = provider;
         this.providerId = providerId;
         this.refreshToken = refreshToken;
+        this.tokenExpirationTime = tokenExpirationTime;
         this.createDate = createDate;
         this.chatlist = chatlist;
     }
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
+    }
+
+    public void expireRefreshToken(LocalDateTime now) {
+        this.tokenExpirationTime = now;
     }
 }

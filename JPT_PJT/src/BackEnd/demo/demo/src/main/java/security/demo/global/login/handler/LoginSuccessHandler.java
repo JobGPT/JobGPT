@@ -7,10 +7,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import security.demo.domain.Entity.User;
 import security.demo.domain.repository.UserRepository;
+import security.demo.global.jwt.JwtProperties;
 import security.demo.global.jwt.service.JwtService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,9 +30,12 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken); // 응답 헤더에 AccessToken, RefreshToken 실어서 응답
 
+        Date now = new Date();
+        Date tokenExpirationTime = new Date(now.getTime() + JwtProperties.REFRESHTOKEN_TIME);
+
         User user = userRepository.findByUsername(username).get();
         if (userRepository.existsByUsername(username)) {
-            user.updateRefreshToken(refreshToken);
+            user.updateRefreshToken(refreshToken,tokenExpirationTime);
             userRepository.saveAndFlush(user);
         }
         System.out.println("login success, username : "+ username);
