@@ -3,7 +3,7 @@ import './Profile.css';
 
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { useStore } from '../store.js';
 
@@ -15,14 +15,20 @@ export default function Profile() {
         <>
           <div id="panel" style={{ color: 'white', marginBottom: '20px' }}>
             <Disclosure.Panel>
-              <a id='profile_btn' onClick={ClearConversation}>Clear conversation</a>
-              <Link to='/'>Log out</Link>
+              <a id="profile_btn" onClick={ClearConversation}>
+                Clear conversation
+              </a>
+              <Link to="/" style={{ textDecoration: 'none' }} id="logout_btn">
+                Log out
+              </Link>
             </Disclosure.Panel>
           </div>
           <Disclosure.Button>
             <img src={profileimg} alt="profile" />
             nikname
-            <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-purple-500`} />
+            <ChevronUpIcon
+              className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-purple-500`}
+            />
           </Disclosure.Button>
         </>
       )}
