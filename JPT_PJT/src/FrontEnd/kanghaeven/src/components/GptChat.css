@@ -18,11 +18,10 @@
 }
 
 #map {
-  z-index: 1;
+  z-index: 0;
 }
 
 #corp_loc {
-  margin-top: 30px;
   border: solid 1px #bcbcbc;
 }
 
