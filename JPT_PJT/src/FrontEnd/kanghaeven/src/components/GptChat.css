@@ -17,15 +17,6 @@
   margin: 0.5rem 0;
 }
 
-#description_box {
-  border: 0.5px solid black;
-}
-
-#description {
-  padding: 0.5rem;
-  border-top: 0.5px solid black;
-}
-
 #map {
   z-index: 1;
 }

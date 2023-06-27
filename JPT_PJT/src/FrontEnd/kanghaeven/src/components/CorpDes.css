@@ -1,0 +1,29 @@
+#description_box {
+  border: solid 1px #bcbcbc;
+  background-color: #fff;
+}
+
+#des_top {
+  align-items: center;
+  border-bottom: solid 1px #e0e0e0;
+  padding: 0 20px;
+}
+
+#cop_name {
+  padding-right: 35px;
+  white-space: nowrap;
+  font-size: 15px;
+  color: #272727;
+  font-weight: bold;
+  letter-spacing: -0.02em;
+  margin: 15px 0;
+  line-height: normal;
+}
+
+#description {
+  width: 100%;
+  padding: 20px 20px 40px 20px;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.84615;
+}

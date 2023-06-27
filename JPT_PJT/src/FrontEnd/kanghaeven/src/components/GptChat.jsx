@@ -3,6 +3,8 @@ import { useStore } from '../store.js';
 
 import KaKaoMap from './KaKaoMap.jsx';
 import Corporation from './Corporation.jsx';
+import CorpDes from './CorpDes.jsx';
+import CorpLogo from './CorpLogo.jsx';
 
 import './GptChat.css';
 
@@ -18,23 +20,10 @@ export default function GptChat({ msg }) {
       if (current_msg == obj.summery.company_overview['table-1'].name) {
         return (
           <div>
-            <div style={{ display: 'flex' }}>
-              <img src={companyInfo.logo} />
-              <h3>{companyInfo.name}</h3>
-              <span>{companyInfo.makesOffer}</span>
-              <a href={comp_page} target="_blank">
-                {companyInfo['sameAs']}
-              </a>
-            </div>{' '}
-            {/* 정리 필요 */}
+            <CorpLogo companyInfo={companyInfo} comp_page={comp_page} />
             <Corporation companyInfo={companyInfo} obj={obj} jobPostings={jobPostings} />
             <br />
-            <div id="description_box">
-              <span style={{ fontWeight: 'bold', padding: '5px' }}>
-                {companyInfo.name}?
-              </span>
-              <div dangerouslySetInnerHTML={{ __html: des }} id="description"></div>
-            </div>
+            <CorpDes companyInfo={companyInfo} des={des} />
             <br />
             <div id="corp_loc">
               <div id="top">
