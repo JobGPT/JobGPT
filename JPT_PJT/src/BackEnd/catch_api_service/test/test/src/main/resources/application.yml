@@ -1,10 +1,10 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/test;
-    # 이름바꿔주기
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:tcp://localhost/~/test;
+#    # 이름바꿔주기
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html

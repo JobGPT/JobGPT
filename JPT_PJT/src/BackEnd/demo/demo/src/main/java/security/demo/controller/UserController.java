@@ -9,6 +9,7 @@ import security.demo.domain.service.UserService;
 
 
 @RestController
+@RequestMapping(value = "/api")
 public class UserController {
 
     @Autowired

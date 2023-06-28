@@ -2,6 +2,7 @@ package jobGPT.test.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Table(name = "industry")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Industry {
     @Id
     @GeneratedValue

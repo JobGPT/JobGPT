@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import security.demo.domain.DTO.*;
 import security.demo.domain.Entity.User;
@@ -12,6 +13,7 @@ import security.demo.global.jwt.annotation.JwtAuth;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/api")
 public class ChatController {
 
     private final ChatService chatService;

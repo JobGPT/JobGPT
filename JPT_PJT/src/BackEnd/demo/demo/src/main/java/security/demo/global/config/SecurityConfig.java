@@ -82,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .and()
                 .formLogin()
                 .loginPage("/login") // 권한이 없을 시 /login 페이지로 이동하게 함
-                .loginProcessingUrl("/loginProc") // loginProc주소 호출되면 시큐리티가 낚아채서 대신 로그인 진행
+                .loginProcessingUrl("/api/login") // loginProc주소 호출되면 시큐리티가 낚아채서 대신 로그인 진행
                 .defaultSuccessUrl("/")
 
                         // oAuth2
@@ -95,7 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .userService(principalOauth2UserService);// 구글 로그인이 완료된 뒤의 후처리가 필요함 -> 팁. 코드x, (엑세스 토큰 + 사용자 프로필 정보O)
 
         http.logout()
-                .logoutUrl("/logout")
+                .logoutUrl("/api/logout")
                 .logoutSuccessHandler(logoutSuccessHandler)
                 .deleteCookies("JSESSIONID","remember-me");
 

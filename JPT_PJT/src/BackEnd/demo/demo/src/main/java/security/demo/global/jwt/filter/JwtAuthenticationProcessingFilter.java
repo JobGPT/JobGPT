@@ -32,7 +32,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(request.getRequestURI().equals("/login")) {
+        if(request.getRequestURI().equals("/api/login") || request.getRequestURI().equals("/api/logout")) {
             filterChain.doFilter(request, response);
             return;//안해주면 아래로 내려가서 계속 필터를 진행해버림
         }
