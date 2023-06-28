@@ -5,6 +5,7 @@ import KaKaoMap from './KaKaoMap.jsx';
 import Corporation from './Corporation.jsx';
 import CorpDes from './CorpDes.jsx';
 import CorpLogo from './CorpLogo.jsx';
+import JobPosting from './JobPosting.jsx';
 
 import './GptChat.css';
 
@@ -41,14 +42,7 @@ export default function GptChat({ msg }) {
       } else if (current_msg == '채용공고') {
         return (
           <div>
-            {Object.entries(jobPostings).map(([key, value]) => (
-              <div key={key}>
-                {value[0]}
-                <a href={value.link} target="_blank">
-                  {value.link}
-                </a>
-              </div>
-            ))}
+            <JobPosting jobPostings={jobPostings} />
           </div>
         );
       } else {
