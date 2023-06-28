@@ -1,9 +1,9 @@
 //package jobGPT.test.service;
 //
-//import jobGPT.test.domain.CompInfo;
-//import jobGPT.test.domain.Company;
-//import jobGPT.test.domain.RecomendComp;
-//import jobGPT.test.domain.RecomendTable;
+//import jobGPT.test.domain.company.CompInfo;
+//import jobGPT.test.domain.company.Company;
+//import jobGPT.test.domain.company.RecomendComp;
+//import jobGPT.test.domain.company.RecomendTable;
 //import jobGPT.test.repository.CompanyRepository;
 //import jobGPT.test.repository.CompinfoRepository;
 //import jobGPT.test.repository.RecomendCompRepository;

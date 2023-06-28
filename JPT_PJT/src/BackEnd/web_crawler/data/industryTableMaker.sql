@@ -17,8 +17,8 @@ CREATE TABLE Industry (
 
 CREATE TABLE companyInfo (
     companyID INT,
-    compInfo JSON,
-    fieldInfo JSON,
+    compInfo STRING,
+    fieldInfo STRING,
     FOREIGN KEY (companyID) REFERENCES Company(companyID)
 );
 
