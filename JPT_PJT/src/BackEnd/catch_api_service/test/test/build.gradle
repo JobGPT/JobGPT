@@ -14,7 +14,8 @@ configurations {
 	}
 }
 
-repositories {
+
+repositories {s
 	mavenCentral()
 }
 
