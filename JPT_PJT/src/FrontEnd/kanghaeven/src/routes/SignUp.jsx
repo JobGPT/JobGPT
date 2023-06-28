@@ -1,15 +1,35 @@
-import './SignUp.css'
+import './SignUp.css';
 
-import { Button } from "react-bootstrap"
+import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
 import { useCallback, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
-
+import { fetchSignupUser } from '../api/auth';
 
 export default function SignUp() {
-  const { email, password, confirmPassword, username, setEmail, setPassword, setConfirmPassword, setUsername, signupUser} = useStore();
-  const { emailMessage, passwordMessage, confirmPasswordMessage, usernameMessage, setEmailMessage, setPasswordMessage, setConfirmPasswordMessage, setUsernameMessage } = useStore();
+  const { 
+    email, 
+    password, 
+    confirmPassword,
+    username,
+    setEmail, 
+    setPassword, 
+    setConfirmPassword, 
+    setUsername, 
+    signupUser
+  } = useStore();
+
+  const { 
+    emailMessage, 
+    passwordMessage, 
+    confirmPasswordMessage, 
+    usernameMessage, 
+    setEmailMessage, 
+    setPasswordMessage, 
+    setConfirmPasswordMessage, 
+    setUsernameMessage 
+  } = useStore();
   const navigate = useNavigate();
 
   const Reset = () => {
@@ -25,7 +45,7 @@ export default function SignUp() {
 
   useEffect(() => {
     Reset();
-  }, [])
+  }, []);
 
   // 이메일, 비밀번호, 닉네임 유효성 검사
   // 닉네임 1~8자 길이, 첫번째 문자 한글/영문대소/숫자 중 하나, 그 후 어떤 문자든 허용
@@ -48,7 +68,7 @@ export default function SignUp() {
     return email
       .toLowerCase()
       .match(/([\w-.]+)@(([\w-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
-  }
+  };
 
   const isUsernameValid = validateUsername(username);
   const isPasswordValid = validatePassword(password);
@@ -60,8 +80,8 @@ export default function SignUp() {
     event.preventDefault();
     if (isAllValid) {
       if (signupUser()) {
-        navigate('/mainpage');
-      };
+        fetchSignupUser({ email, username, password });
+      }
     }
   }
   
@@ -84,7 +104,7 @@ export default function SignUp() {
     if (!validatePassword(currentPassword)) {
       setPasswordMessage("영문, 숫자, 특수기호 조합으로 10자리 이상 입력해주세요.");
     } else {
-      setPasswordMessage("안전한 비밀번호입니다.");
+      setPasswordMessage('안전한 비밀번호입니다.');
     }
   }, []);
   
@@ -134,31 +154,35 @@ export default function SignUp() {
             </div>
           </div>
 
-          <div className='inputform'>
+          <div className="inputform">
             <label>Password</label>
             <Form.Control
-              size="md" 
+              size="md"
               type="password"
               value={password}
               onChange={onChangePassword}
-              className='formcontrol'
+              className="formcontrol"
             />
-            <div className='alertmessage'>
-              <div className={isPasswordValid ? 'success' : 'error'}>{passwordMessage}</div>
+            <div className="alertmessage">
+              <div className={isPasswordValid ? 'success' : 'error'}>
+                {passwordMessage}
+              </div>
             </div>
           </div>
 
-          <div className='inputform'>
+          <div className="inputform">
             <label>Confirm Password</label>
             <Form.Control
-              size="md" 
+              size="md"
               type="password"
               value={confirmPassword}
               onChange={onChangeConfirmPassword}
-              className='formcontrol'
+              className="formcontrol"
             />
-            <div className='alertmessage'>
-              <div className={isConfirmPasswordValid ? 'success' : 'error'}>{confirmPasswordMessage}</div>
+            <div className="alertmessage">
+              <div className={isConfirmPasswordValid ? 'success' : 'error'}>
+                {confirmPasswordMessage}
+              </div>
             </div>
           </div>
 
@@ -181,12 +205,16 @@ export default function SignUp() {
         {isAllValid ? (
           <Button onClick={onSubmit}>Sign up</Button>
         ) : (
-          <Button onClick={onSubmit} disabled={!isAllValid}>Sign up</Button>
+          <Button onClick={onSubmit} disabled={!isAllValid}>
+            Sign up
+          </Button>
         )}
 
-        <div className='extralink'>
-          <div className='alertmessage'>Already have an account?</div>
-          <Link to="/login" className='loginbutton'>Log in</Link>
+        <div className="extralink">
+          <div className="alertmessage">Already have an account?</div>
+          <Link to="/login" className="loginbutton">
+            Log in
+          </Link>
         </div>
 
         {/* <div>OR</div>
@@ -194,5 +222,5 @@ export default function SignUp() {
         <Button>Continue with Naver</Button>   */}
       </div>
     </div>
-  )
+  );
 }
