@@ -2,10 +2,7 @@ package security.demo.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import security.demo.domain.DTO.*;
 import security.demo.domain.Entity.User;
 import security.demo.domain.service.ChatService;
@@ -32,6 +29,12 @@ public class ChatController {
     @GetMapping("/searchbox")
     public ResponseEntity<UserSearchChatBoxDto> searchChat(@JwtAuth User user) {
         return ResponseEntity.ok(chatService.searchChatbox(user.getUsername()));
+    }
+
+    @DeleteMapping("/deletebox")
+    public ResponseEntity<String> deletebox(Long id) {
+        chatService.delete(id);
+        return ResponseEntity.ok("delete success");
     }
 
 }

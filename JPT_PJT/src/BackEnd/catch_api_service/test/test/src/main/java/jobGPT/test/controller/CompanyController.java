@@ -1,6 +1,5 @@
 package jobGPT.test.controller;
 
-import jobGPT.test.domain.Company;
 import jobGPT.test.dto.CompanyRequestDTO;
 import jobGPT.test.dto.CompanyResponseDTO;
 import jobGPT.test.dto.PostingDTO;
@@ -10,10 +9,8 @@ import jobGPT.test.repository.IndustryRepository;
 import jobGPT.test.service.ComService;
 import jobGPT.test.service.RecomendService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.json.JSONParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.XML;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;

@@ -1,6 +1,5 @@
 package jobGPT.test.dto;
 
-import jobGPT.test.domain.RecomendComp;
 import lombok.*;
 
 import java.util.ArrayList;
