@@ -45,12 +45,9 @@ def find_table(html_: str) -> dict:
         else:
             table_dict[cnt] = dict()
             for idx, value in enumerate(values):
-                print("=============================")
                 v_seting = []
                 for v in value:
                     v_seting = find_string(v, v_seting)
-                print(v_seting)
-                print("=============================")
                 table_dict[cnt][idx] = v_seting
                 if '마감' in value.get_text(strip=True): flag = True
             cnt += 1
