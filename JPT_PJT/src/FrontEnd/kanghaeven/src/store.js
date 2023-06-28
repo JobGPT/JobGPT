@@ -9,28 +9,28 @@ const store = (set) => {
   let index = 0;
   
   return {
-    email: '',
-    emailMessage: '',
+    username: '',
+    usernameMessage: '',
     password: '',
     passwordMessage: '',
     confirmPassword: '',
     confirmPasswordMessage: '',
-    nickname: '',
-    nicknameMessage: '',
-    setEmail: (email) => set({ email }),
-    setEmailMessage: (emailMessage) => set({ emailMessage }),
+    email: '',
+    emailMessage: '',
+    setUsername: (username) => set({ username }),
+    setUsernameMessage: (usernameMessage) => set({ usernameMessage }),
     setPassword: (password) => set({ password }),
     setPasswordMessage: (passwordMessage) => set({ passwordMessage }),
     setConfirmPassword: (confirmPassword) => set({ confirmPassword }),
     setConfirmPasswordMessage: (confirmPasswordMessage) => set({ confirmPasswordMessage }),
-    setNickname: (nickname) => set({ nickname }),
-    setNicknameMessage: (nicknameMessage) => set({ nicknameMessage }),
+    setEmail: (email) => set({ email }),
+    setEmailMessage: (emailMessage) => set({ emailMessage }),
     loginUser: async () => {
       try {
-        console.log('Email:', useStore.getState().email);
+        console.log('Username:', useStore.getState().username);
         console.log('Password:', useStore.getState().password);
         const data = {
-          'Email' : useStore.getState().email,
+          'Username' : useStore.getState().username,
           'Password' : useStore.getState().password,
         }
         fetchLoginUser(data)
@@ -45,13 +45,13 @@ const store = (set) => {
     },
     signupUser: async () => {
       try {
-        console.log('Email:', useStore.getState().email);
+        console.log('Username:', useStore.getState().username);
         console.log('Password:', useStore.getState().password);
-        console.log('Nickname:', useStore.getState().nickname);
+        console.log('Email:', useStore.getState().email);
         const data = {
-          'Email' : useStore.getState().email,
+          'Username' : useStore.getState().username,
           'Password' : useStore.getState().password,
-          'Nickname' : useStore.getState().nickname,
+          'Email' : useStore.getState().email,
         }
         fetchSignupUser(data)
         .then((res) => {

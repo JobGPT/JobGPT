@@ -8,14 +8,14 @@ import Form from 'react-bootstrap/Form';
 
 
 export default function Login() {
-  const { email, password, setEmail, setPassword, loginUser } = useStore();
-  const { emailMessage, passwordMessage, setEmailMessage, setPasswordMessage } = useStore();
+  const { username, password, setUsername, setPassword, loginUser } = useStore();
+  const { usernameMessage, passwordMessage, setUsernameMessage, setPasswordMessage } = useStore();
   const navigate = useNavigate();
 
   const Reset = () => {
-    setEmail('');
+    setUsername('');
     setPassword('');
-    setEmailMessage('');
+    setUsernameMessage('');
     setPasswordMessage('');
   }
 
@@ -23,17 +23,17 @@ export default function Login() {
     Reset();
   }, [])
 
-  const validateEmail = (email) => {
-    return email.toLowerCase().match(/([\w-.]+)@(([\w-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
+  const validateUsername = (username) => {
+    return username.toLowerCase().match(/([\w-.]+)@(([\w-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
   };
 
   const validatePassword = (password) => {
     return password.toLowerCase().match(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,25}$/);
   };
 
-  const isEmailValid = validateEmail(email);
+  const isusernameValid = validateUsername(username);
   const isPasswordValid = validatePassword(password);
-  const isAllValid = isEmailValid && isPasswordValid;
+  const isAllValid = isusernameValid && isPasswordValid;
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -44,14 +44,14 @@ export default function Login() {
     }
   };
 
-  const onChangeEmail = useCallback(async (event) => {
-    const currentEmail = event.currentTarget.value;
-    setEmail(currentEmail);
+  const onChangeusername = useCallback(async (event) => {
+    const currentUsername = event.currentTarget.value;
+    setUsername(currentUsername);
 
-    if (!validateEmail(currentEmail)) {
-      setEmailMessage('이메일 형식이 올바르지 않습니다.');
+    if (!validateUsername(currentUsername)) {
+      setUsernameMessage('이메일 형식이 올바르지 않습니다.');
     } else {
-      setEmailMessage('올바른 이메일 형식입니다.');
+      setUsernameMessage('올바른 이메일 형식입니다.');
     }
   }, []);
 
@@ -60,7 +60,7 @@ export default function Login() {
     setPassword(currentPassword);
 
     if (!validatePassword(currentPassword)) {
-      setPasswordMessage('영문, 숫자, 특수기호 조합으로 8자리 이상 입력해주세요.');
+      setPasswordMessage('영문, 숫자, 특수기호 조합으로 10자리 이상 입력해주세요.');
     } else {
       setPasswordMessage('안전한 비밀번호입니다.');
     }
@@ -73,16 +73,16 @@ export default function Login() {
 
         <form onSubmit={onSubmit}>
           <div className='inputform'>
-            <label>Email</label>
+            <label>Username</label>
             <Form.Control
               size="lg" 
-              type="email"
-              value={email}
-              onChange={onChangeEmail}
+              type="username"
+              value={username}
+              onChange={onChangeusername}
               className='formcontrol'
             />
             <div className='alertmessage'>
-              <div className={isEmailValid ? 'success' : 'error'}>{emailMessage}</div>
+              <div className={isusernameValid ? 'success' : 'error'}>{usernameMessage}</div>
             </div>
           </div>
 
