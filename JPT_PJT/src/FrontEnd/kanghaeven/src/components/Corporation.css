@@ -38,7 +38,7 @@ th {
   padding: 10px 10px 12px 10px;
 }
 
-td {
+#info_container > tbody > tr > td {
   color: #666;
   border-top: solid 1px #e0e0e0 !important;
   padding: 10px 10px 12px 10px;
