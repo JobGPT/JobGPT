@@ -4,7 +4,7 @@ import google from '../assets/google.png';
 import { Button } from "react-bootstrap";
 
 const Google = () => {
-  const googleClientID = "531047025202-lgr6val5f8kmceqq7alru4o0l6e7f5i7.apps.googleusercontent.com"; // process.env.REACT_APP_GOOGLE_KEY;
+  const googleClientId = "531047025202-lgr6val5f8kmceqq7alru4o0l6e7f5i7.apps.googleusercontent.com"; // process.env.REACT_APP_GOOGLE_KEY;
 
   const googleRedirectUrl = "http://localhost:5173/googleLogin"; // process.env.REACT_APP_GOOGLE_REDIRECT_URL;
 
