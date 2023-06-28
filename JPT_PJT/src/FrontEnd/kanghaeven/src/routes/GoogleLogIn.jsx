@@ -13,7 +13,8 @@ const GoogleLogin = () => {
   // 액세스토큰 받기
 
   useEffect(() => {
-    fetch(`http://localhost:3000/oauth2/authorization/google?code=${code}`, {
+    fetch(`http://localhost:8080/oauth2/authorization/google`, {
+      // fetch(`http://localhost:8080/oauth2/authorization/google?code=${code}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

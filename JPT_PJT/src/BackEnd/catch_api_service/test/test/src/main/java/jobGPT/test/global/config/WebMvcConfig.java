@@ -20,9 +20,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final JwtAuthArgumentResolver jwtAuthArgumentResolver;
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/*") // 어떤 api 경로에 매핑할지
-//                .allowedOrigins("http://localhost:8082") // 어떤 경로에서 오는걸 cors 허용할지 , 콤마 써서 여러개 쓸 수 있음
-                .allowedOrigins("")
+        registry.addMapping("/**") // 어떤 api 경로에 매핑할지
+                .allowedOrigins("http://localhost:5173") // 어떤 경로에서 오는걸 cors 허용할지 , 콤마 써서 여러개 쓸 수 있음
+                .allowedOrigins("*")
                 .allowedMethods( // 허용할 http 메소드
                         HttpMethod.GET.name(),
                         HttpMethod.POST.name(),

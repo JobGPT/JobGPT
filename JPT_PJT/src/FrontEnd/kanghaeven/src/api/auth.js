@@ -1,6 +1,6 @@
 import axios from 'axios';
-const loginUrl = 'http://locahost:5173/login';
-const signupUrl = 'http://locahost:5173/signup';
+const loginUrl = 'http://locahost:8080/api/login';
+const signupUrl = 'http://locahost:8080/api/signup';
 
 
 const fetchLoginUser = (data) => {
