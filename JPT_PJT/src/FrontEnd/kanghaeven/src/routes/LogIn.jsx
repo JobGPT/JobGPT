@@ -114,10 +114,7 @@ export default function Login() {
           <div className='alertmessage'>Don't have an account?</div>
           <Link to="/signup" className='signupbutton'>Sign up</Link>
         </div>
-        
-        {/* <div>OR</div>
-        <Button>Continue with Google</Button>
-        <Button>Continue with Naver</Button> */}
+
       </div>
     </div>
   );
