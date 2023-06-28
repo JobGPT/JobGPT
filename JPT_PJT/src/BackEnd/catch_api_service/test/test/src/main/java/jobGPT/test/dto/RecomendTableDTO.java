@@ -1,7 +1,7 @@
 package jobGPT.test.dto;
 
-import jobGPT.test.domain.Company;
-import jobGPT.test.domain.RecomendComp;
+import jobGPT.test.domain.company.Company;
+import jobGPT.test.domain.company.RecomendComp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

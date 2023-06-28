@@ -12,7 +12,7 @@ import {
 
 import { get_summery } from './api/Catch/Catch/index.js';
 
-// import { db, dbQuery } from './lib/database.js'
+// import { mysql_db, dbQuery } from './src/confing/database.js'
 
 class Server {
   constructor() {
