@@ -15,6 +15,7 @@ import  {
 } from './api/Catch/Catch/index.js'
 
 import { mysql_db, dbQuery } from './src/confing/database.js'
+import { NONAME } from 'dns';
 
 class Server{
   constructor(){
@@ -56,12 +57,12 @@ class Server{
 
     try {
       // Catch 채용정보 분석
-      const {CompName, catch_inform} = await this.CatchData(name)
+      const {compName, catch_inform} = await this.CatchData(name)
       data_form.summery = catch_inform
-      
+
       // DB에 정보 저장.
       dbQuery("INSERT INTO companyInfo (companyName, compInfo) VALUES (?, ?)", 
-      [CompName._text, JSON.stringify(catch_inform.company_overview)])
+      [compName._text, JSON.stringify(catch_inform.company_overview)])
       .then(result => {
           console.log("Data inserted successfully");
       })
@@ -70,7 +71,7 @@ class Server{
       });
 
       // DART 회사정보 분석
-      const detail = await this.DartData(CompName._text)
+      const detail = await this.DartData(compName._text)
       data_form.detail = detail
       
       res.json(data_form);
@@ -83,14 +84,29 @@ class Server{
 
   async CatchData(name){
     const {Data} = await this.getCompanyFromCatch(name);
-    const {CompName, SummaryURL} = Data.Companys.Company[0];
-    const data = await this.executePythonScript('web_beautifulsoup.py', SummaryURL._text);
+    const Companys = Data.Companys.Company
+
+    let compName = null
+    let summeryURL = null
+    if (typeof Companys === "object" && !Array.isArray(Companys)) {
+      // Companys는 객체입니다.
+      let { CompName, SummaryURL } = Companys;
+      compName = CompName;
+      summeryURL = SummaryURL;
+    } else if (Array.isArray(Companys)) {
+      // Companys는 배열입니다.
+      let { CompName, SummaryURL } = Companys[0];
+      compName = CompName;
+      summeryURL = SummaryURL;
+    }
+    
+    const data = await this.executePythonScript('web_beautifulsoup.py', summeryURL._text);
     // 0. 채용공고, 1. 기업개요, 2. 재무평가, 3. 현직자리뷰, 4. 면접후기
     const catch_inform = {
       'job_Posting' : data[0],
       'company_overview' : data[1]
     }
-    return { CompName, catch_inform }
+    return { compName, catch_inform }
   }
 
   async DartData(name){

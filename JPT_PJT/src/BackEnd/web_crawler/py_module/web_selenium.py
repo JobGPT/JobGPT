@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, WebDriverException
 from bs4 import BeautifulSoup
+from bs4.element import Tag, NavigableString
 import time
 import requests
 import json
@@ -44,11 +45,26 @@ def find_table(html_: str) -> dict:
         else:
             table_dict[cnt] = dict()
             for idx, value in enumerate(values):
-                table_dict[cnt][idx] = value.get_text(strip=True)
+                print("=============================")
+                v_seting = []
+                for v in value:
+                    v_seting = find_string(v, v_seting)
+                print(v_seting)
+                print("=============================")
+                table_dict[cnt][idx] = v_seting
                 if '마감' in value.get_text(strip=True): flag = True
             cnt += 1
         if flag : return table_dict
     return table_dict
+
+def find_string(v_String,lst):
+    if isinstance(v_String, NavigableString):
+        if not v_String == ' ':
+            lst += [v_String]
+    else:
+        for v in v_String:
+            find_string(v, lst)
+    return lst
 
 def scrape_catch(driver, url, idx):
 
