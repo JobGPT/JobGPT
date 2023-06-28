@@ -1,7 +1,7 @@
 package jobGPT.test.service;
 
-import jobGPT.test.domain.RecomendComp;
-import jobGPT.test.domain.RecomendTable;
+import jobGPT.test.domain.company.RecomendComp;
+import jobGPT.test.domain.company.RecomendTable;
 import jobGPT.test.dto.RecoCompDTO;
 import jobGPT.test.dto.RecoCompResponseDTO;
 import jobGPT.test.repository.RecomendCompRepository;
