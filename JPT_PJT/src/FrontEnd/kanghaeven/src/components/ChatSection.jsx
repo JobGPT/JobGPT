@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useStore } from '../store.js';
 import sendimg from '../assets/send.svg';
 import axios from 'axios';
+import { useMediaQuery } from 'react-responsive';
 
 import MyChat from './MyChat';
 import GptChat from './GptChat';
@@ -16,6 +17,8 @@ export default function ChatSection() {
   const isFirstMessage = sendmessage.length === 0;
   const company_info = useStore((store) => store.company_info);
   const save_company_info = useStore((store) => store.save_company_info);
+
+  const isLgBreakpoint = useMediaQuery({ minWidth: 992 });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -69,11 +72,12 @@ export default function ChatSection() {
           <div
             className={`message
           ${index === 0 ? 'firstmargin' : ''}
-          ${index === sendmessage.length - 1 ? 'lastmargin' : ''}
+          ${index === sendmessage.length - 1 ? (isLgBreakpoint ? 'lastmargin' : 'lastmargin01') : ''}
           `}
             key={index}
           >
             <MyChat message={msg} />
+
             <div id="info">{company_info.length !== 0 ? <GptChat msg={msg} /> : null}</div>
           </div>
         ))}
