@@ -13,7 +13,7 @@ export default function Profile() {
     <Disclosure>
       {({ open }) => (
         <>
-          <div id="panel" style={{ color: 'white', marginBottom: '20px' }}>
+          <div id="panel" style={{ color: 'white', marginBottom: '1rem' }}>
             <Disclosure.Panel>
               <a id="profile_btn" onClick={ClearConversation}>
                 Clear conversation
@@ -25,7 +25,9 @@ export default function Profile() {
           </div>
           <Disclosure.Button>
             <img src={profileimg} alt="profile" />
-            nikname
+            <div className="nickname">
+              nikname
+            </div>
             <ChevronUpIcon
               className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-purple-500`}
             />

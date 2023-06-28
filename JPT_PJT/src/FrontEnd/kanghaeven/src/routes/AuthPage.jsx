@@ -30,7 +30,6 @@ export default function AuthPage() {
 
         <div>or</div>
 
-
         <GoogleLoginBtn />
         <NaverLoginBtn />
         <KakaoLoginBtn />

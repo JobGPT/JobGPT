@@ -3,6 +3,11 @@ import React, { useEffect } from "react";
 import { useNavigate } from 'react-router';
 
 const NaverLogin = () => {
+
+  const clientID = "cvYMn0uNR2j3P2nIoHDh"; // process.env.REACT_APP_CLIENT_ID;
+
+  const clientSecret = "YPeI6c7pem"; // process.env.REACT_APP_STATE_STRING;
+
   // 아직 인가 코드가 아닌 쿼리 스트링 형태이므로 인가 코드로 만들어 줌
   const code = new URL(document.location.toString()).searchParams.get('code');
   console.log(code);
@@ -13,7 +18,7 @@ const NaverLogin = () => {
   // 액세스토큰 받기
 
   useEffect(() => {
-    fetch(`http://localhost:8000/oauth2/authorization/naver?code=${code}`, {
+    fetch(`https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${clientID}&client_secret=${clientSecret}&code=${code}&state=test`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -26,6 +31,7 @@ const NaverLogin = () => {
       })
       .catch((error) => alert(error))
       .then((data) => {
+        console.log(data)
         if (data.result) {
           localStorage.setItem("TOKEN", data.result);
           alert("로그인 성공");
