@@ -9,9 +9,8 @@
   cursor: pointer;
   font-size: 0.875rem;
   border: 1px solid;
-  border-color: #6c757d;
+  border-color: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
-  text-decoration: none;
 }
 
 .newchat:hover {

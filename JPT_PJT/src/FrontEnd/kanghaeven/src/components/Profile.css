@@ -3,7 +3,8 @@
   border-radius: 4px;
 }
 
-div > a {
+#profile_btn,
+#logout_btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -14,7 +15,8 @@ div > a {
   text-decoration: none !important;
 }
 
-div > a:hover {
+#profile_btn:hover,
+#logout_btn:hover {
   cursor: pointer;
   background-color: rgba(64, 64, 79, 1);
 }
