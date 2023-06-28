@@ -1,6 +1,7 @@
 package jobGPT.test.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class IndustryFigure {
 
     @Id
@@ -15,7 +17,7 @@ public class IndustryFigure {
     @Column(name="figure_code")
     private Long code;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "industry_code")
+    @JoinColumn(name = "industry_id", referencedColumnName = "industry_code")
     private Industry industry;
     private String industryFigure;
 

@@ -91,64 +91,43 @@ public class ComService {
                 .compName(savedCompany.getCompName())
                 .recomendComps(sendRecoDTO).build();
     }
-
     @Transactional
-    public CompanyResponseDTO addCompany(String companyName) {
+    public CatchRequestDTO addCompany(String companyName) {
         if (companyRepository.existsByCompName(companyName) == true){
             Company company = companyRepository.findByCompName(companyName);
-            return CompanyResponseDTO.builder()
-                    .companyId(company.getId())
+            return CatchRequestDTO.builder()
+                    .compName(company.getCompName())
                     .area(company.getArea())
                     .size(company.getSize())
-                    .compName(company.getCompName())
-                    .industryId(company.getIndustry().getCode()).build();
+                    .industryName(company.getIndustry().getIndustryName())
+                    .build();
         }
-        try {
-            String apiKey = "OKi0USF3nvPj8a7RqbTErJqAeUNEt0YnkpKixpoEB2QcQ";
-            String apiUrl = "https://www.catch.co.kr/apiGuide/guide/openAPIGuide/apiCompList?Service=1&CompName=" + companyName + "&SortCode=1&APIKey=" + apiKey;
+        String apiKey = "OKi0USF3nvPj8a7RqbTErJqAeUNEt0YnkpKixpoEB2QcQ";
+        String apiUrl = "https://www.catch.co.kr/apiGuide/guide/openAPIGuide/apiCompList?Service=1&CompName=" + companyName + "&SortCode=1&APIKey=" + apiKey;
 
-            RestTemplate restTemplate = new RestTemplate();
-            String response = restTemplate.getForObject(apiUrl, String.class);
-            JSONObject jsonObj = XML.toJSONObject(response);
-            JSONObject jsonCompObj = jsonObj.getJSONObject("Data").getJSONObject("Companys");
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.getForObject(apiUrl, String.class);
+        JSONObject jsonObj = XML.toJSONObject(response);
+        JSONObject jsonCompObj = jsonObj.getJSONObject("Data").getJSONObject("Companys");
 
-            System.out.println(jsonCompObj);
-            System.out.println(jsonCompObj.get("Company"));
-            System.out.println(jsonCompObj.get("Company") instanceof JSONObject);
-            System.out.println(jsonCompObj.get("Company").getClass().getSimpleName());
-
-            JSONObject compData;
-            if (jsonCompObj.get("Company") instanceof JSONObject) {
-                compData = jsonCompObj.getJSONObject("Company");
-            } else {
-                compData = jsonCompObj.getJSONArray("Company").getJSONObject(0);
-            }
-            String companyIndustryName = getIndustyName(compData);
-            Company company = new Company();
-            company.setCompName(compData.getString("CompName"));
-            company.setSize(compData.getString("CompSizeName"));
-            company.setArea(compData.getString("CompAddress"));
-            company.setIndustry(industryRepository.findByIndustryName(companyIndustryName));
-            companyRepository.save(company);
-
-            Company company2 = companyRepository.findByCompName(companyName);
-            System.out.println("company1 company1" + company);
-            System.out.println("company2 company2" + company2);
-
-        } catch (Exception e) {
-            System.out.println("올바른 회사이름을 입력해주세요");
-            e.printStackTrace();
+        JSONObject compData;
+        if (jsonCompObj.get("Company") instanceof JSONObject) {
+            compData = jsonCompObj.getJSONObject("Company");
+        } else {
+            compData = jsonCompObj.getJSONArray("Company").getJSONObject(0);
         }
-        Company company = companyRepository.findByCompName(companyName);
-        System.out.println("build company" + company);
-        return CompanyResponseDTO.builder()
-                .companyId(company.getId())
-                .area(company.getArea())
-                .size(company.getSize())
-                .compName(company.getCompName())
-                .industryId(company.getIndustry().getCode()).build();
+        System.out.println("compData" + compData);
+        String industyName = getIndustyName(compData);
+        CatchRequestDTO catchRequestDTO = new CatchRequestDTO(compData.getString("CompName"), compData.getString("CompAddress"), compData.getString("CompSizeName"), industyName);
+        companyRepository.save(catchRequestDTO.toEntity(industryRepository));
+
+        return catchRequestDTO.builder()
+                .compName(compData.getString("CompName"))
+                .area(compData.getString("CompAddress"))
+                .size(compData.getString("CompSizeName"))
+                .industryName(industyName)
+                .build();
     }
-
     private static String getIndustyName(JSONObject compData) {
 
         String industryName = compData.getString("JinhakCodeName");

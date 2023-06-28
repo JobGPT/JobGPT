@@ -26,8 +26,8 @@ public class Company {
     @Column(nullable = false, length = 20)
     private String size; // 회사 규모
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "industry_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "industry_id", referencedColumnName = "industry_code")
     private Industry industry; // 상세 정보
     @JsonIgnore
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)

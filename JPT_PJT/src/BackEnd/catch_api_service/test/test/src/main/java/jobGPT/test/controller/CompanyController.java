@@ -1,10 +1,7 @@
 package jobGPT.test.controller;
 
 import jobGPT.test.domain.Company;
-import jobGPT.test.dto.CompanyRequestDTO;
-import jobGPT.test.dto.CompanyResponseDTO;
-import jobGPT.test.dto.PostingDTO;
-import jobGPT.test.dto.RecoCompResponseDTO;
+import jobGPT.test.dto.*;
 import jobGPT.test.repository.CompanyRepository;
 import jobGPT.test.repository.IndustryRepository;
 import jobGPT.test.service.ComService;
@@ -41,10 +38,15 @@ public class CompanyController {
     /*
     **** catch API 회사 정보 가져오기
      */
-    @GetMapping("/catch/{companyName}")
+    @PostMapping("/catch/{companyName}")
     @ResponseBody
-    public ResponseEntity<CompanyResponseDTO> getCompanyFromCatchAPI(@PathVariable String companyName) {
-        return ResponseEntity.ok(comService.addCompany(companyName));
+    public ResponseEntity<CatchRequestDTO> getCompanyFromCatchAPI(@PathVariable String companyName) {
+        CatchRequestDTO companyResponseDTO = comService.addCompany(companyName);
+        if (companyResponseDTO != null) {
+            return ResponseEntity.ok(companyResponseDTO);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
     /*
      **** saramin API 채용공고 가져오기
