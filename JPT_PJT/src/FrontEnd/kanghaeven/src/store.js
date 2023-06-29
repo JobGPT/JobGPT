@@ -14,6 +14,8 @@ const store = (set) => {
     confirmPasswordMessage: '',
     email: '',
     emailMessage: '',
+    accesstoken: '',
+    refreshtoken: '',
     setUsername: (username) => set({ username }),
     setUsernameMessage: (usernameMessage) => set({ usernameMessage }),
     setPassword: (password) => set({ password }),
@@ -33,8 +35,17 @@ const store = (set) => {
         };
         fetchLoginUser(data)
           .then((res) => {
-            console.log(res.data);
-            return true;
+            console.log(res.config.method);
+            if (res.config.method === 'post') {
+              // AccessToken 값 저장
+              const accessToken = res.headers.accesstoken;
+              useStore.setState({ accesstoken: accessToken });
+
+              // RefreshToken 값 저장
+              const refreshToken = res.headers['refreshtoken'];
+              useStore.setState({ refreshtoken: refreshToken });
+              return true;
+            }
           })
           .catch((err) => {
             console.log(err);

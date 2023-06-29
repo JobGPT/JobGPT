@@ -3,9 +3,7 @@ const loginUrl = 'http://localhost:8080/api/login';
 const signupUrl = 'http://localhost:8080/api/signup';
 
 const fetchLoginUser = (data) => {
-  const jsondata = JSON.stringify(data);
-  console.log(typeof data);
-  return axios.post(loginUrl, jsondata, {
+  return axios.post(loginUrl, data, {
     headers: {
       'Content-Type': 'application/json',
     },
