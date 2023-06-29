@@ -16,6 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import security.demo.global.config.auth.PrincipalDetailsService;
 import security.demo.global.jwt.filter.JwtAuthenticationProcessingFilter;
 import security.demo.global.jwt.service.JwtService;
@@ -24,11 +27,11 @@ import security.demo.global.login.handler.LoginFailHandler;
 import security.demo.global.login.handler.LoginSuccessHandler;
 import security.demo.global.logout.handler.LogoutSuccessHandler;
 import security.demo.global.oauth2.PrincipalOauth2UserService;
-import security.demo.domain.repository.UserRepository;
 import security.demo.global.oauth2.handler.OAuth2LoginFailHandler;
 import security.demo.global.oauth2.handler.OAuth2LoginSuccessHandler;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 
 // 구글 로그인이 완료된 뒤의 후처리가 필요함  1.코드받기, 2.엑세스 토큰(권한)
 // 3.사용자프로필 정보를 가져오고 4.정보를 토대로 회원가입을 자동으로 진행시킴
@@ -45,10 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     PrincipalOauth2UserService principalOauth2UserService;
     @Autowired
     private final JwtService jwtService;
-    @Autowired
-    private CorsConfig corsConfig;
     private final PrincipalDetailsService principalDetailsService;
-    private final UserRepository userRepository;
     private final OAuth2LoginFailHandler oAuth2LoginFailHandler;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final ObjectMapper objectMapper;
@@ -66,7 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .httpBasic().disable()
 
                         // 필터 관리
-                .addFilter(corsConfig.corsFilter())
                 .addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
                 .addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class)
 
@@ -103,6 +102,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     }
 
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT","OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/login", configuration);
+        return source;
+    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();

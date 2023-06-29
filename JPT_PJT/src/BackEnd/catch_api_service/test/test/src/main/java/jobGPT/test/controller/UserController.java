@@ -5,6 +5,7 @@ import jobGPT.test.domain.security.DTO.SignUpDto;
 import jobGPT.test.domain.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,5 +24,11 @@ public class UserController {
         System.out.println("회원가입 진행 : " + signUpDto);
         userService.signUp(signUpDto);
         return ResponseEntity.ok("signup success");
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173")
+    @PostMapping("/login")
+    public ResponseEntity<String> login() {
+        return ResponseEntity.ok("Success");
     }
 }
