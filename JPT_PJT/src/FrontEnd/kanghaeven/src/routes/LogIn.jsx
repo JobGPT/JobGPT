@@ -5,11 +5,10 @@ import { useStore } from '../store';
 import { useCallback, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 
-
-
 export default function Login() {
   const { username, password, setUsername, setPassword, loginUser } = useStore();
-  const { usernameMessage, passwordMessage, setUsernameMessage, setPasswordMessage } = useStore();
+  const { usernameMessage, passwordMessage, setUsernameMessage, setPasswordMessage } =
+    useStore();
   const navigate = useNavigate();
 
   const Reset = () => {
@@ -17,18 +16,20 @@ export default function Login() {
     setPassword('');
     setUsernameMessage('');
     setPasswordMessage('');
-  }
+  };
 
   useEffect(() => {
     Reset();
-  }, [])
+  }, []);
 
   const validateUsername = (username) => {
-    return username.toLowerCase().match(/([\w-.]+)@(([\w-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
+    return username.toLowerCase().match(/^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|].{1,8}$/);
   };
 
   const validatePassword = (password) => {
-    return password.toLowerCase().match(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,25}$/);
+    return password
+      .toLowerCase()
+      .match(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,25}$/);
   };
 
   const isusernameValid = validateUsername(username);
@@ -38,9 +39,9 @@ export default function Login() {
   const onSubmit = (event) => {
     event.preventDefault();
     if (isAllValid) {
-      if(loginUser()) {
+      if (loginUser()) {
         navigate('/mainpage');
-      };
+      }
     }
   };
 
@@ -72,34 +73,37 @@ export default function Login() {
         <h1>Welcome back to JobGPT!</h1>
 
         <form onSubmit={onSubmit}>
-          <div className='inputform'>
+          <div className="inputform">
             <label>Username</label>
             <Form.Control
-              size="lg" 
+              size="lg"
               type="username"
               value={username}
               onChange={onChangeusername}
-              className='formcontrol'
+              className="formcontrol"
             />
-            <div className='alertmessage'>
-              <div className={isusernameValid ? 'success' : 'error'}>{usernameMessage}</div>
+            <div className="alertmessage">
+              <div className={isusernameValid ? 'success' : 'error'}>
+                {usernameMessage}
+              </div>
             </div>
           </div>
 
-          <div className='inputform'>
+          <div className="inputform">
             <label>Password</label>
             <Form.Control
-              size="lg" 
+              size="lg"
               type="password"
               value={password}
               onChange={onChangePassword}
-              className='formcontrol'
+              className="formcontrol"
             />
-            <div className='alertmessage'>
-              <div className={isPasswordValid ? 'success' : 'error'}>{passwordMessage}</div>
+            <div className="alertmessage">
+              <div className={isPasswordValid ? 'success' : 'error'}>
+                {passwordMessage}
+              </div>
             </div>
           </div>
-
         </form>
 
         {isAllValid ? (
@@ -109,12 +113,13 @@ export default function Login() {
             Log in
           </Button>
         )}
-        
-        <div className='extralink'>
-          <div className='alertmessage'>Don't have an account?</div>
-          <Link to="/signup" className='signupbutton'>Sign up</Link>
-        </div>
 
+        <div className="extralink">
+          <div className="alertmessage">Don't have an account?</div>
+          <Link to="/signup" className="signupbutton">
+            Sign up
+          </Link>
+        </div>
       </div>
     </div>
   );

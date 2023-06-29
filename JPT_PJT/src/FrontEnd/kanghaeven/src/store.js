@@ -2,12 +2,9 @@ import { create } from 'zustand';
 import chatimg from './assets/chatimg.svg';
 import { fetchLoginUser, fetchSignupUser } from './api/auth';
 
-
-
 const store = (set) => {
-  
   let index = 0;
-  
+
   return {
     username: '',
     usernameMessage: '',
@@ -22,7 +19,8 @@ const store = (set) => {
     setPassword: (password) => set({ password }),
     setPasswordMessage: (passwordMessage) => set({ passwordMessage }),
     setConfirmPassword: (confirmPassword) => set({ confirmPassword }),
-    setConfirmPasswordMessage: (confirmPasswordMessage) => set({ confirmPasswordMessage }),
+    setConfirmPasswordMessage: (confirmPasswordMessage) =>
+      set({ confirmPasswordMessage }),
     setEmail: (email) => set({ email }),
     setEmailMessage: (emailMessage) => set({ emailMessage }),
     loginUser: async () => {
@@ -30,14 +28,18 @@ const store = (set) => {
         console.log('Username:', useStore.getState().username);
         console.log('Password:', useStore.getState().password);
         const data = {
-          'Username' : useStore.getState().username,
-          'Password' : useStore.getState().password,
-        }
+          username: useStore.getState().username,
+          password: useStore.getState().password,
+        };
         fetchLoginUser(data)
-        .then((res) => {
-          console.log(res.data);
-          return true;
-        })
+          .then((res) => {
+            console.log(res.data);
+            return true;
+          })
+          .catch((err) => {
+            console.log(err);
+            return false;
+          });
       } catch (error) {
         console.log(error);
         return true;
@@ -49,22 +51,20 @@ const store = (set) => {
         console.log('Password:', useStore.getState().password);
         console.log('Email:', useStore.getState().email);
         const data = {
-          'Username' : useStore.getState().username,
-          'Password' : useStore.getState().password,
-          'Email' : useStore.getState().email,
-        }
-        fetchSignupUser(data)
-        .then((res) => {
+          username: useStore.getState().username,
+          password: useStore.getState().password,
+          email: useStore.getState().email,
+        };
+        fetchSignupUser(data).then((res) => {
           console.log(res.data);
           return true;
-          
-        })
-      } catch(error) {
+        });
+      } catch (error) {
         console.log(error);
         return true;
       }
     },
-    
+
     chats: [],
     img: chatimg,
     showOffcanvas01: true,

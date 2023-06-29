@@ -44,8 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     PrincipalOauth2UserService principalOauth2UserService;
     @Autowired
     private final JwtService jwtService;
-    @Autowired
-    private CorsConfig corsConfig;
     private final PrincipalDetailsService principalDetailsService;
     private final UserRepository userRepository;
     private final OAuth2LoginFailHandler oAuth2LoginFailHandler;
@@ -65,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .httpBasic().disable()
 
                         // 필터 관리
-                .addFilter(corsConfig.corsFilter())
+
                 .addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
                 .addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class)
 

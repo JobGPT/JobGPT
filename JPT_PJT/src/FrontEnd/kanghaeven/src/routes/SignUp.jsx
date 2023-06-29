@@ -8,27 +8,27 @@ import Form from 'react-bootstrap/Form';
 import { fetchSignupUser } from '../api/auth';
 
 export default function SignUp() {
-  const { 
-    email, 
-    password, 
+  const {
+    email,
+    password,
     confirmPassword,
     username,
-    setEmail, 
-    setPassword, 
-    setConfirmPassword, 
-    setUsername, 
-    signupUser
+    setEmail,
+    setPassword,
+    setConfirmPassword,
+    setUsername,
+    signupUser,
   } = useStore();
 
-  const { 
-    emailMessage, 
-    passwordMessage, 
-    confirmPasswordMessage, 
-    usernameMessage, 
-    setEmailMessage, 
-    setPasswordMessage, 
-    setConfirmPasswordMessage, 
-    setUsernameMessage 
+  const {
+    emailMessage,
+    passwordMessage,
+    confirmPasswordMessage,
+    usernameMessage,
+    setEmailMessage,
+    setPasswordMessage,
+    setConfirmPasswordMessage,
+    setUsernameMessage,
   } = useStore();
   const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ export default function SignUp() {
     setPasswordMessage('');
     setConfirmPasswordMessage('');
     setEmailMessage('');
-  }
+  };
 
   useEffect(() => {
     Reset();
@@ -53,17 +53,15 @@ export default function SignUp() {
   // 이메일 형식이 맞는지 ex) english@email.com
 
   const validateUsername = (username) => {
-    return username
-      .toLowerCase()
-      .match(/^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|].{1,8}$/)
-  }
-  
+    return username.toLowerCase().match(/^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|].{1,8}$/);
+  };
+
   const validatePassword = (password) => {
     return password
-    .toLowerCase()
-    .match(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,25}$/);
-  }
-  
+      .toLowerCase()
+      .match(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,25}$/);
+  };
+
   const validateEmail = (email) => {
     return email
       .toLowerCase()
@@ -74,83 +72,83 @@ export default function SignUp() {
   const isPasswordValid = validatePassword(password);
   const isConfirmPasswordValid = password === confirmPassword;
   const isEmailValid = validateEmail(email);
-  const isAllValid = isEmailValid && isPasswordValid && isConfirmPasswordValid && isUsernameValid;
+  const isAllValid =
+    isEmailValid && isPasswordValid && isConfirmPasswordValid && isUsernameValid;
 
   const onSubmit = (event) => {
     event.preventDefault();
     if (isAllValid) {
       if (signupUser()) {
-        fetchSignupUser({ email, username, password });
+        navigate('/');
       }
     }
-  }
-  
-  
-  const onChangeUsername = useCallback( (event) => {
+  };
+
+  const onChangeUsername = useCallback((event) => {
     const currentUsername = event.currentTarget.value;
     setUsername(currentUsername);
-    
+
     if (!validateUsername(currentUsername)) {
-      setUsernameMessage("1글자 이상 9글자 미만으로 입력해주세요.");
+      setUsernameMessage('1글자 이상 9글자 미만으로 입력해주세요.');
     } else {
-      setUsernameMessage("사용할 수 있는 닉네임입니다.");
+      setUsernameMessage('사용할 수 있는 닉네임입니다.');
     }
   }, []);
-  
-  const onChangePassword = useCallback( (event) => {
+
+  const onChangePassword = useCallback((event) => {
     const currentPassword = event.currentTarget.value;
     setPassword(currentPassword);
-    
+
     if (!validatePassword(currentPassword)) {
-      setPasswordMessage("영문, 숫자, 특수기호 조합으로 10자리 이상 입력해주세요.");
+      setPasswordMessage('영문, 숫자, 특수기호 조합으로 10자리 이상 입력해주세요.');
     } else {
       setPasswordMessage('안전한 비밀번호입니다.');
     }
   }, []);
-  
-  const onChangeConfirmPassword = useCallback( (event) => {
-    const currentConfirmPassword = event.currentTarget.value;
-    setConfirmPassword(currentConfirmPassword);
-    
-    if (currentConfirmPassword !== password) {
-      setConfirmPasswordMessage("비밀번호가 일치하지 않습니다.");
-    } else {
-      setConfirmPasswordMessage("올바른 비밀번호입니다.");
-    }
-  }, [password]);
-  
-    const onChangeEmail = useCallback( async (event) => {
-      const currentEmail = event.currentTarget.value;
-      setEmail(currentEmail);
-  
-      if (!validateEmail(currentEmail)) {
-        setEmailMessage("이메일 형식이 올바르지 않습니다.");
+
+  const onChangeConfirmPassword = useCallback(
+    (event) => {
+      const currentConfirmPassword = event.currentTarget.value;
+      setConfirmPassword(currentConfirmPassword);
+
+      if (currentConfirmPassword !== password) {
+        setConfirmPasswordMessage('비밀번호가 일치하지 않습니다.');
       } else {
-        setEmailMessage("올바른 이메일 형식입니다.");
+        setConfirmPasswordMessage('올바른 비밀번호입니다.');
       }
-    }, []);
-  
-  
+    },
+    [password]
+  );
+
+  const onChangeEmail = useCallback(async (event) => {
+    const currentEmail = event.currentTarget.value;
+    setEmail(currentEmail);
+
+    if (!validateEmail(currentEmail)) {
+      setEmailMessage('이메일 형식이 올바르지 않습니다.');
+    } else {
+      setEmailMessage('올바른 이메일 형식입니다.');
+    }
+  }, []);
 
   return (
     <div id="signupsectionwrapper">
       <div className="signupsection">
         <h1>Create your account</h1>
-        <form
-          onSubmit={onSubmit}
-        >
-
-          <div className='inputform'>
+        <form onSubmit={onSubmit}>
+          <div className="inputform">
             <label>Username</label>
             <Form.Control
-              size="md" 
+              size="md"
               type="text"
               value={username}
               onChange={onChangeUsername}
-              className='formcontrol'
+              className="formcontrol"
             />
-            <div className='alertmessage'>
-              <div className={isUsernameValid ? 'success' : 'error'}>{usernameMessage}</div>   
+            <div className="alertmessage">
+              <div className={isUsernameValid ? 'success' : 'error'}>
+                {usernameMessage}
+              </div>
             </div>
           </div>
 
@@ -186,18 +184,17 @@ export default function SignUp() {
             </div>
           </div>
 
-
-          <div className='inputform'>
+          <div className="inputform">
             <label>Email</label>
             <Form.Control
-              size="md" 
+              size="md"
               type="email"
               value={email}
               onChange={onChangeEmail}
-              className='formcontrol'
+              className="formcontrol"
             />
-            <div className='alertmessage'>
-              <div className={isEmailValid ? 'success' : 'error'}>{emailMessage}</div>     
+            <div className="alertmessage">
+              <div className={isEmailValid ? 'success' : 'error'}>{emailMessage}</div>
             </div>
           </div>
         </form>

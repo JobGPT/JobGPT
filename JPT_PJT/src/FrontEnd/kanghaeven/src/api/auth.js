@@ -1,9 +1,11 @@
 import axios from 'axios';
-const loginUrl = 'http://locahost:8080/api/login';
-const signupUrl = 'http://locahost:8080/api/signup';
+const loginUrl = 'http://localhost:8080/api/login';
+const signupUrl = 'http://localhost:8080/api/signup';
 
 const fetchLoginUser = (data) => {
-  return axios.post(loginUrl, data, {
+  const jsondata = JSON.stringify(data);
+  console.log(typeof data);
+  return axios.post(loginUrl, jsondata, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -11,11 +13,16 @@ const fetchLoginUser = (data) => {
 };
 
 const fetchSignupUser = (data) => {
-  return axios.post(signupUrl, data, {
+  const formData = new URLSearchParams();
+  for (const key in data) {
+    formData.append(key, data[key]);
+  }
+
+  return axios.post(signupUrl, formData.toString(), {
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-    data,
+    transformRequest: [(data) => data],
   });
 };
 

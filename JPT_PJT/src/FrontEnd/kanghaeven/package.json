@@ -9,14 +9,6 @@
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
-  "proxy": [
-    {
-      "target": "http://localhost:3000"
-    },
-    {
-      "target": "https://nid.naver.com"
-    }
-  ],
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
