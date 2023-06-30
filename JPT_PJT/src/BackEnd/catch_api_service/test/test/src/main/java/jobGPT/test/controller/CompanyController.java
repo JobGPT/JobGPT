@@ -1,8 +1,5 @@
 package jobGPT.test.controller;
 
-import jobGPT.test.domain.Company;
-import jobGPT.test.dto.*;
-
 import jobGPT.test.dto.CompanyRequestDTO;
 import jobGPT.test.dto.CompanyResponseDTO;
 import jobGPT.test.dto.PostingDTO;

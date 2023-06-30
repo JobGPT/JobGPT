@@ -25,8 +25,15 @@ public class Company {
     private String area; // 회사 지역
     @Column(nullable = false, length = 20)
     private String size; // 회사 규모
+<<<<<<< HEAD
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "industry_id", referencedColumnName = "industry_code")
+=======
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "industry_id")
+>>>>>>> 295baccd46a5a87a53c9c79de4149e886e07be82
     private Industry industry; // 상세 정보
     @JsonIgnore
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
