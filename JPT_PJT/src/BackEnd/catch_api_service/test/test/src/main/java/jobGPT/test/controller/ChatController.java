@@ -17,22 +17,26 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping("/create/chatbox")
+    @CrossOrigin(origins = "http://localhost:5173")
     public ResponseEntity<ChatBoxResponseDto> createbox(@JwtAuth User user, ChatBoxRequestDto chatBoxRequestDto) {
         System.out.println("create start");
         return ResponseEntity.ok(chatService.createChatBox(chatBoxRequestDto, user.getUsername()));
     }
 
     @PostMapping("/create/chat")
+    @CrossOrigin(origins = "http://localhost:5173")
     public ResponseEntity<ChatResponseDto> createtalk(@JwtAuth User writer, ChatRequestDto chatRequestDto) {
         return ResponseEntity.ok(chatService.createChat(chatRequestDto, writer.getUsername()));
     }
 
     @GetMapping("/searchbox")
+    @CrossOrigin(origins = "http://localhost:5173")
     public ResponseEntity<UserSearchChatBoxDto> searchChat(@JwtAuth User user) {
         return ResponseEntity.ok(chatService.searchChatbox(user.getUsername()));
     }
 
     @DeleteMapping("/deletebox")
+    @CrossOrigin(origins = "http://localhost:5173")
     public ResponseEntity<String> deletebox(Long id) {
         chatService.delete(id);
         return ResponseEntity.ok("delete success");

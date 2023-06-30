@@ -123,6 +123,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         source.registerCorsConfiguration("/api/deletebox", configuration);
         source.registerCorsConfiguration("/oauth2/authorization/naver", configuration);
         source.registerCorsConfiguration("/oauth2/authorization/google", configuration);
+        source.registerCorsConfiguration("/api/logout", configuration);
+        source.registerCorsConfiguration("/api/create/chatbox", configuration);
+        source.registerCorsConfiguration("/api/create/chat", configuration);
+        source.registerCorsConfiguration("/api/searchbox", configuration);
+        source.registerCorsConfiguration("/api/deletebox", configuration);
         return source;
     }
     @Bean

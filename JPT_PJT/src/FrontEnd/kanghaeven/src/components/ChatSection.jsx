@@ -12,7 +12,7 @@ export default function ChatSection() {
   const [message, setMessage] = useState('');
   const sendmessage = useStore((store) => store.sendmessage);
   const addmessage = useStore((store) => store.addMessage);
-  const addchat = useStore((store) => store.addChat);
+  const addchat2 = useStore((store) => store.addChat2);
   const textareaRef = useRef(null);
   const isFirstMessage = sendmessage.length === 0;
   const company_info = useStore((store) => store.company_info);
@@ -23,7 +23,7 @@ export default function ChatSection() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const messageWithLineBreaks = message.replace(/\n/g, '<br>');
-    const Requestmessage =  message.split(/은|는|이|가|을|를|에/)[0];
+    const Requestmessage = message.split(/은|는|이|가|을|를|에/)[0];
     if (isFirstMessage) {
       const Json = `{"comp": "${Requestmessage}"}`;
       const obj = JSON.parse(Json); // JSON 형식으로 바꾸기
@@ -35,7 +35,7 @@ export default function ChatSection() {
         console.log(company_info);
       });
       console.log('Chat:', message);
-      addchat(messageWithLineBreaks);
+      addchat2(messageWithLineBreaks);
       addmessage(messageWithLineBreaks);
       setMessage('');
     } else {
@@ -72,13 +72,21 @@ export default function ChatSection() {
           <div
             className={`message
           ${index === 0 ? 'firstmargin' : ''}
-          ${index === sendmessage.length - 1 ? (isLgBreakpoint ? 'lastmargin' : 'lastmargin01') : ''}
+          ${
+            index === sendmessage.length - 1
+              ? isLgBreakpoint
+                ? 'lastmargin'
+                : 'lastmargin01'
+              : ''
+          }
           `}
             key={index}
           >
             <MyChat message={msg} />
 
-            <div id="info">{company_info.length !== 0 ? <GptChat msg={msg} /> : null}</div>
+            <div id="info">
+              {company_info.length !== 0 ? <GptChat msg={msg} /> : null}
+            </div>
           </div>
         ))}
       </div>
