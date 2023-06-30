@@ -50,9 +50,9 @@ export default function Login() {
     setUsername(currentUsername);
 
     if (!validateUsername(currentUsername)) {
-      setUsernameMessage('이메일 형식이 올바르지 않습니다.');
+      setUsernameMessage('닉네임 형식이 올바르지 않습니다.');
     } else {
-      setUsernameMessage('올바른 이메일 형식입니다.');
+      setUsernameMessage('올바른 닉네임 형식입니다.');
     }
   }, []);
 
