@@ -1,12 +1,9 @@
 package jobGPT.test.repository;
 
 
-import jobGPT.test.domain.CompInfo;
-import jobGPT.test.domain.Company;
-import jobGPT.test.domain.RecomendTable;
+import jobGPT.test.domain.company.CompInfo;
+import jobGPT.test.domain.company.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 
 public interface CompinfoRepository extends JpaRepository<CompInfo,Long> {

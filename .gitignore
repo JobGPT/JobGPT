@@ -23,9 +23,13 @@ pyvenv.cfg
 pip-selfcheck.json
 .env
 # End of https://www.toptal.com/developers/gitignore/api/venv
+<<<<<<< HEAD
 
 ### macOS ###
 # General
 .DS_Store
 .AppleDouble
 .LSOverride
+=======
+database.js
+>>>>>>> 295baccd46a5a87a53c9c79de4149e886e07be82

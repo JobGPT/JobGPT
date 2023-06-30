@@ -1,0 +1,24 @@
+#container {
+  position: relative;
+  width: 100%;
+  color: #2d3748;
+}
+
+#chat_container {
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+  font-size: 1rem;
+}
+
+#current_chat {
+  display: flex;
+  gap: 1rem;
+  margin: 0.5rem 0;
+}
+
+.profileimg {
+  background-color: #adb5bd;
+  height: 26px;
+  border-radius: 5%;
+}

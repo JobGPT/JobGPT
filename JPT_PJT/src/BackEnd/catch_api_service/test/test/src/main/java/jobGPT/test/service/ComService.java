@@ -1,17 +1,14 @@
 package jobGPT.test.service;
 
-import jobGPT.test.domain.CompInfo;
-import jobGPT.test.domain.Company;
-import jobGPT.test.domain.RecomendComp;
-import jobGPT.test.domain.RecomendTable;
+import jobGPT.test.domain.company.CompInfo;
+import jobGPT.test.domain.company.Company;
+import jobGPT.test.domain.company.RecomendComp;
+import jobGPT.test.domain.company.RecomendTable;
 import jobGPT.test.dto.*;
 import jobGPT.test.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;

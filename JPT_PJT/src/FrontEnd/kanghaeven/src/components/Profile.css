@@ -1,0 +1,27 @@
+#panel {
+  border: none;
+  border-radius: 4px;
+}
+
+#profile_btn,
+#logout_btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  background-color: rgb(5, 5, 9);
+  color: #fff;
+  text-decoration: none !important;
+}
+
+#profile_btn:hover,
+#logout_btn:hover {
+  cursor: pointer;
+  background-color: rgba(64, 64, 79, 1);
+}
+
+.nickname {
+  margin-left: 1rem;
+  color: #fff;
+}
