@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import chatimg from './assets/chatimg.svg';
 import { fetchLoginUser, fetchSignupUser, fetchLogoutUser } from './api/auth';
+import { fetchCreateChatbox, fetchDeleteChatbox, fetchSearchBox } from './api/chat';
 
 const store = (set) => {
   let index = 0;
@@ -100,6 +101,35 @@ const store = (set) => {
       set((store) => ({
         chats: [...store.chats, newChat],
       }));
+    },
+    addChat2: (title) => {
+      const data = {
+        title: title,
+        accesstoken: useStore.getState().accesstoken,
+        refreshtoken: useStore.getState().refreshtoken,
+      };
+      console.log(data);
+      fetchCreateChatbox(data)
+        .then((res) => {
+          console.log(res);
+          const info = {
+            accesstoken: useStore.getState().accesstoken,
+            refreshtoken: useStore.getState().refreshtoken,
+          };
+          fetchSearchBox(info)
+            .then((res) => {
+              console.log(res.data);
+              set((store) => ({
+                chats: [...store.chats, res.data],
+              }));
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     btnClick: (id) => {
       const buttonElement = document.getElementById(`button-${id}`);

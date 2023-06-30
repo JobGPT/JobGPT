@@ -140,7 +140,7 @@ class Server {
     const currentModuleDir = path.dirname(currentModulePath);
 
     const addScriptPath = path.join(currentModuleDir, 'py_module', 'module.py');
-    const pythonProcess = spawn('python3', [addScriptPath, target], { encoding: 'utf8' });
+    const pythonProcess = spawn('python', [addScriptPath, target], { encoding: 'utf8' });
 
     pythonProcess.stdout.on('data', (data) => {
       const URLs = data.toString();
@@ -178,7 +178,7 @@ async function openPython(module_name, target) {
     const addScriptPath = path.join(currentModuleDir, 'py_module', module_name);
 
     // const pythonInterpreterPath = path.join(currentModuleDir, '..', '..', '..', '..', 'venv', 'Scripts', 'python');
-    const pythonProcess = spawn('python3', [addScriptPath, target], { encoding: 'utf8' });
+    const pythonProcess = spawn('python', [addScriptPath, target], { encoding: 'utf8' });
 
     let output = '';
 

@@ -11,6 +11,8 @@ import editimg from '../assets/edit.svg';
 import cancleimg from '../assets/cancle.svg';
 import checkimg from '../assets/check.svg';
 
+import { fetchDeleteChatbox } from '../api/chat';
+
 export default function NewChat({ title, index }) {
   const [is_active, setActive] = useState(false); // a 태그 활성화
   const [edit_active, setEdit] = useState(false);
@@ -101,7 +103,7 @@ export default function NewChat({ title, index }) {
           onClick={(event) => event.stopPropagation()}
         >
           <button
-            onClick={() => handleClickEdit(event)}
+            onClick={() => handleClickEdit()}
             id="button-edit"
             style={
               (edit_active && active) || delete_active
@@ -122,7 +124,7 @@ export default function NewChat({ title, index }) {
             <img src={checkimg} style={{ height: '15px', width: '15px' }} />
           </button>
           <button
-            onClick={() => handleClickDelete(event)}
+            onClick={() => handleClickDelete()}
             id="button-delete"
             style={
               (delete_active && active) || edit_active
