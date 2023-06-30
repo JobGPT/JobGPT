@@ -43,15 +43,16 @@ const fetchDeleteChatbox = (data) => {
 };
 
 const fetchSearchBox = (data) => {
+  console.log(data);
   try {
-    return axios.get(searchUrl, data, {
+    return axios.get(searchUrl, {
       headers: {
         AccessToken: `Bearer ${data.accesstoken}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
   } catch {
-    return axios.get(searchUrl, data, {
+    return axios.get(searchUrl, {
       headers: {
         RefreshToken: `Bearer ${data.refreshtoken}`,
         'Content-Type': 'application/x-www-form-urlencoded',

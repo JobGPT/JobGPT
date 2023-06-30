@@ -116,6 +116,7 @@ const store = (set) => {
             accesstoken: useStore.getState().accesstoken,
             refreshtoken: useStore.getState().refreshtoken,
           };
+          console.log(info);
           fetchSearchBox(info)
             .then((res) => {
               console.log(res.data);
