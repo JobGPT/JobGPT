@@ -12,12 +12,7 @@ import {
 
 import { get_summery } from './api/Catch/Catch/index.js';
 
-<<<<<<< HEAD
 import { mysql_db, dbQuery } from './src/confing/database.js'
-import { NONAME } from 'dns';
-=======
-// import { mysql_db, dbQuery } from './src/confing/database.js'
->>>>>>> 295baccd46a5a87a53c9c79de4149e886e07be82
 
 class Server {
   constructor() {
@@ -59,7 +54,6 @@ class Server {
 
     try {
       // Catch 채용정보 분석
-<<<<<<< HEAD
       const {compName, catch_inform} = await this.CatchData(name)
       data_form.summery = catch_inform
 
@@ -76,27 +70,6 @@ class Server {
       // DART 회사정보 분석
       const detail = await this.DartData(compName._text)
       data_form.detail = detail
-      
-      res.json(data_form);
-=======
-      const { CompName, catch_inform } = await this.CatchData(name);
-      data_form.summery = catch_inform;
-
-      // DB에 정보 저장.
-      // dbQuery("INSERT INTO companyInfo (companyName, compInfo) VALUES (?, ?)",
-      // [CompName._text, JSON.stringify(catch_inform.company_overview)])
-      // .then(result => {
-      //     console.log("Data inserted successfully");
-      // })
-      // .catch(error => {
-      //     console.error("Error inserting data: ", error);
-      // });
-
-      // DART 회사정보 분석
-      const detail = await this.DartData(CompName._text);
-      data_form.detail = detail;
->>>>>>> 295baccd46a5a87a53c9c79de4149e886e07be82
-
       res.json(data_form);
     } catch (error) {
       console.error(error);
@@ -104,7 +77,6 @@ class Server {
     }
   }
 
-<<<<<<< HEAD
   async CatchData(name){
     const {Data} = await this.getCompanyFromCatch(name);
     const Companys = Data.Companys.Company
@@ -130,18 +102,6 @@ class Server {
       'company_overview' : data[1]
     }
     return { compName, catch_inform }
-=======
-  async CatchData(name) {
-    const { Data } = await this.getCompanyFromCatch(name);
-    const { CompName, SummaryURL } = Data.Companys.Company[0];
-    const data = await this.executePythonScript('web_beautifulsoup.py', SummaryURL._text);
-    // 0. 채용공고, 1. 기업개요, 2. 재무평가, 3. 현직자리뷰, 4. 면접후기
-    const catch_inform = {
-      job_Posting: data[0],
-      company_overview: data[1],
-    };
-    return { CompName, catch_inform };
->>>>>>> 295baccd46a5a87a53c9c79de4149e886e07be82
   }
 
   async DartData(name) {
@@ -194,7 +154,7 @@ class Server {
     const currentModuleDir = path.dirname(currentModulePath);
 
     const addScriptPath = path.join(currentModuleDir, 'py_module', 'module.py');
-    const pythonProcess = spawn('python3', [addScriptPath, target], { encoding: 'utf8' });
+    const pythonProcess = spawn('python', [addScriptPath, target], { encoding: 'utf8' });
 
     pythonProcess.stdout.on('data', (data) => {
       const URLs = data.toString();
@@ -232,7 +192,7 @@ async function openPython(module_name, target) {
     const addScriptPath = path.join(currentModuleDir, 'py_module', module_name);
 
     // const pythonInterpreterPath = path.join(currentModuleDir, '..', '..', '..', '..', 'venv', 'Scripts', 'python');
-    const pythonProcess = spawn('python3', [addScriptPath, target], { encoding: 'utf8' });
+    const pythonProcess = spawn('python', [addScriptPath, target], { encoding: 'utf8' });
 
     let output = '';
 
