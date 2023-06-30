@@ -27,6 +27,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 
 // 구글 로그인이 완료된 뒤의 후처리가 필요함  1.코드받기, 2.엑세스 토큰(권한)
@@ -44,8 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     PrincipalOauth2UserService principalOauth2UserService;
     @Autowired
     private final JwtService jwtService;
-    @Autowired
-    private CorsConfig corsConfig;
     private final PrincipalDetailsService principalDetailsService;
     private final UserRepository userRepository;
     private final OAuth2LoginFailHandler oAuth2LoginFailHandler;
@@ -65,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .httpBasic().disable()
 
                         // 필터 관리
-                .addFilter(corsConfig.corsFilter())
+
                 .addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
                 .addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class)
 
@@ -97,11 +100,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .logoutUrl("/api/logout")
                 .logoutSuccessHandler(logoutSuccessHandler)
                 .deleteCookies("JSESSIONID","remember-me");
-
-
-
+        http.cors();
     }
 
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT","OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        configuration.addExposedHeader("AccessToken");
+        configuration.addExposedHeader("RefreshToken");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/login", configuration);
+        source.registerCorsConfiguration("/api/logout", configuration);
+        return source;
+    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
