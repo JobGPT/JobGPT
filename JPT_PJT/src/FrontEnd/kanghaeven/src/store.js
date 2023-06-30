@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import chatimg from './assets/chatimg.svg';
-import { fetchLoginUser, fetchSignupUser } from './api/auth';
+import { fetchLoginUser, fetchSignupUser, fetchLogoutUser } from './api/auth';
 
 const store = (set) => {
   let index = 0;
@@ -75,7 +75,19 @@ const store = (set) => {
         return true;
       }
     },
-
+    logoutUser: async () => {
+      const data = {
+        accesstoken: useStore.getState().accesstoken,
+        refreshtoken: useStore.getState().refreshtoken,
+      };
+      fetchLogoutUser(data)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     chats: [],
     img: chatimg,
     showOffcanvas01: true,

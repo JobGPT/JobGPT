@@ -116,6 +116,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/api/login", configuration);
+        source.registerCorsConfiguration("/api/logout", configuration);
         return source;
     }
     @Bean
