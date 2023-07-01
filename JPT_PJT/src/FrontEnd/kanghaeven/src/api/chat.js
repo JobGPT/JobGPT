@@ -26,14 +26,14 @@ const fetchCreateChatbox = (info) => {
 
 const fetchDeleteChatbox = (data) => {
   try {
-    return axios.delete(deleteUrl, data, {
+    return axios.delete(deleteUrl, data.id, {
       headers: {
         Accesstoken: `Bearer ${data.accesstoken}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
   } catch {
-    return axios.delete(deleteUrl, data, {
+    return axios.delete(deleteUrl, data.id, {
       headers: {
         RefreshToken: `Bearer ${data.refreshtoken}`,
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -62,3 +62,4 @@ const fetchSearchBox = (data) => {
 };
 
 export { fetchCreateChatbox, fetchDeleteChatbox, fetchSearchBox };
+

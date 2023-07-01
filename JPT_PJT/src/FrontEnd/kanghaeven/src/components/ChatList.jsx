@@ -1,18 +1,18 @@
-import Offcanvas from 'react-bootstrap/Offcanvas';
 import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import Row from 'react-bootstrap/Row';
 
 import './ChatList.css';
 
-import Profile from './Profile';
-import NewChatBtn from './NewChatBtn';
-import NewChat from './NewChat';
 import close from '../assets/close.svg';
+import NewChat from './NewChat';
+import NewChatBtn from './NewChatBtn';
+import Profile from './Profile';
 
 import { CloseButton } from 'react-bootstrap';
-import { useStore } from '../store.js';
 import { useMediaQuery } from 'react-responsive';
+import { useStore } from '../store.js';
 
 
 function ChatList({ handleCloseOffcanvas }) {
@@ -41,9 +41,9 @@ function ChatList({ handleCloseOffcanvas }) {
         </Row>
         <div className="relative" style={{ height: 'auto', width: '100%' }}>
           <ol style={{ flexDirection: 'column', padding: '0px' }}>
-            {chats.map((chat, index) => (
-                <li className="relative items-center" key={index}>
-                  <NewChat title={chat.title} index={chat.index} />
+            {chats.map((chat) => (
+                <li className="relative items-center" key={chat.id}>
+                  <NewChat title={chat.title} id={chat.id} />
                 </li>
             ))}
           </ol>

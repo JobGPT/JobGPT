@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import chatimg from './assets/chatimg.svg';
-import { fetchLoginUser, fetchSignupUser, fetchLogoutUser } from './api/auth';
+import { fetchLoginUser, fetchLogoutUser, fetchSignupUser } from './api/auth';
 import { fetchCreateChatbox, fetchDeleteChatbox, fetchSearchBox } from './api/chat';
+import chatimg from './assets/chatimg.svg';
 
 const store = (set) => {
   let index = 0;
@@ -120,8 +120,8 @@ const store = (set) => {
           fetchSearchBox(info)
             .then((res) => {
               console.log(res.data);
-              set((store) => ({
-                chats: [...store.chats, res.data],
+              set(() => ({
+                chats: [res.chatbox],
               }));
             })
             .catch((err) => {
@@ -140,17 +140,23 @@ const store = (set) => {
         img: imgSource,
       }));
     },
-    confirmClick: (newTitle, deleteActive, editActive, index, event) => {
+    confirmClick: (newTitle, deleteActive, editActive, id, event) => {
       event.preventDefault();
       if (deleteActive) {
-        set((store) => ({
-          chats: store.chats.filter((chat) => chat.index !== index),
-        }));
+        const data = {
+          id: id,
+          accesstoken: useStore.getState().accesstoken,
+          refreshtoken: useStore.getState().refreshtoken,
+        }
+        fetchDeleteChatbox(data)
+        .then((res) => {
+          console.log(res)
+        })
       } else if (editActive) {
         set((store) => ({
           chats: store.chats.map((chat) => {
-            if (chat.index === index) {
-              return { title: newTitle, index: chat.index };
+            if (chat.id === id) {
+              return { title: newTitle, id: chat.id };
             }
             return chat;
           }),
