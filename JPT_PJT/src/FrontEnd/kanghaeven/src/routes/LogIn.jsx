@@ -10,6 +10,7 @@ export default function Login() {
   const { usernameMessage, passwordMessage, setUsernameMessage, setPasswordMessage } =
     useStore();
   const navigate = useNavigate();
+  const { httpStatusCode } = useStore();
 
   const Reset = () => {
     setUsername('');
@@ -40,6 +41,9 @@ export default function Login() {
     event.preventDefault();
     if (isAllValid) {
       if (loginUser()) {
+        if (dataError.status === 400) {
+          navigate('/');
+        }
         navigate('/mainpage');
       }
     }

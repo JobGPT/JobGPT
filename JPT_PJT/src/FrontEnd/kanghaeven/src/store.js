@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import chatimg from './assets/chatimg.svg';
 import { fetchLoginUser, fetchSignupUser, fetchLogoutUser } from './api/auth';
 import { fetchCreateChatbox, fetchDeleteChatbox, fetchSearchBox } from './api/chat';
+import { useState } from 'react';
+import { Axios, AxiosError } from 'axios';
 
 const store = (set) => {
   let index = 0;
@@ -17,6 +19,7 @@ const store = (set) => {
     emailMessage: '',
     accesstoken: '',
     refreshtoken: '',
+    setDataError: (error) => set({ error }),
     setUsername: (username) => set({ username }),
     setUsernameMessage: (usernameMessage) => set({ usernameMessage }),
     setPassword: (password) => set({ password }),
@@ -50,27 +53,13 @@ const store = (set) => {
           })
           .catch((err) => {
             console.log(err);
+            console.log(err.response.data);
+            console.log(err.response.status);
+            if (error.response) {
+              setDataError({ data: error.response.data, status: error.response.status })
+            };
             return false;
           });
-      } catch (error) {
-        console.log(error);
-        return true;
-      }
-    },
-    signupUser: async () => {
-      try {
-        console.log('Username:', useStore.getState().username);
-        console.log('Password:', useStore.getState().password);
-        console.log('Email:', useStore.getState().email);
-        const data = {
-          username: useStore.getState().username,
-          password: useStore.getState().password,
-          email: useStore.getState().email,
-        };
-        fetchSignupUser(data).then((res) => {
-          console.log(res.data);
-          return true;
-        });
       } catch (error) {
         console.log(error);
         return true;

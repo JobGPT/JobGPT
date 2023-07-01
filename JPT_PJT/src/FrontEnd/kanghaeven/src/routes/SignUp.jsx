@@ -17,7 +17,6 @@ export default function SignUp() {
     setPassword,
     setConfirmPassword,
     setUsername,
-    signupUser,
   } = useStore();
 
   const {
@@ -47,38 +46,65 @@ export default function SignUp() {
     Reset();
   }, []);
 
+  
   // 이메일, 비밀번호, 닉네임 유효성 검사
   // 닉네임 1~8자 길이, 첫번째 문자 한글/영문대소/숫자 중 하나, 그 후 어떤 문자든 허용
   // 비밀번호 10~25자 길이, 영문자/숫자/특수문자 각 하나 이상
   // 이메일 형식이 맞는지 ex) english@email.com
-
+  
   const validateUsername = (username) => {
     return username.toLowerCase().match(/^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|].{1,8}$/);
   };
-
+  
   const validatePassword = (password) => {
     return password
-      .toLowerCase()
-      .match(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,25}$/);
+    .toLowerCase()
+    .match(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,25}$/);
   };
-
+  
   const validateEmail = (email) => {
     return email
-      .toLowerCase()
-      .match(/([\w-.]+)@(([\w-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
+    .toLowerCase()
+    .match(/([\w-.]+)@(([\w-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
   };
-
+  
   const isUsernameValid = validateUsername(username);
   const isPasswordValid = validatePassword(password);
   const isConfirmPasswordValid = password === confirmPassword;
   const isEmailValid = validateEmail(email);
   const isAllValid =
-    isEmailValid && isPasswordValid && isConfirmPasswordValid && isUsernameValid;
+  isEmailValid && isPasswordValid && isConfirmPasswordValid && isUsernameValid;
+  
 
-  const onSubmit = (event) => {
+  const signupUser = async () => {
+    try {
+      console.log('Username:', useStore.getState().username);
+      console.log('Password:', useStore.getState().password);
+      console.log('Email:', useStore.getState().email);
+      const data = {
+        username: useStore.getState().username,
+        password: useStore.getState().password,
+        email: useStore.getState().email,
+      };
+      const res = await fetchSignupUser(data);
+        console.log(res.data);
+        return true;
+      } catch (error) {
+      console.log(error);
+      if (error.response.data.status === 500) {
+        alert(error.response.data.message);
+      };
+      return false;
+    }
+  }
+
+  const onSubmit = async(event) => {
     event.preventDefault();
     if (isAllValid) {
-      if (signupUser()) {
+      const success = await signupUser();
+      if (success) {
+        navigate('/mainpage');
+      } else {
         navigate('/');
       }
     }
@@ -214,9 +240,6 @@ export default function SignUp() {
           </Link>
         </div>
 
-        {/* <div>OR</div>
-        <Button>Continue with Google</Button>
-        <Button>Continue with Naver</Button>   */}
       </div>
     </div>
   );
