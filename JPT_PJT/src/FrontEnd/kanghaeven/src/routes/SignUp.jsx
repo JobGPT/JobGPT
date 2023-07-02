@@ -95,8 +95,8 @@ export default function SignUp() {
         alert(error.response.data.message);
       };
       return false;
-    }
-  }
+    };
+  };
 
   const onSubmit = async(event) => {
     event.preventDefault();
@@ -106,8 +106,8 @@ export default function SignUp() {
         navigate('/mainpage');
       } else {
         navigate('/');
-      }
-    }
+      };
+    };
   };
 
   const onChangeUsername = useCallback((event) => {
@@ -118,7 +118,7 @@ export default function SignUp() {
       setUsernameMessage('1글자 이상 9글자 미만으로 입력해주세요.');
     } else {
       setUsernameMessage('사용할 수 있는 닉네임입니다.');
-    }
+    };
   }, []);
 
   const onChangePassword = useCallback((event) => {
@@ -129,7 +129,7 @@ export default function SignUp() {
       setPasswordMessage('영문, 숫자, 특수기호 조합으로 10자리 이상 입력해주세요.');
     } else {
       setPasswordMessage('안전한 비밀번호입니다.');
-    }
+    };
   }, []);
 
   const onChangeConfirmPassword = useCallback(
@@ -141,7 +141,7 @@ export default function SignUp() {
         setConfirmPasswordMessage('비밀번호가 일치하지 않습니다.');
       } else {
         setConfirmPasswordMessage('올바른 비밀번호입니다.');
-      }
+      };
     },
     [password]
   );
@@ -154,7 +154,7 @@ export default function SignUp() {
       setEmailMessage('이메일 형식이 올바르지 않습니다.');
     } else {
       setEmailMessage('올바른 이메일 형식입니다.');
-    }
+    };
   }, []);
 
   return (

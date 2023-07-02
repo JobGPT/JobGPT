@@ -29,42 +29,6 @@ const store = (set) => {
       set({ confirmPasswordMessage }),
     setEmail: (email) => set({ email }),
     setEmailMessage: (emailMessage) => set({ emailMessage }),
-    loginUser: async () => {
-      try {
-        console.log('Username:', useStore.getState().username);
-        console.log('Password:', useStore.getState().password);
-        const data = {
-          username: useStore.getState().username,
-          password: useStore.getState().password,
-        };
-        fetchLoginUser(data)
-          .then((res) => {
-            console.log(res.config.method);
-            if (res.config.method === 'post') {
-              // AccessToken 값 저장
-              const accessToken = res.headers.accesstoken;
-              useStore.setState({ accesstoken: accessToken });
-
-              // RefreshToken 값 저장
-              const refreshToken = res.headers['refreshtoken'];
-              useStore.setState({ refreshtoken: refreshToken });
-              return true;
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            console.log(err.response.data);
-            console.log(err.response.status);
-            if (error.response) {
-              setDataError({ data: error.response.data, status: error.response.status })
-            };
-            return false;
-          });
-      } catch (error) {
-        console.log(error);
-        return true;
-      }
-    },
     logoutUser: async () => {
       const data = {
         accesstoken: useStore.getState().accesstoken,

@@ -4,13 +4,24 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
 import { useCallback, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
+import { fetchLoginUser } from '../api/auth';
 
 export default function Login() {
-  const { username, password, setUsername, setPassword, loginUser } = useStore();
-  const { usernameMessage, passwordMessage, setUsernameMessage, setPasswordMessage } =
-    useStore();
+  const { 
+    username, 
+    password, 
+    setUsername, 
+    setPassword 
+  } = useStore();
+
+  const { 
+    usernameMessage, 
+    passwordMessage, 
+    setUsernameMessage, 
+    setPasswordMessage 
+  } = useStore();
+
   const navigate = useNavigate();
-  const { httpStatusCode } = useStore();
 
   const Reset = () => {
     setUsername('');
@@ -37,16 +48,45 @@ export default function Login() {
   const isPasswordValid = validatePassword(password);
   const isAllValid = isusernameValid && isPasswordValid;
 
-  const onSubmit = (event) => {
+  const loginUser = async () => {
+    try {
+      console.log('Username:', useStore.getState().username);
+      console.log('Password:', useStore.getState().password);
+      const data = {
+        username: useStore.getState().username,
+        password: useStore.getState().password,
+      };
+      const res = await fetchLoginUser(data);
+      console.log(res.config.method);
+      if (res.config.method === 'post') {
+        // AccessToken 값 저장
+        const accessToken = res.headers.accesstoken;
+        useStore.setState({ accesstoken: accessToken });
+
+        // RefreshToken 값 저장
+        const refreshToken = res.headers['refreshtoken'];
+        useStore.setState({ refreshtoken: refreshToken });
+      };
+      return true;
+    } catch (err) {
+      console.log(err);
+      if (err.response.status === 400) {
+        alert( err.response.data )
+      };
+      return false;
+    };
+  };
+
+  const onSubmit = async(event) => {
     event.preventDefault();
     if (isAllValid) {
-      if (loginUser()) {
-        if (dataError.status === 400) {
-          navigate('/');
-        }
+      const success = await loginUser();
+      if (success) {
         navigate('/mainpage');
-      }
-    }
+      } else {
+        navigate('/');
+      };
+    };
   };
 
   const onChangeusername = useCallback(async (event) => {
