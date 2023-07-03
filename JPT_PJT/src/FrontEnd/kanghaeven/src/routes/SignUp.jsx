@@ -88,6 +88,7 @@ export default function SignUp() {
       };
       const res = await fetchSignupUser(data);
         console.log(res.data);
+        alert('회원가입이 완료되었습니다! 로그인을 진행해주세요.');
         return true;
       } catch (error) {
       console.log(error);
@@ -103,7 +104,7 @@ export default function SignUp() {
     if (isAllValid) {
       const success = await signupUser();
       if (success) {
-        navigate('/mainpage');
+        navigate('/login');
       } else {
         navigate('/');
       };

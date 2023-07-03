@@ -61,11 +61,16 @@ export default function Login() {
       if (res.config.method === 'post') {
         // AccessToken 값 저장
         const accessToken = res.headers.accesstoken;
+        localStorage.setItem("accessToken", accessToken);
         useStore.setState({ accesstoken: accessToken });
+        console.log('accessToken:', accessToken);
 
         // RefreshToken 값 저장
         const refreshToken = res.headers['refreshtoken'];
+        localStorage.setItem("refreshToken", refreshToken);
         useStore.setState({ refreshtoken: refreshToken });
+        console.log('refreshToken:', refreshToken);
+
       };
       return true;
     } catch (err) {

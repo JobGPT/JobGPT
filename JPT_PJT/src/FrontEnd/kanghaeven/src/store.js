@@ -17,8 +17,6 @@ const store = (set) => {
     confirmPasswordMessage: '',
     email: '',
     emailMessage: '',
-    accesstoken: '',
-    refreshtoken: '',
     setDataError: (error) => set({ error }),
     setUsername: (username) => set({ username }),
     setUsernameMessage: (usernameMessage) => set({ usernameMessage }),
