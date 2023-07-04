@@ -1,17 +1,17 @@
-import './NewChat.css';
 import chatimg from '../assets/chatimg.svg';
+import './NewChat.css';
 
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 
-import deleteimg from '../assets/delete.svg';
-import editimg from '../assets/edit.svg';
 import cancleimg from '../assets/cancle.svg';
 import checkimg from '../assets/check.svg';
+import deleteimg from '../assets/delete.svg';
+import editimg from '../assets/edit.svg';
 
-export default function NewChat({ title, index }) {
+
+export default function NewChat({ title, id }) {
   const [is_active, setActive] = useState(false); // a 태그 활성화
   const [edit_active, setEdit] = useState(false);
   const [delete_active, setDelete] = useState(false);
@@ -54,19 +54,19 @@ export default function NewChat({ title, index }) {
 
   const handleConfirmClick = (event) => {
     if (delete_active) {
-      confirmClick(editedTitle, delete_active, edit_active, index, event);
+      confirmClick(editedTitle, delete_active, edit_active, id, event);
       navigate('/mainpage');
     } else if (edit_active) {
       setBtnActive(false);
       setEdit(false);
-      confirmClick(editedTitle, delete_active, edit_active, index, event);
+      confirmClick(editedTitle, delete_active, edit_active, id, event);
     }
   };
 
   return (
     <>
       <Link
-        to={`/mainpage/${index}`}
+        to={`/mainpage/${id}`}
         id="box"
         className={
           'flex items-center gap-3 relative rounded-md cursor-pointer break-all )} pr-14 )} bg-gray-800 hover:bg-gray-800 group' +
@@ -101,7 +101,7 @@ export default function NewChat({ title, index }) {
           onClick={(event) => event.stopPropagation()}
         >
           <button
-            onClick={() => handleClickEdit(event)}
+            onClick={() => handleClickEdit()}
             id="button-edit"
             style={
               (edit_active && active) || delete_active
@@ -122,7 +122,7 @@ export default function NewChat({ title, index }) {
             <img src={checkimg} style={{ height: '15px', width: '15px' }} />
           </button>
           <button
-            onClick={() => handleClickDelete(event)}
+            onClick={() => handleClickDelete()}
             id="button-delete"
             style={
               (delete_active && active) || edit_active

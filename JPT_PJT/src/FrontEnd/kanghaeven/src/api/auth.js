@@ -1,11 +1,11 @@
 import axios from 'axios';
+
 const loginUrl = 'http://localhost:8080/api/login';
 const signupUrl = 'http://localhost:8080/api/signup';
+const logoutUrl = 'http://localhost:8080/api/logout';
 
 const fetchLoginUser = (data) => {
-  const jsondata = JSON.stringify(data);
-  console.log(typeof data);
-  return axios.post(loginUrl, jsondata, {
+  return axios.post(loginUrl, data, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -26,4 +26,21 @@ const fetchSignupUser = (data) => {
   });
 };
 
-export { fetchLoginUser, fetchSignupUser };
+const fetchLogoutUser = (data) => {
+  try {
+    console.log(data);
+    return axios.get(logoutUrl, {
+      headers: {
+        Accesstoken: `Bearer ${data.accesstoken}`,
+      },
+    });
+  } catch {
+    return axios.get(logoutUrl, {
+      headers: {
+        Refreshtoken: `Bearer ${data.refreshtoken}`,
+      },
+    });
+  }
+};
+
+export { fetchLoginUser, fetchSignupUser, fetchLogoutUser };

@@ -115,11 +115,14 @@ def get_employment_url(soup):
             detail_soup = BeautifulSoup(html, 'html.parser')
             link_holder = detail_soup.find('li', class_="howto", id="view2")
 
-            a_element = link_holder.find('a')
-            href = a_element['href']
-            employ_id = href.split('_')[1]
-            _href = f'/controls/recruitLink/{employ_id}?gubun=1'
-            site_link.append(target_url+_href)
+            if link_holder :
+                a_element = link_holder.find('a')
+                href = a_element['href']
+                employ_id = href.split('_')[1]
+                _href = f'/controls/recruitLink/{employ_id}?gubun=1'
+                site_link.append(target_url+_href)
+            else:
+                site_link.append(target_url)
             
     return site_link
 

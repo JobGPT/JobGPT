@@ -9,6 +9,7 @@ import { useStore } from '../store.js';
 
 export default function Profile() {
   const ClearConversation = useStore((store) => store.ClearConversation);
+  const logoutUser = useStore((store) => store.logoutUser);
   return (
     <Disclosure>
       {({ open }) => (
@@ -18,16 +19,19 @@ export default function Profile() {
               <a id="profile_btn" onClick={ClearConversation}>
                 Clear conversation
               </a>
-              <Link to="/" style={{ textDecoration: 'none' }} id="logout_btn">
+              <Link
+                onClick={logoutUser}
+                to="/"
+                style={{ textDecoration: 'none' }}
+                id="logout_btn"
+              >
                 Log out
               </Link>
             </Disclosure.Panel>
           </div>
           <Disclosure.Button>
             <img src={profileimg} alt="profile" />
-            <div className="nickname">
-              nikname
-            </div>
+            <div className="nickname">nikname</div>
             <ChevronUpIcon
               className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-purple-500`}
             />
