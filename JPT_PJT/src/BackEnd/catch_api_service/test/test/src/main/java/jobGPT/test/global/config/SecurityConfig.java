@@ -45,9 +45,8 @@ import java.util.Arrays;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // @PreAuthorize("hasRole("~~") or hasRole("~~")") 활성화, 특정 주소 접근시 권한 및 인증을 위한 어노테이션 활성화 -> @Secured("ROLE_MANAGER") 이 롤 아니면 못들어감
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
-    @Autowired
-    PrincipalOauth2UserService principalOauth2UserService;
-    @Autowired
+
+    private final PrincipalOauth2UserService principalOauth2UserService;
     private final JwtService jwtService;
     private final PrincipalDetailsService principalDetailsService;
     private final UserRepository userRepository;

@@ -26,14 +26,14 @@ const fetchCreateChatbox = (info) => {
 
 const fetchDeleteChatbox = (data) => {
   try {
-    return axios.delete(deleteUrl, data, {
+    return axios.delete(deleteUrl, data.id, {
       headers: {
         Accesstoken: `Bearer ${data.accesstoken}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
   } catch {
-    return axios.delete(deleteUrl, data, {
+    return axios.delete(deleteUrl, data.id, {
       headers: {
         RefreshToken: `Bearer ${data.refreshtoken}`,
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -43,15 +43,16 @@ const fetchDeleteChatbox = (data) => {
 };
 
 const fetchSearchBox = (data) => {
+  console.log(data);
   try {
-    return axios.get(searchUrl, data, {
+    return axios.get(searchUrl, {
       headers: {
         AccessToken: `Bearer ${data.accesstoken}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
   } catch {
-    return axios.get(searchUrl, data, {
+    return axios.get(searchUrl, {
       headers: {
         RefreshToken: `Bearer ${data.refreshtoken}`,
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -61,3 +62,4 @@ const fetchSearchBox = (data) => {
 };
 
 export { fetchCreateChatbox, fetchDeleteChatbox, fetchSearchBox };
+
