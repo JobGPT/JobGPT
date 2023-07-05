@@ -14,18 +14,39 @@ import { CloseButton } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
 import { useStore } from '../store.js';
 
+import { useEffect } from 'react';
+import { fetchSearchBox } from '../api/chat.js';
 
 function ChatList({ handleCloseOffcanvas }) {
   const chats = useStore((store) => store.chats);
   const handleToggleOffcanvas01 = useStore((store) => store.handleToggleOffcanvas01);
   const isLgBreakpoint = useMediaQuery({ minWidth: 992 });
+  const assetoken = useStore((store) => store.accesstoken);
+  const refreshtoken = useStore((store) => store.refreshtoken);
+  const setChats = useStore((store) => store.setChats);
+  useEffect(() => {
+    const data = {
+      accesstoken: assetoken,
+      refreshtoken: refreshtoken,
+    };
+
+    fetchSearchBox(data)
+      .then((response) => {
+        const newChats = response.data.chatbox;
+        setChats(newChats);
+      })
+      .catch((error) => {
+        // 에러 처리
+        console.error(error);
+      });
+  }, [assetoken, refreshtoken]);
 
   return (
     <div className="bg-dark" style={{ height: '100%' }}>
       <Offcanvas.Header style={{ flexDirection: 'column' }}>
         <Row style={{ width: '100%' }}>
           <Col xs={9} style={{ padding: '0px' }}>
-              <NewChatBtn />
+            <NewChatBtn />
           </Col>
           {!isLgBreakpoint ? (
             <Col xs={3} className="colclose">
@@ -33,7 +54,11 @@ function ChatList({ handleCloseOffcanvas }) {
             </Col>
           ) : (
             <Col xs={3}>
-              <Button id="closebtn" onClick={handleToggleOffcanvas01} variant="outline-secondary">
+              <Button
+                id="closebtn"
+                onClick={handleToggleOffcanvas01}
+                variant="outline-secondary"
+              >
                 <img src={close} className="closeimg" />
               </Button>
             </Col>
@@ -42,9 +67,9 @@ function ChatList({ handleCloseOffcanvas }) {
         <div className="relative" style={{ height: 'auto', width: '100%' }}>
           <ol style={{ flexDirection: 'column', padding: '0px' }}>
             {chats.map((chat) => (
-                <li className="relative items-center" key={chat.id}>
-                  <NewChat title={chat.title} id={chat.id} />
-                </li>
+              <li className="relative items-center" key={chat.id}>
+                <NewChat title={chat.title} id={chat.id} />
+              </li>
             ))}
           </ol>
         </div>

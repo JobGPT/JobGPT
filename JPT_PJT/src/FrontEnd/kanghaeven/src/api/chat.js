@@ -25,12 +25,15 @@ const fetchCreateChatbox = (info) => {
 };
 
 const fetchDeleteChatbox = (data) => {
+  const info = { id: data.id };
+  console.log(info);
   try {
-    return axios.delete(deleteUrl, data.id, {
+    return axios.delete(deleteUrl, {
       headers: {
         Accesstoken: `Bearer ${data.accesstoken}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
+      data: info,
     });
   } catch {
     return axios.delete(deleteUrl, data.id, {
@@ -43,7 +46,6 @@ const fetchDeleteChatbox = (data) => {
 };
 
 const fetchSearchBox = (data) => {
-  console.log(data);
   try {
     return axios.get(searchUrl, {
       headers: {
@@ -62,4 +64,3 @@ const fetchSearchBox = (data) => {
 };
 
 export { fetchCreateChatbox, fetchDeleteChatbox, fetchSearchBox };
-

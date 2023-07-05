@@ -10,8 +10,9 @@ import checkimg from '../assets/check.svg';
 import deleteimg from '../assets/delete.svg';
 import editimg from '../assets/edit.svg';
 
-
 export default function NewChat({ title, id }) {
+  console.log(title);
+  console.log(id);
   const [is_active, setActive] = useState(false); // a 태그 활성화
   const [edit_active, setEdit] = useState(false);
   const [delete_active, setDelete] = useState(false);
@@ -47,15 +48,18 @@ export default function NewChat({ title, id }) {
 
   const handleClickDelete = (event) => {
     event.preventDefault();
+    console.log('delete', delete_active);
     btnClick('delete');
     setBtnActive(!active);
-    setDelete(!delete_active);
+    setDelete(true);
   };
 
   const handleConfirmClick = (event) => {
     if (delete_active) {
       confirmClick(editedTitle, delete_active, edit_active, id, event);
       navigate('/mainpage');
+      setDelete(false);
+      setBtnActive(false);
     } else if (edit_active) {
       setBtnActive(false);
       setEdit(false);
@@ -101,7 +105,7 @@ export default function NewChat({ title, id }) {
           onClick={(event) => event.stopPropagation()}
         >
           <button
-            onClick={() => handleClickEdit()}
+            onClick={(event) => handleClickEdit(event)}
             id="button-edit"
             style={
               (edit_active && active) || delete_active
@@ -122,7 +126,7 @@ export default function NewChat({ title, id }) {
             <img src={checkimg} style={{ height: '15px', width: '15px' }} />
           </button>
           <button
-            onClick={() => handleClickDelete()}
+            onClick={(event) => handleClickDelete(event)}
             id="button-delete"
             style={
               (delete_active && active) || edit_active

@@ -94,6 +94,7 @@ const store = (set) => {
     showOffcanvas01: true,
     sendmessage: [],
     company_info: [],
+    setChats: (chats) => set({ chats: chats }),
     setButtonImage: (image) => set({ img: image }),
     addChat: (title) => {
       const newChat = { title, index };
@@ -121,7 +122,7 @@ const store = (set) => {
             .then((res) => {
               console.log(res.data);
               set(() => ({
-                chats: [res.chatbox],
+                chats: res.data.chatbox,
               }));
             })
             .catch((err) => {
@@ -140,18 +141,22 @@ const store = (set) => {
         img: imgSource,
       }));
     },
-    confirmClick: (newTitle, deleteActive, editActive, id, event) => {
+    confirmClick: async (newTitle, deleteActive, editActive, id, event) => {
       event.preventDefault();
+      console.log(id);
       if (deleteActive) {
         const data = {
           id: id,
           accesstoken: useStore.getState().accesstoken,
           refreshtoken: useStore.getState().refreshtoken,
+        };
+        try {
+          console.log(data);
+          const res = await fetchDeleteChatbox(data);
+          console.log(res);
+        } catch (error) {
+          console.error(error);
         }
-        fetchDeleteChatbox(data)
-        .then((res) => {
-          console.log(res)
-        })
       } else if (editActive) {
         set((store) => ({
           chats: store.chats.map((chat) => {
