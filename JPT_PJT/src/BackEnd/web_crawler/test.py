@@ -20,17 +20,23 @@ import json
 data_xml = z.read('CORPCODE.xml').decode('utf-8')
 data_odict = xmltodict.parse(data_xml)
 data_dict = json.loads(json.dumps(data_odict))
-data = data_dict.get('result', {}).get('list')
+rote_data = data_dict.get('result', {}).get('list')
 
-# target = "삼성전자"
-# target_inform_dart = None
-# for item in data:
-#     if item['corp_name'] in [target]:
-#         target_inform_dart = item
-#         break
+target = "현대자동차"
+target_inform_dart = None
+for item in rote_data:
+    if item['corp_name'] in [target]:
+        target_inform_dart = item
+        break
 
 # print(target_inform_dart['corp_code'])
 
+corp_names = [item['corp_name'] for item in rote_data]  # corp_name 값 추출
+
+# # 추출한 값들을 텍스트 파일에 저장
+# with open('corp_names.txt', 'w', encoding='utf-8') as file:
+#     for corp_name in corp_names:
+#         file.write(corp_name + '\n')
 
 ## 회사의 공시정보 따오기
 
@@ -158,7 +164,7 @@ def get_comp(target_inform_dart):
 
     params = {
         'crtfc_key': crtfc_key,
-        'corp_code' : target_inform_dart.corp_code, # 삼성전자 임
+        'corp_code' : target_inform_dart['corp_code'], # 삼성전자 임
         'bgn_de' : start_date,
         'end_de' : end_date,
         'last_reprt_at': 'Y',
@@ -169,7 +175,10 @@ def get_comp(target_inform_dart):
     res = requests.get(api, params=params)
     data = json.loads(res.content)
 
-    D = next((item for item in data if "분기보고서" in item["report_nm"]), None)
+    if data.get('list'):
+        D = next((item for item in data.get('list') if "분기보고서" in item["report_nm"]), None)
+    else:
+        D = None
     return D
 
 def get_mainserv(D):
@@ -213,7 +222,8 @@ def get_mainserv(D):
                     get_Data = contents_of_business.get('SECTION-2')[0]
                     if get_Data.get('P') : 
                         p_tag = get_Data.get('P')
-                        print(p_tag)
+                        # print(p_tag)
+                        return p_tag
                     # for cont in contents_of_business:
                     #     print(cont
                     #)
@@ -229,8 +239,18 @@ def get_mainserv(D):
         print(f'{D["corp_name"]}에서 예외가 발생했습니다.', e)
         return None
 
-# for idx, item in enumerate(data):
-#     d = get_comp(item)
-    
-#     if idx == 300:
-#         break
+
+with open('corp_info.txt', 'w', encoding='utf-8') as file:
+    for idx, item in enumerate(rote_data):
+        print(idx if idx % 10 == 0 else '')
+        d = get_comp(item)
+        main_service = None
+        if d : main_service = get_mainserv(d)
+        
+        if main_service:
+            # key는 item['corp_name'] value가 main_service인 객체를 파일에 저장
+            json_object = json.dumps({item['corp_name']: main_service}, ensure_ascii=False)
+            file.write(json_object + '\n')
+        
+        if idx == 200:
+            break
