@@ -17,10 +17,13 @@ export default function ChatSection() {
   const isFirstMessage = sendmessage.length === 0;
   const company_info = useStore((store) => store.company_info);
   const save_company_info = useStore((store) => store.save_company_info);
+  const savechat = useStore((store) => store.saveChat);
+
+  const [now_title, setNowTitle] = useState('');
 
   const isLgBreakpoint = useMediaQuery({ minWidth: 992 });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const messageWithLineBreaks = message.replace(/\n/g, '<br>');
     const Requestmessage = message.split(/은|는|이|가|을|를|에/)[0];
@@ -28,18 +31,24 @@ export default function ChatSection() {
       const Json = `{"comp": "${Requestmessage}"}`;
       const obj = JSON.parse(Json); // JSON 형식으로 바꾸기
       console.log(obj);
-      axios.post('/catch', obj).then((response) => {
+      try {
+        const response = await axios.post('/catch', obj);
         const data = response.data;
         console.log(data);
         save_company_info(data);
         console.log(company_info);
-      });
-      console.log('Chat:', message);
-      addchat2(messageWithLineBreaks);
-      addmessage(messageWithLineBreaks);
-      setMessage('');
+
+        await addchat2(messageWithLineBreaks);
+        addmessage(messageWithLineBreaks);
+        setMessage('');
+        savechat(messageWithLineBreaks, messageWithLineBreaks);
+        setNowTitle(messageWithLineBreaks);
+      } catch (error) {
+        // 에러 처리
+      }
     } else {
       addmessage(messageWithLineBreaks);
+      savechat(now_title, messageWithLineBreaks);
       setMessage('');
     }
   };

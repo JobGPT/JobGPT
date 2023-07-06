@@ -1,6 +1,11 @@
 import { create } from 'zustand';
 import { fetchLoginUser, fetchLogoutUser, fetchSignupUser } from './api/auth';
-import { fetchCreateChatbox, fetchDeleteChatbox, fetchSearchBox } from './api/chat';
+import {
+  fetchCreateChatbox,
+  fetchDeleteChatbox,
+  fetchSearchBox,
+  fetchCreateChat,
+} from './api/chat';
 import chatimg from './assets/chatimg.svg';
 
 const store = (set) => {
@@ -94,6 +99,7 @@ const store = (set) => {
     showOffcanvas01: true,
     sendmessage: [],
     company_info: [],
+    now_talk_id: null,
     setChats: (chats) => set({ chats: chats }),
     setButtonImage: (image) => set({ img: image }),
     addChat: (title) => {
@@ -103,16 +109,18 @@ const store = (set) => {
         chats: [...store.chats, newChat],
       }));
     },
-    addChat2: (title) => {
+    addChat2: async (title) => {
       const data = {
         title: title,
         accesstoken: useStore.getState().accesstoken,
         refreshtoken: useStore.getState().refreshtoken,
       };
       console.log(data);
-      fetchCreateChatbox(data)
+      await fetchCreateChatbox(data)
         .then((res) => {
           console.log(res);
+          useStore.setState({ now_talk_id: res.data.id });
+          console.log(useStore.getState().now_talk_id);
           const info = {
             accesstoken: useStore.getState().accesstoken,
             refreshtoken: useStore.getState().refreshtoken,
@@ -128,6 +136,23 @@ const store = (set) => {
             .catch((err) => {
               console.log(err);
             });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    saveChat: (title, talk) => {
+      console.log(useStore.getState().now_talk_id);
+      const data = {
+        accesstoken: useStore.getState().accesstoken,
+        refreshtoken: useStore.getState().refreshtoken,
+        talkboxId: useStore.getState().now_talk_id,
+        title,
+        talk,
+      };
+      fetchCreateChat(data)
+        .then((res) => {
+          console.log(res.data);
         })
         .catch((err) => {
           console.log(err);

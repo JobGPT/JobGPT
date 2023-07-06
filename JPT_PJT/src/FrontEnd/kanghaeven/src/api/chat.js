@@ -3,6 +3,7 @@ import axios from 'axios';
 const createUrl = 'http://localhost:8080/api/create/chatbox';
 const deleteUrl = 'http://localhost:8080/api/deletebox';
 const searchUrl = 'http://localhost:8080/api/searchbox';
+const chatUrl = 'http://localhost:8080/api/create/chat';
 
 const fetchCreateChatbox = (info) => {
   const data = { title: info.title };
@@ -63,4 +64,25 @@ const fetchSearchBox = (data) => {
   }
 };
 
-export { fetchCreateChatbox, fetchDeleteChatbox, fetchSearchBox };
+const fetchCreateChat = (data) => {
+  const info = { talkboxId: data.talkboxId, talk: data.talk, title: data.title };
+  try {
+    return axios.post(chatUrl, {
+      headers: {
+        AccessToken: `Bearer ${data.accesstoken}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      data: info,
+    });
+  } catch {
+    return axios.post(chatUrl, {
+      headers: {
+        RefreshToken: `Bearer ${data.refreshtoken}`,
+        'Content-type': 'application/x-www-form-urlencoded',
+      },
+      data: info,
+    });
+  }
+};
+
+export { fetchCreateChatbox, fetchDeleteChatbox, fetchSearchBox, fetchCreateChat };
