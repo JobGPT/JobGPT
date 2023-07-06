@@ -155,7 +155,10 @@ const store = (set) => {
           console.log(res.data);
         })
         .catch((err) => {
+          console.log("시작");
+          console.log(data);
           console.log(err);
+          console.log("끝");
         });
     },
     btnClick: (id) => {

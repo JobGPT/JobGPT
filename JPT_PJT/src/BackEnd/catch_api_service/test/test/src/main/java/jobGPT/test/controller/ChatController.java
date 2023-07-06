@@ -29,6 +29,12 @@ public class ChatController {
         return ResponseEntity.ok(chatService.createChat(chatRequestDto, writer.getUsername()));
     }
 
+    @PostMapping("/create/gptchat")
+    @CrossOrigin(origins = "http://localhost:5173")
+    public ResponseEntity<ChatResponseDto> createGPTtalk(ChatRequestDto chatRequestDto) {
+        return ResponseEntity.ok(chatService.createChat(chatRequestDto, "JobGPT"));
+    }
+
     @GetMapping("/searchbox")
     @CrossOrigin(origins = "http://localhost:5173")
     public ResponseEntity<UserSearchChatBoxDto> searchChat(@JwtAuth User user) {

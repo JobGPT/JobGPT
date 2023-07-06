@@ -35,6 +35,7 @@ public class JwtAuthArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         log.info("start resolveArgument");
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
+        log.info("request token: {}",request.getHeader("AccessToken"));
         if (request.getHeader("AccessToken") == null) {
             String authorizationHeader = request.getHeader("RefreshToken");
             String token = authorizationHeader.split(" ")[1];
