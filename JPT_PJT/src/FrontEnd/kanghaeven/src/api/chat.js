@@ -67,20 +67,18 @@ const fetchSearchBox = (data) => {
 const fetchCreateChat = (data) => {
   const info = { talkboxId: data.talkboxId, talk: data.talk, title: data.title };
   try {
-    return axios.post(chatUrl, {
+    return axios.post(chatUrl, info, {
       headers: {
         AccessToken: `Bearer ${data.accesstoken}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      data: info,
     });
   } catch {
-    return axios.post(chatUrl, {
+    return axios.post(chatUrl, info, {
       headers: {
         RefreshToken: `Bearer ${data.refreshtoken}`,
         'Content-type': 'application/x-www-form-urlencoded',
       },
-      data: info,
     });
   }
 };
